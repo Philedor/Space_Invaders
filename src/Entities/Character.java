@@ -62,8 +62,8 @@ public class Character{
             this.sprites.add(tmp);
         }
 
-        this.width = this.getImage().getWidth(null);
-        this.height = this.getImage().getHeight(null);
+        this.width = this.getImage(0).getWidth(null);
+        this.height = this.getImage(0).getHeight(null);
     }
 
     public static void Shoot(){ projectiles.add( new Projectile(angle, posX, posY)); }
@@ -85,7 +85,9 @@ public class Character{
     public int getPosY()   {return posY;}
 
     // For Update and Drawing
-    public Image getImage()  {return this.sprites.get(0);}
+    public Image getImage(int state)  {
+        return this.sprites.get(state);
+    }
     public LinkedList<Projectile> getProjectiles()    {return projectiles;}
 
     // For collision management, defines the hitbox

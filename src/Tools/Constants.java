@@ -25,7 +25,7 @@ public class Constants {
     // Image importation infos
     //Player
     public static final String  PLAYER_SPRITE =                     "resources/sprites/player/player.png";
-    public static final int     NB_PLAYER_SPRITE =                  2;
+    public static final int     NB_PLAYER_SPRITE =                  9;
     // Enemy
     public static final String  ENEMY_SPRITE =                      "resources/sprites/alien.png";
     public static final int     NB_ENEMY_SPRITE =                   1;

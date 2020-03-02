@@ -6,7 +6,6 @@ import Entities.Projectile;
 import Tools.Constants;
 
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,6 +29,10 @@ public class GameScene extends JPanel implements ActionListener {
     private boolean running = false;
     private static LinkedList<Enemy> enemies;
     private Player player;
+
+    //needs a rename- used to keep certain animation on for longer
+    private static int animation_counter = 0;
+    private static int animationframe;
 
     private Thread thread;
     private BufferedImage bufferedImage;
@@ -100,16 +103,40 @@ public class GameScene extends JPanel implements ActionListener {
     private void drawEnemies(Graphics graphics){
         for(Enemy enemy : enemies){
             // if condition to add for explosion animation
-            graphics.drawImage(enemy.getImage(), enemy.getPosX(), enemy.getPosY(), this);
+            graphics.drawImage(enemy.getImage(0), enemy.getPosX(), enemy.getPosY(), this);
         }
     }
 
     /** Draw the Player
      * @param  graphics the graphic context*/
     private void drawPlayer(Graphics graphics) {
-        // if condition to add for explosion animation
+        //cycling through animations
+        if(animation_counter < 24){
+            //animation counter is used to display one frame per animation for a little longer
+            ++animation_counter;
+            if(animation_counter < 8) {animationframe = 0;}
+            else if(animation_counter < 16) {animationframe = 1;}
+            else if(animation_counter < 24) {animationframe =2;}
+        }
+        else {
+            animation_counter = 0;
+        }
+
+        // if condition to add for left, right and explosion animation
+        if(player.rightPressed== true) {
+            //at player3.png the right flying animation starts and has 3 animations
+            player.state = 3 + animationframe;
+        }
+        else if(player.leftPressed == true){
+            //at player6.png the left flying animation starts and has 3 animations
+            player.state = 6 + animationframe;
+        }
+        else
+        {
+            player.state = animationframe;
+        }
         graphics.drawImage(back, 0, 0, this);
-        graphics.drawImage(player.getImage(), player.getPosX(), player.getPosY(), this);
+        graphics.drawImage(player.getImage(player.state), player.getPosX(), player.getPosY(), this);
     }
 
     /** Update function called automatically whenever an action takes place

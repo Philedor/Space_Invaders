@@ -14,8 +14,9 @@ import static Tools.Constants.keycodes;
 
 public class Player extends Character{
 
-    private static boolean leftPressed;
-    private static boolean rightPressed;
+    public static boolean leftPressed;
+    public static boolean rightPressed;
+    public static int state;
     private static int deltaX;
     private static int deltaY;
     private static float deltaangle;
