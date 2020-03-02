@@ -24,15 +24,6 @@ public class Game extends JFrame {
         setVisible(true);
     }
 
-    // Game Main Loop
-    public static void Loop(){
-
-    }
-
-    // End the Game by killing all Processes and clearing the memory
-    public static void Kill(){
-
-    }
 
     // For Settings puroposes
     public void changesize(int width, int height) {

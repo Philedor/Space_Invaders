@@ -1,10 +1,12 @@
 package Entities;
 
+import Tools.Constants;
+
 import javax.swing.*;
 import java.awt.*;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Entity {
 
@@ -15,20 +17,19 @@ public class Entity {
     };
 
     // In game related stats / date
-    protected static LinkedList<Projectile> projectiles;
 
-    protected static boolean CanMoveHorizontally;
-    protected static boolean CanMoveVertically;
+    protected static boolean CanMoveHorizontally = true;
+    protected static boolean CanMoveVertically = true;
     protected static boolean CanTurn = false;
     protected static boolean CanShoot = false;
     protected static Team team;
-    protected boolean live;
+    protected boolean live = true;
     protected int framesTillDeath;
 
     protected int hp;
-    protected float attackSpeed;
+    protected static long attackSpeed;
     protected int onContactDMG;
-    protected int shootDMG;
+    protected static int shootDMG;
 
     // Position and orientation
     protected static int posX;
@@ -40,16 +41,65 @@ public class Entity {
 
     protected static float angle;           // in radians
     protected static float turnSpeed;
-    protected static float deltaTheta;
+    protected static float deltaTheta = 0;
 
     // Graphics data
-    protected ArrayList<Image> sprites;
+
     protected int nb_sprites;
     protected int currentsprite = 0;
+    protected static ArrayList<Image> sprites;
+    protected static int width;
+    protected static int height;
+    protected String deathsprites;
 
-    protected int width;
-    protected int height;
 
+
+    protected static long lastshoot;
+
+    public Entity(/*Team pteam, */int pdeathframes, int php, long pattackSpeed, int pcdmg, int psdmg, int px, int py, int pms, float pangle, float pts, int pnbs, String ppath, String pdeathsprites){
+        /*team =  pteam;*/
+        framesTillDeath = pdeathframes;
+        hp = php;
+        attackSpeed = pattackSpeed;
+        onContactDMG = pcdmg;
+        shootDMG = psdmg;
+        posX = px;
+        posY = py;
+        deltaX = 0;
+        deltaY = 0;
+        moveSpeed = pms;
+        angle = pangle;
+        turnSpeed = pts;
+
+        LoadSprites(ppath, pnbs);
+
+        lastshoot = System.currentTimeMillis();
+        deathsprites = pdeathsprites;
+
+    }
+
+
+    public Entity(/*Team pteam, */int pdeathframes, int php, long pattackSpeed, int pcdmg, int psdmg, int px, int py, int pms, float pangle, float pts, int pnbs, String ppath, String pdeathsprites, int dx, int dy){
+        /*team =  pteam;*/
+        framesTillDeath = pdeathframes;
+        hp = php;
+        attackSpeed = pattackSpeed;
+        onContactDMG = pcdmg;
+        shootDMG = psdmg;
+        posX = px;
+        posY = py;
+        deltaX = dx;
+        deltaY = dy;
+        moveSpeed = pms;
+        angle = pangle;
+        turnSpeed = pts;
+
+        LoadSprites(ppath, pnbs);
+
+        lastshoot = System.currentTimeMillis();
+        deathsprites = pdeathsprites;
+
+    }
 
 
     /** Sprites Loading, can load multiple sprites to allow animation later on
@@ -57,7 +107,7 @@ public class Entity {
      * @param  nb the number of sprites*/
     public void LoadSprites(String path, int nb){
 
-        this.sprites = new ArrayList<>();
+        sprites = new ArrayList<>();
         // Useful values so that we only use one memory space for each
         // Or just facilitate the process
         Image tmp;
@@ -72,16 +122,13 @@ public class Entity {
 
         for(int i = 0; i < nb; i++){
             tmppath = pathroot + i +end;
-            ii = new ImageIcon(tmppath);
-            tmp = ii.getImage();
-            this.sprites.add(tmp);
+            sprites.add(new ImageIcon(tmppath).getImage());
+        height = this.getImage().getHeight(null);
+        width = this.getImage().getWidth(null);
         }
-
-        this.width = this.getImage().getWidth(null);
-        this.height = this.getImage().getHeight(null);
     }
 
-    public static void Shoot(){ projectiles.add( new Projectile(angle, posX, posY, team)); }
+
 
     public void damage(int dmg){
         this.hp -= dmg;
@@ -90,6 +137,11 @@ public class Entity {
     }
 
     public void Kill(){
+        this.live = false;
+        this.deltaX = 0;
+        this.deltaY = 0;
+        LoadSprites(deathsprites, framesTillDeath);
+
     }
 
     // Getters
@@ -98,12 +150,17 @@ public class Entity {
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
 
+    public void setDeltaX(int x){deltaX = x; }
+    public void setDeltaY(int y){deltaY = y; }
+
     // For Update and Drawing
-    public Image getImage()  {return this.sprites.get(0);}
-    public LinkedList<Projectile> getProjectiles()    {return projectiles;}
+    public Image getImage()  {return this.sprites.get(currentsprite);}
 
     // For collision management, defines the hitbox
     public Rectangle getBounds() { return new Rectangle(posX, posY, width, height);}
+
+    private float CalculateDeltaX(float angle, int moveSpeed)     {return (float) Math.cos(angle) / (float)moveSpeed;}
+    private float CalculateDeltaY(float angle, int moveSpeed)     {return (float) Math.sin(angle) / (float)moveSpeed;}
 
 }
 

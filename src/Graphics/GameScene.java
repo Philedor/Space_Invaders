@@ -4,6 +4,8 @@ import Entities.Enemy;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.Constants;
+import java.util.ArrayList;
+import java.util.List;
 
 
 import javax.swing.*;
@@ -12,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 
@@ -24,11 +25,15 @@ public class GameScene extends JPanel implements ActionListener {
     private Image back;
 
     private Timer timer;
-    int DELAY = 15;
+    int DELAY = 30;
 
     private boolean running = false;
-    private static LinkedList<Enemy> enemies;
+    public static List<Enemy> enemies = new ArrayList<>();
     private Player player;
+    private long enemyLastMove;
+    private long enemyMoveTime = 1000;
+
+    private static List<Projectile> projectiles = new ArrayList<>();
 
     // Init the game Scene
     public GameScene(int w, int h){
@@ -54,6 +59,7 @@ public class GameScene extends JPanel implements ActionListener {
     private void InitEntities() {
         player = new Player();
         //enemies = new LinkedList<>();
+        enemyLastMove = System.currentTimeMillis();
         // Enemies generation
     }
 
@@ -67,7 +73,7 @@ public class GameScene extends JPanel implements ActionListener {
 
         drawPlayer(g);
         //drawEnemies(g);
-        //drawProjectile
+        drawProjectiles(g);
 
         Toolkit.getDefaultToolkit().sync();
 
@@ -77,17 +83,17 @@ public class GameScene extends JPanel implements ActionListener {
     /** Draw the projectiles
      * @param  graphics the graphic context*/
     private void drawProjectiles(Graphics graphics) {
-        for (Projectile proj: player.getProjectiles()) {
+        for (Projectile proj: projectiles) {
             // if condition to add for explosion animation
             graphics.drawImage(proj.getImage(), proj.getPosX(), proj.getPosY(), this);
         }
-
+/*
         for(Enemy enemy : enemies) {
             for (Projectile proj : enemy.getProjectiles()) {
                 // if condition to add for explosion animation
                 graphics.drawImage(proj.getImage(), proj.getPosX(), proj.getPosY(), this);
             }
-        }
+        }*/
     }
 
     /** Draw the enemies
@@ -115,7 +121,7 @@ public class GameScene extends JPanel implements ActionListener {
         // Update Player
         player.Update();
         //updateEnemies();
-        //updateProjectiles();
+        updateProjectiles();
 
         // collision checked during update to avoid calling multiple loops to go through each lists every time
         repaint();
@@ -132,10 +138,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void updateEnemies() {
         Enemy left = getMostLeftEnemy();
-        left.setMostLeft(true);
-
         Enemy right = getMostRightEnemy();
-        right.setMostRightht(true);
 
         if ((left.getPosX() <= Constants.GAME_MIN_WIDTH + 5) ||
                 (right.getPosX() >= Constants.GAME_MAX_WIDTH - 5)) {
@@ -143,6 +146,8 @@ public class GameScene extends JPanel implements ActionListener {
         }
 
         // Actually move the enemies
+
+        if (System.currentTimeMillis() - enemyLastMove >= enemyMoveTime )
         for (Enemy e : enemies){
             e.MoveSideways();
             PlayerCollision(e);     // Check Collision
@@ -150,15 +155,18 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     private void updateProjectiles() {
-        for (Projectile proj: player.getProjectiles()) {
+        for (int i = 0; i < projectiles.size(); i++){//Projectile proj: projectileList) {
             // if condition to add for explosion animation
-            proj.Update();
-            if (proj.getFrames_until_explosion() == -1){
-                player.getProjectiles().remove(proj);
-                ProjectileCollisionCheck(proj);
+            Projectile proj = projectiles.get(i);
+            /*if (proj.getFrames_until_explosion() == -1){
+                projectiles.remove(i);
             }
+            else {*/
+            proj.Update();
+            //ProjectileCollisionCheck(proj);
+            //}
         }
-
+/*
         for(Enemy enemy : enemies) {
             for (Projectile proj : enemy.getProjectiles()) {
                 // if condition to add for explosion animation
@@ -168,7 +176,7 @@ public class GameScene extends JPanel implements ActionListener {
                     ProjectileCollisionCheck(proj);
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -235,6 +243,8 @@ public class GameScene extends JPanel implements ActionListener {
         }
         return enemy;
     }
+
+    public static void AddProj(Projectile projectile){  projectiles.add(projectile);}
 
     private int getEnemyLeftPos(){ return getMostLeftEnemy().getPosX();}
     private int getEnemyRightPos(){ return getMostRightEnemy().getPosX();}

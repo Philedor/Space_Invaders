@@ -1,8 +1,7 @@
 
 TODO :
     - Projectile Management
-    - Structure revamp
-    - Make Projectile Manager so that they when the enemy that shot die the projectiledoesn't disappear? TO DISCUSS
+    - Make Projectile Manager so that they when the enemy that shot die the projectiledoesn't disappear, Take projectiles out of enemy class
     - Enemies Generation
     - Bonus Generation
 
