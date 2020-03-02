@@ -24,8 +24,8 @@ public class Constants {
 
     // Image importation infos
     //Player
-    public static final String  PLAYER_SPRITE =                     "resources/sprites/player.png";
-    public static final int     NB_PLAYER_SPRITE =                  1;
+    public static final String  PLAYER_SPRITE =                     "resources/sprites/player/player.png";
+    public static final int     NB_PLAYER_SPRITE =                  2;
     // Enemy
     public static final String  ENEMY_SPRITE =                      "resources/sprites/alien.png";
     public static final int     NB_ENEMY_SPRITE =                   1;
@@ -51,7 +51,7 @@ public class Constants {
     public static final int PROJECTILE_SPEED =          15;         // Pixel per Update
     public static final int PROJECTILE_DAMAGE =         1;
     public static final float PLAYER_ATTACK_SPEED =     2f;          // Attack per seconds
-    public static final int PLAYER_SPEED =              1;
+    public static final int PLAYER_SPEED =              2;
     public static final float ENEMY_ATTACK_SPEED =      0.5f;
     public static final int ENEMY_SPEED =               10;
     public static final int GRAVITY =                   10;
