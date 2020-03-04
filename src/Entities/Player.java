@@ -1,83 +1,111 @@
 package Entities;
 
 import Tools.Constants;
-import com.sun.jdi.connect.spi.TransportService;
-import org.w3c.dom.html.HTMLParagraphElement;
-
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static Tools.Constants.keycodes;
 
-public class Player extends Character{
+public class Player extends Entity{
 
-    private static boolean leftPressed;
-    private static boolean rightPressed;
-    private static int deltaX;
-    private static int deltaY;
-    private static float deltaangle;
-    private static boolean CanUpNDown;
+    private List<Projectile> projectiles;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    private boolean upPressed = false;
+    private boolean downPressed = false;
+    private boolean isShooting = false;
 
-    public Player(){
-        this.posX =          Constants.PLAYER_STARTING_X;
-        this.posY =          Constants.PLAYER_STARTING_Y;
-        this.moveSpeed =     Constants.PLAYER_SPEED;
-        this.attackSpeed =   Constants.PLAYER_ATTACK_SPEED;
-        this.angle =         Constants.PLAYER_STARTING_ANGLE;
-        this.projectiles =   new LinkedList<>();
+    private int hp;
+    private int dmg;
+    private int moveSpeed;
+    private double turnSpeed;
+    private long atkSpeed;
+    private long lastShoot;
 
-        this.sprites = new ArrayList<>();
-        LoadSprites(Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE);
 
-        CanUpNDown = true;
+    public Player() {
+        super(Team.PLAYER, Constants.PLAYER_STARTING_X, Constants.PLAYER_STARTING_Y, Constants.PLAYER_STARTING_ANGLE, Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE);
+
+        projectiles = new ArrayList<>();
+        hp = Constants.PLAYER_HP;
+        dmg = Constants.PLAYER_DAMAGE;
+        moveSpeed = Constants.PLAYER_SPEED;
+        turnSpeed = Constants.PLAYER_TURN_SPEED;
+        atkSpeed = Constants.PLAYER_ATTACK_SPEED;
+        lastShoot = System.currentTimeMillis() - atkSpeed;  // To allow te player to shoot from the beginning
     }
+
+    public void Shoot(){
+        if(System.currentTimeMillis() - lastShoot > atkSpeed){
+            projectiles.add(new Projectile(team, posX, posY, angle, dmg));
+            lastShoot = System.currentTimeMillis();
+        }
+    }
+
 
     public void Update() {
-        posX = Math.max(Math.min(posX + deltaX, Constants.GAME_MAX_WIDTH), Constants.GAME_MIN_WIDTH) ;
-        posY = Math.min(Math.max(posY + deltaY, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT);
-        angle = Math.max(Math.min(angle + deltaangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
+        posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH), Constants.GAME_MIN_WIDTH) ;
+        posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT);
+        angle = Math.max(Math.min(angle + dangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
+        if (isShooting) Shoot();
     }
 
-
-
-    public static void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        // Cannot use switch because bindings are sadly not constant
-        if     (key == keycodes[2] && CanMove)     {deltaX = -moveSpeed;    leftPressed = true;}
-        if     (key == keycodes[3] && CanMove)     {deltaX =  moveSpeed;     rightPressed = true;}
-        if     (key == keycodes[4] && CanTurn)     deltaangle = -turnSpeed;
-        if     (key == keycodes[5] && CanTurn)     deltaangle = turnSpeed;
-
-        else if     (key == keycodes[6] && CanShoot)    Shoot();
-
-        if     (key == keycodes[0] && CanUpNDown)     deltaY = -moveSpeed;
-        if     (key == keycodes[1] && CanUpNDown)     deltaY =  moveSpeed;
-        //if     (key == KeyEvent.VK_Y)              System.out.println("" + posX + ", "+ posY);
+    public void damage(int dmg){
+        hp -= dmg;
+        if (hp <= 0)
+            live = false;
     }
 
-    public static void keyReleased(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        // Cannot use switch because bindings are sadly not constant
+
+        if     (key == keycodes[0] )     {dy = -moveSpeed;      upPressed = true;}
+        if     (key == keycodes[1] )     {dy =  moveSpeed;      downPressed = true;}
+
+        if     (key == keycodes[2] )     {dx = -moveSpeed;      leftPressed = true;}
+        if     (key == keycodes[3] )     {dx =  moveSpeed;      rightPressed = true;}
+
+        if     (key == keycodes[4] )     dangle = -turnSpeed;
+        if     (key == keycodes[5] )     dangle = turnSpeed;
+
+        if     (key == keycodes[6])    isShooting = true;
+
+    }
+
+    public void keyReleased(KeyEvent e) {
+
+        int key = e.getKeyCode();
+
+        // Up/Down
+        if     (key == keycodes[0]) {
+                dy = 0;
+        }
+        if     (key == keycodes[1])  {
+                dy = 0;
+        }
+
+        // Left/Right
         if     (key == keycodes[2]) {
             leftPressed = false;
             if (!rightPressed)
-                deltaX = 0;
+                dx = 0;
         }
-        if     (key == keycodes[3] && CanMove){
+        if     (key == keycodes[3]){
             rightPressed = false;
             if (!leftPressed)
-                deltaX = 0;
+                dx = 0;
         }
-        if     (key == keycodes[4] && CanTurn)     deltaangle = 0;
-        if     (key == keycodes[5] && CanTurn)     deltaangle = 0;
 
-        if     (key == keycodes[0] && CanUpNDown)     deltaY =  0;
-        if     (key == keycodes[1] && CanUpNDown)     deltaY =  0;
-        //if     (key == KeyEvent.VK_Y)              System.out.println("" + posX + ", "+ posY);
+        // Turn
+        if     (key == keycodes[4] )     dangle = 0;
+        if     (key == keycodes[5] )     dangle = 0;
+
+        if     (key == keycodes[6])    isShooting = false;
+
     }
+
+    public List<Projectile> getProjectiles(){return projectiles;}
 
 
 }
