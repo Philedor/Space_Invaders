@@ -1,14 +1,16 @@
 package Entities;
 
-import Tools.Constants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.PortUnreachableException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
+
+
 public class Entity {
+
 
     // Used to identify which side an entity belongs to
     public enum Team {
@@ -16,151 +18,91 @@ public class Entity {
         ENEMIES
     };
 
-    // In game related stats / date
+    Team team;
+    boolean live;
 
-    protected static boolean CanMoveHorizontally = true;
-    protected static boolean CanMoveVertically = true;
-    protected static boolean CanTurn = false;
-    protected static boolean CanShoot = false;
-    protected static Team team;
-    protected boolean live = true;
-    protected int framesTillDeath;
+
+    protected int posX;
+    protected int posY;
+    protected int dx;
+    protected int dy;
+    protected double angle;
+    protected double dangle;
 
     protected int hp;
-    protected static long attackSpeed;
-    protected int onContactDMG;
-    protected static int shootDMG;
 
-    // Position and orientation
-    protected static int posX;
-    protected static int posY;
-    protected static int moveSpeed;
-
-    protected static int deltaX;
-    protected static int deltaY;
-
-    protected static float angle;           // in radians
-    protected static float turnSpeed;
-    protected static float deltaTheta = 0;
-
-    // Graphics data
-
-    protected int nb_sprites;
-    protected int currentsprite = 0;
-    protected static ArrayList<Image> sprites;
-    protected static int width;
-    protected static int height;
-    protected String deathsprites;
+    // Graphics
+    protected int nbSprites;
+    protected List<Image> sprites;
+    private int currentSprite;
 
 
+    protected int width;
+    protected int height;
 
-    protected static long lastshoot;
+    // TODO make another construtor with dx and dy as parameter and/or dangle
+    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites){
 
-    public Entity(/*Team pteam, */int pdeathframes, int php, long pattackSpeed, int pcdmg, int psdmg, int px, int py, int pms, float pangle, float pts, int pnbs, String ppath, String pdeathsprites){
-        /*team =  pteam;*/
-        framesTillDeath = pdeathframes;
-        hp = php;
-        attackSpeed = pattackSpeed;
-        onContactDMG = pcdmg;
-        shootDMG = psdmg;
-        posX = px;
-        posY = py;
-        deltaX = 0;
-        deltaY = 0;
-        moveSpeed = pms;
+        team = pteam;
+        live = true;
+        posX = x;
+        posY = y;
         angle = pangle;
-        turnSpeed = pts;
 
-        LoadSprites(ppath, pnbs);
+        dangle = 0;
+        dx = 0;
+        dy = 0;
 
-        lastshoot = System.currentTimeMillis();
-        deathsprites = pdeathsprites;
+        LoadSprites(nbSprites, path);
+    }
 
+    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdx, int pdy){
+
+        team = pteam;
+        live = true;
+        posX = x;
+        posY = y;
+        angle = pangle;
+
+        dangle = 0;
+        dx = pdx;
+        dy = pdy;
+
+        LoadSprites(nbSprites, path);
     }
 
 
-    public Entity(/*Team pteam, */int pdeathframes, int php, long pattackSpeed, int pcdmg, int psdmg, int px, int py, int pms, float pangle, float pts, int pnbs, String ppath, String pdeathsprites, int dx, int dy){
-        /*team =  pteam;*/
-        framesTillDeath = pdeathframes;
-        hp = php;
-        attackSpeed = pattackSpeed;
-        onContactDMG = pcdmg;
-        shootDMG = psdmg;
-        posX = px;
-        posY = py;
-        deltaX = dx;
-        deltaY = dy;
-        moveSpeed = pms;
-        angle = pangle;
-        turnSpeed = pts;
+    protected void LoadSprites(int nb, String path){
 
-        LoadSprites(ppath, pnbs);
-
-        lastshoot = System.currentTimeMillis();
-        deathsprites = pdeathsprites;
-
-    }
-
-
-    /** Sprites Loading, can load multiple sprites to allow animation later on
-     * @param  path the path with sprite name + extension
-     * @param  nb the number of sprites*/
-    public void LoadSprites(String path, int nb){
-
+        nbSprites = nb;
         sprites = new ArrayList<>();
-        // Useful values so that we only use one memory space for each
-        // Or just facilitate the process
-        Image tmp;
-        ImageIcon ii;
         int n = path.length();
-        String pathroot = path.substring(0, n-4);
+
+        String start = path.substring(0, n-4);
         String end = path.substring(n-4);
-        String tmppath;
+        String tmp;
 
-        // Save this one since we know it
-        this.nb_sprites = nb;
-
-        for(int i = 0; i < nb; i++){
-            tmppath = pathroot + i +end;
-            sprites.add(new ImageIcon(tmppath).getImage());
-        height = this.getImage().getHeight(null);
-        width = this.getImage().getWidth(null);
+        // Get the path for each sprites and Load the corresponding images
+        for (int i = 0; i < nb; i++){
+            tmp = start + i + end;
+            sprites.add(new ImageIcon(tmp).getImage());
         }
-    }
 
-
-
-    public void damage(int dmg){
-        this.hp -= dmg;
-        if (this.hp <= 0 )
-            this.Kill();
-    }
-
-    public void Kill(){
-        this.live = false;
-        this.deltaX = 0;
-        this.deltaY = 0;
-        LoadSprites(deathsprites, framesTillDeath);
+        currentSprite = 0;
+        width = getSprite().getWidth(null);
+        height = getSprite().getHeight(null);
 
     }
 
-    // Getters
-    // For game management
+
+
     public int getHP()    {return this.hp;}
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
+    public boolean isLive() {return live;}
 
-    public void setDeltaX(int x){deltaX = x; }
-    public void setDeltaY(int y){deltaY = y; }
+    public Image getSprite(){ return sprites.get(currentSprite);}
 
-    // For Update and Drawing
-    public Image getImage()  {return this.sprites.get(currentsprite);}
 
-    // For collision management, defines the hitbox
-    public Rectangle getBounds() { return new Rectangle(posX, posY, width, height);}
-
-    private float CalculateDeltaX(float angle, int moveSpeed)     {return (float) Math.cos(angle) / (float)moveSpeed;}
-    private float CalculateDeltaY(float angle, int moveSpeed)     {return (float) Math.sin(angle) / (float)moveSpeed;}
-
+    public Rectangle getHitbox() { return new Rectangle(posX, posY, width, height);}
 }
-

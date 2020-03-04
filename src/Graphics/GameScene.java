@@ -70,6 +70,7 @@ public class GameScene extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // different drawing functions for different game states
+        g.drawImage(back, 0, 0, this);
 
         drawPlayer(g);
         //drawEnemies(g);
@@ -83,34 +84,24 @@ public class GameScene extends JPanel implements ActionListener {
     /** Draw the projectiles
      * @param  graphics the graphic context*/
     private void drawProjectiles(Graphics graphics) {
-        for (Projectile proj: projectiles) {
-            // if condition to add for explosion animation
-            graphics.drawImage(proj.getImage(), proj.getPosX(), proj.getPosY(), this);
+        for (Projectile proj : player.getProjectiles()){
+            graphics.drawImage(proj.getSprite(), proj.getPosX(), proj.getPosY(), this);
         }
-/*
-        for(Enemy enemy : enemies) {
-            for (Projectile proj : enemy.getProjectiles()) {
-                // if condition to add for explosion animation
-                graphics.drawImage(proj.getImage(), proj.getPosX(), proj.getPosY(), this);
-            }
-        }*/
+
     }
 
     /** Draw the enemies
      * @param  graphics the graphic context*/
     private void drawEnemies(Graphics graphics){
-        for(Enemy enemy : enemies){
-            // if condition to add for explosion animation
-            graphics.drawImage(enemy.getImage(), enemy.getPosX(), enemy.getPosY(), this);
-        }
+
     }
 
     /** Draw the Player
      * @param  graphics the graphic context*/
     private void drawPlayer(Graphics graphics) {
         // if condition to add for explosion animation
-        graphics.drawImage(back, 0, 0, this);
-        graphics.drawImage(player.getImage(), player.getPosX(), player.getPosY(), this);
+        graphics.drawImage(player.getSprite(), player.getPosX(), player.getPosY(), this);
+
     }
 
     /** Update function called automatically whenever an action takes place
@@ -138,6 +129,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void updateEnemies() {
         Enemy left = getMostLeftEnemy();
+
         Enemy right = getMostRightEnemy();
 
         if ((left.getPosX() <= Constants.GAME_MIN_WIDTH + 5) ||
@@ -163,15 +155,17 @@ public class GameScene extends JPanel implements ActionListener {
             }
             else {*/
             proj.Update();
-            //ProjectileCollisionCheck(proj);
-            //}
+            if (!proj.isLive()){
+                player.getProjectiles().remove(proj);
+                ProjectileCollisionCheck(proj);
+            }
         }
-/*
-        for(Enemy enemy : enemies) {
+
+        /*for(Enemy enemy : enemies) {
             for (Projectile proj : enemy.getProjectiles()) {
                 // if condition to add for explosion animation
                 proj.Update();
-                if (proj.getFrames_until_explosion() == -1){
+                if (proj.isLive()){
                     player.getProjectiles().remove(proj);
                     ProjectileCollisionCheck(proj);
                 }
@@ -184,10 +178,10 @@ public class GameScene extends JPanel implements ActionListener {
      * @param projectile the projectile we re checking
      */
     private void ProjectileCollisionCheck(Projectile projectile) {
-        Rectangle playerHitbox = player.getBounds();
-        if (playerHitbox.intersects(projectile.getBounds())){
+        Rectangle playerHitbox = player.getHitbox();
+        if (playerHitbox.intersects(projectile.getHitbox())){
             projectile.Kill();
-            player.damage(projectile.getDMG());
+            player.damage(projectile.getDmg());
         }
     }
 
@@ -196,8 +190,8 @@ public class GameScene extends JPanel implements ActionListener {
      * @param e the enemy with which we're checking
      */
     private void PlayerCollision(Enemy e){
-        Rectangle playerHitbox = player.getBounds();
-        if (playerHitbox.intersects(e.getBounds()))
+        Rectangle playerHitbox = player.getHitbox();
+        if (playerHitbox.intersects(e.getHitbox()))
             player.damage(Constants.CONTACT_DAMAGE);
     }
 
@@ -206,12 +200,13 @@ public class GameScene extends JPanel implements ActionListener {
      * Call this function in the player update loop to get the projectiles tht he's shooting
      * @param p the projectile we're checking
      */
+    // TODO check the collision
     private void AlienCollision(Projectile p){
-        Rectangle projectileHitBox = p.getBounds();
+        Rectangle projectileHitBox = p.getHitbox();
         for (Enemy e : enemies){
-            if (projectileHitBox.intersects(e.getBounds())){
+            if (projectileHitBox.intersects(e.getHitbox())){
                 p.Kill();
-                e.damage(p.getDMG());
+                e.damage(p.getDmg());
             }
         }
     }
