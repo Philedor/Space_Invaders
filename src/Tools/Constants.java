@@ -10,8 +10,8 @@ public class Constants {
 
 
     // Window Settings
-    public static final int WINDOW_HEIGHT =   720;
-    public static final int WINDOW_WIDTH =    480;
+    public static final int WINDOW_HEIGHT =   1000;
+    public static final int WINDOW_WIDTH =    700;
     public static final String WINDOW_NAME =  "Space Invaders";
 
     // Game Initialisation constants
@@ -41,10 +41,10 @@ public class Constants {
 
 
     // Game Settings
-    public static final int GAME_MIN_WIDTH =         10;
-    public static final int GAME_MAX_WIDTH =         445;
-    public static final int GAME_MIN_HEIGHT =        680;
     public static final int GAME_MAX_HEIGHT =        10;
+    public static final int GAME_MIN_HEIGHT =        WINDOW_HEIGHT-10;
+    public static final int GAME_MAX_WIDTH =         WINDOW_WIDTH-10;
+    public static final int GAME_MIN_WIDTH =         10;
     public static final double MAX_RIGHT_ROTATION =  45;
     public static final double MAX_LEFT_ROTATION =   135;
     public static final double GAME_FPS =            64.0;

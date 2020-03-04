@@ -35,9 +35,6 @@ public class GameScene extends JPanel implements ActionListener {
     private long enemyMoveTime = 1000;
     private boolean enemywentdown = false;
 
-    //needs a rename- used to keep certain animation on for longer
-    private static int animation_counter = 0;
-    private static int animationframe;
 
     private Thread thread;
 
@@ -83,32 +80,9 @@ public class GameScene extends JPanel implements ActionListener {
         // different drawing functions for different game states
         graphics.drawImage(back, 0, 0, this);
 
-        // if condition to add for explosion animation
-        if (animation_counter < 24) {
-            //animation counter is used to display one frame per animation for a little longer
-            ++animation_counter;
-            if (animation_counter < 8) {
-                animationframe = 0;
-            } else if (animation_counter < 16) {
-                animationframe = 1;
-            } else if (animation_counter < 24) {
-                animationframe = 2;
-            }
-        } else {
-            animation_counter = 0;
-        }
-
-        // if condition to add for left, right and explosion animation
-        if (player.rightPressed == true) {
-            //at player3.png the right flying animation starts and has 3 animations
-            player.state = 3 + animationframe;
-        } else if (player.leftPressed == true) {
-            //at player6.png the left flying animation starts and has 3 animations
-            player.state = 6 + animationframe;
-        } else {
-            player.state = animationframe;
-        }
-        graphics.drawImage(player.getSprite(player.state), player.getPosX(), player.getPosY(), this);
+        // animating player
+        player.animate();
+        graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
 
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.state), enemy.getPosX(), enemy.getPosY(), this);

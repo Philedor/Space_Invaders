@@ -34,7 +34,9 @@ public class Entity {
     // Graphics
     protected int nbSprites;
     protected List<Image> sprites;
-    private int currentSprite;
+    public int currentSprite;
+    public static int animation_counter = 0;
+    public static int animationframe;
 
 
     protected int width;

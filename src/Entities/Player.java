@@ -16,7 +16,6 @@ public class Player extends Entity{
     private boolean upPressed = false;
     private boolean downPressed = false;
     public boolean isShooting = false;
-    public int state = 0;
 
     private int hp;
     private int dmg;
@@ -24,6 +23,7 @@ public class Player extends Entity{
     private double turnSpeed;
     private long atkSpeed;
     private long lastShoot;
+
 
 
     public Player() {
@@ -40,7 +40,7 @@ public class Player extends Entity{
 
     public void Shoot(){
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
-            projectiles.add(new Projectile(team, posX, posY, angle, dmg));
+            projectiles.add(new Projectile(team, posX+32, posY, angle, dmg));
             lastShoot = System.currentTimeMillis();
         }
     }
@@ -120,6 +120,33 @@ public class Player extends Entity{
     }
 
     public List<Projectile> getProjectiles(){return projectiles;}
+
+    public void animate(){
+        if (animation_counter < 24) {
+            //animation counter is used to display one frame per animation for a little longer
+            ++animation_counter;
+            if (animation_counter < 8) {
+                animationframe = 0;
+            } else if (animation_counter < 16) {
+                animationframe = 1;
+            } else if (animation_counter < 24) {
+                animationframe = 2;
+            }
+        } else {
+            animation_counter = 0;
+        }
+
+        // if condition to add for left, right and explosion animation
+        if (dx > 0) {
+            //at player3.png the right flying animation starts and has 3 animations
+            currentSprite = 3 + animationframe;
+        } else if (dx < 0) {
+            //at player6.png the left flying animation starts and has 3 animations
+            currentSprite = 6 + animationframe;
+        } else {
+            currentSprite = animationframe;
+        }
+    }
 
 
 }

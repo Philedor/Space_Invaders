@@ -20,7 +20,7 @@ public class Main {
     }
 
 
-    // Used to generate enemy cooridinates and just copy paste them
+    // Used to generate enemy coordinates and just copy paste them
     private static void Gen_enemyblock(int rows, int columns){
         int width = Constants.GAME_MAX_WIDTH * 3 / 4 - Constants.GAME_MIN_WIDTH;
         int height = Constants.GAME_MIN_HEIGHT / 3 - Constants.GAME_MAX_HEIGHT;
