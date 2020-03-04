@@ -1,6 +1,5 @@
 package Entities;
 
-import Graphics.GameScene;
 import Tools.Constants;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -77,6 +76,15 @@ public class Player extends Entity{
     public void keyReleased(KeyEvent e) {
 
         int key = e.getKeyCode();
+        // Up/Down
+        if     (key == keycodes[0]) {
+                dy = 0;
+        }
+        if     (key == keycodes[1])  {
+                dy = 0;
+        }
+
+        // Left/Right
         if     (key == keycodes[2]) {
             leftPressed = false;
             if (!rightPressed)
@@ -91,9 +99,9 @@ public class Player extends Entity{
 
         }
 
-        if     (key == keycodes[0])  {
-            upPressed = false;
-            if (!downPressed)
+        // Turn
+        if     (key == keycodes[4] )     dangle = 0;
+        if     (key == keycodes[5] )     dangle = 0;
                 dy = 0;
             else dy = moveSpeed;
         }

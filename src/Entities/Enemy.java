@@ -1,6 +1,5 @@
 package Entities;
 
-import Graphics.GameScene;
 import Tools.Constants;
 
 import java.util.ArrayList;

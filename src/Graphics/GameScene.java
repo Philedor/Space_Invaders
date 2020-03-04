@@ -4,8 +4,6 @@ import Entities.Enemy;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.Constants;
-import java.util.ArrayList;
-import java.util.List;
 
 
 import javax.swing.*;
@@ -25,7 +23,7 @@ public class GameScene extends JPanel implements ActionListener {
     private Image back;
 
     private Timer timer;
-    int DELAY = 30;
+    int DELAY = 15;
 
     private boolean running = false;
     public static List<Enemy> enemies = new ArrayList<>();
@@ -33,7 +31,7 @@ public class GameScene extends JPanel implements ActionListener {
     private long enemyLastMove;
     private long enemyMoveTime = 1000;
 
-    private static List<Projectile> projectiles = new ArrayList<>();
+    private Thread thread;
 
     // Init the game Scene
     public GameScene(int w, int h){
@@ -59,7 +57,6 @@ public class GameScene extends JPanel implements ActionListener {
     private void InitEntities() {
         player = new Player();
         //enemies = new LinkedList<>();
-        enemyLastMove = System.currentTimeMillis();
         // Enemies generation
     }
 
@@ -138,8 +135,6 @@ public class GameScene extends JPanel implements ActionListener {
         }
 
         // Actually move the enemies
-
-        if (System.currentTimeMillis() - enemyLastMove >= enemyMoveTime )
         for (Enemy e : enemies){
             e.MoveSideways();
             PlayerCollision(e);     // Check Collision
@@ -147,13 +142,8 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     private void updateProjectiles() {
-        for (int i = 0; i < projectiles.size(); i++){//Projectile proj: projectileList) {
+        for (Projectile proj: player.getProjectiles()) {
             // if condition to add for explosion animation
-            Projectile proj = projectiles.get(i);
-            /*if (proj.getFrames_until_explosion() == -1){
-                projectiles.remove(i);
-            }
-            else {*/
             proj.Update();
             if (!proj.isLive()){
                 player.getProjectiles().remove(proj);
@@ -238,8 +228,6 @@ public class GameScene extends JPanel implements ActionListener {
         }
         return enemy;
     }
-
-    public static void AddProj(Projectile projectile){  projectiles.add(projectile);}
 
     private int getEnemyLeftPos(){ return getMostLeftEnemy().getPosX();}
     private int getEnemyRightPos(){ return getMostRightEnemy().getPosX();}

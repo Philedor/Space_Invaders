@@ -36,14 +36,14 @@ public class Constants {
     // Projectile
     public static final String  PROJECTILE_SPRITE =                 "resources/sprites/missile.png";
     public static final int     NB_PROJECTILE_SPRITE =              1;
-    public static final String  PROJECTILE_EXPLOSION_SPRITE =       "resources/sprites/missile.png";
+    public static final String  PROJECTILE_EXPLOSION_SPRITE =       "resources/sprites/projectile_explosion.png";
     public static final int     NB_PROJECTILE_EXPLOSION_SPRITE=     1;
 
 
     // Game Settings
     public static final int GAME_MIN_WIDTH =         10;
-    public static final int GAME_MAX_WIDTH =         450;
-    public static final int GAME_MIN_HEIGHT =        700;
+    public static final int GAME_MAX_WIDTH =         470;
+    public static final int GAME_MIN_HEIGHT =        710;
     public static final int GAME_MAX_HEIGHT =        10;
     public static final double MAX_RIGHT_ROTATION =  45;
     public static final double MAX_LEFT_ROTATION =   135;
