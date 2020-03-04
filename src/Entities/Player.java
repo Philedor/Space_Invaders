@@ -77,32 +77,36 @@ public class Player extends Entity{
     public void keyReleased(KeyEvent e) {
 
         int key = e.getKeyCode();
-
-        // Up/Down
-        if     (key == keycodes[0]) {
-                dy = 0;
-        }
-        if     (key == keycodes[1])  {
-                dy = 0;
-        }
-
-        // Left/Right
         if     (key == keycodes[2]) {
             leftPressed = false;
             if (!rightPressed)
                 dx = 0;
+            else dx = moveSpeed;
         }
         if     (key == keycodes[3]){
             rightPressed = false;
             if (!leftPressed)
                 dx = 0;
+            else dx = -moveSpeed;
+
         }
 
-        // Turn
-        if     (key == keycodes[4] )     dangle = 0;
-        if     (key == keycodes[5] )     dangle = 0;
+        if     (key == keycodes[0])  {
+            upPressed = false;
+            if (!downPressed)
+                dy = 0;
+            else dy = moveSpeed;
+        }
+
+        if     (key == keycodes[1])  {
+            downPressed = false;
+            if(!upPressed)
+                dy = 0;
+            else dy = -moveSpeed;
+        }
 
         if     (key == keycodes[6])    isShooting = false;
+
 
     }
 
