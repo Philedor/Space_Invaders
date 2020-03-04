@@ -102,9 +102,6 @@ public class Player extends Entity{
         // Turn
         if     (key == keycodes[4] )     dangle = 0;
         if     (key == keycodes[5] )     dangle = 0;
-                dy = 0;
-            else dy = moveSpeed;
-        }
 
         if     (key == keycodes[1])  {
             downPressed = false;
