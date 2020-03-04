@@ -14,6 +14,7 @@ public class Enemy extends Entity {
     private int moveSpeed;
     private long atkSpeed;
     private long lastShoot;
+    public int state = 0;
 
     public Enemy(int x, int y) {
         super(Team.ENEMIES, x, y, Constants.ENEMY_STARTING_ANGLE, Constants.ENEMY_SPRITE, Constants.NB_ENEMY_SPRITE);

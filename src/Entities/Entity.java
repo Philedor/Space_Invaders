@@ -89,8 +89,8 @@ public class Entity {
         }
 
         currentSprite = 0;
-        width = getSprite().getWidth(null);
-        height = getSprite().getHeight(null);
+        width = getSprite(0).getWidth(null);
+        height = getSprite(0).getHeight(null);
 
     }
 
@@ -101,7 +101,7 @@ public class Entity {
     public int getPosY()   {return posY;}
     public boolean isLive() {return live;}
 
-    public Image getSprite(){ return sprites.get(currentSprite);}
+    public Image getSprite(int state){ return sprites.get(state);}
 
 
     public Rectangle getHitbox() { return new Rectangle(posX, posY, width, height);}

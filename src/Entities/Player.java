@@ -11,11 +11,12 @@ import static java.awt.event.KeyEvent.VK_Y;
 public class Player extends Entity{
 
     private List<Projectile> projectiles;
-    private boolean leftPressed = false;
-    private boolean rightPressed = false;
+    public boolean leftPressed = false;
+    public boolean rightPressed = false;
     private boolean upPressed = false;
     private boolean downPressed = false;
-    private boolean isShooting = false;
+    public boolean isShooting = false;
+    public int state = 0;
 
     private int hp;
     private int dmg;
