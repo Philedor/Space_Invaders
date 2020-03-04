@@ -113,7 +113,6 @@ public class Player extends Entity{
         if     (key == keycodes[4] )     dangle = 0;
         if     (key == keycodes[5] )     dangle = 0;
 
-
         if     (key == keycodes[6])    isShooting = false;
 
 

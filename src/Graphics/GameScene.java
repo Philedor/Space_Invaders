@@ -85,7 +85,7 @@ public class GameScene extends JPanel implements ActionListener {
         graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
 
         for (Enemy enemy : enemies) {
-            graphics.drawImage(enemy.getSprite(enemy.state), enemy.getPosX(), enemy.getPosY(), this);
+            graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
         }
         for (Projectile proj : player.getProjectiles()) {
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
