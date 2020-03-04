@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Tools.Constants.keycodes;
+import static java.awt.event.KeyEvent.VK_Y;
 
 public class Player extends Entity{
 
@@ -71,6 +72,8 @@ public class Player extends Entity{
 
         if     (key == keycodes[6])    isShooting = true;
 
+        if (key == VK_Y) System.out.println(posX + "  " + posY);
+
     }
 
     public void keyReleased(KeyEvent e) {
@@ -78,10 +81,16 @@ public class Player extends Entity{
         int key = e.getKeyCode();
         // Up/Down
         if     (key == keycodes[0]) {
+            upPressed = false;
+            if(!downPressed)
                 dy = 0;
+            else dy = moveSpeed;
         }
         if     (key == keycodes[1])  {
+            downPressed = false;
+            if(!upPressed)
                 dy = 0;
+            else dy = -moveSpeed;
         }
 
         // Left/Right
@@ -103,12 +112,6 @@ public class Player extends Entity{
         if     (key == keycodes[4] )     dangle = 0;
         if     (key == keycodes[5] )     dangle = 0;
 
-        if     (key == keycodes[1])  {
-            downPressed = false;
-            if(!upPressed)
-                dy = 0;
-            else dy = -moveSpeed;
-        }
 
         if     (key == keycodes[6])    isShooting = false;
 

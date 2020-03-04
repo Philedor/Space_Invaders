@@ -1,9 +1,11 @@
 package Graphics;
 
 import Entities.Enemy;
+import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.Constants;
+import com.sun.source.tree.ArrayAccessTree;
 
 
 import javax.swing.*;
@@ -31,11 +33,12 @@ public class GameScene extends JPanel implements ActionListener {
     private Player player;
     private long enemyLastMove;
     private long enemyMoveTime = 1000;
+    private boolean enemywentdown = false;
 
     private Thread thread;
 
     // Init the game Scene
-    public GameScene(int w, int h){
+    public GameScene(int w, int h) {
         width = w;
         height = h;
         running = true;
@@ -57,59 +60,52 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void InitEntities() {
         player = new Player();
-        //enemies = new LinkedList<>();
+
         // Enemies generation
+        enemies = new ArrayList<>();
+
+        for (int i = 0; i < Constants.LEVEL1.length; i++) {
+            int[] en = Constants.LEVEL1[i];
+            enemies.add(new Enemy(en[0], en[1]));
+        }
     }
 
 
     // Is called by repaint()
     // Use to draw different game states (Menu, In Game, Pause, End Screen...)
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         // different drawing functions for different game states
-        g.drawImage(back, 0, 0, this);
+        graphics.drawImage(back, 0, 0, this);
 
-        drawPlayer(g);
-        //drawEnemies(g);
-        drawProjectiles(g);
+        // if condition to add for explosion animation
+        graphics.drawImage(player.getSprite(), player.getPosX(), player.getPosY(), this);
+
+        for (Enemy enemy : enemies) {
+            graphics.drawImage(enemy.getSprite(), enemy.getPosX(), enemy.getPosY(), this);
+        }
+        for (Projectile proj : player.getProjectiles()) {
+            graphics.drawImage(proj.getSprite(), proj.getPosX(), proj.getPosY(), this);
+        }
 
         Toolkit.getDefaultToolkit().sync();
 
 
     }
 
-    /** Draw the projectiles
-     * @param  graphics the graphic context*/
-    private void drawProjectiles(Graphics graphics) {
-        for (Projectile proj : player.getProjectiles()){
-            graphics.drawImage(proj.getSprite(), proj.getPosX(), proj.getPosY(), this);
-        }
-
-    }
-
-    /** Draw the enemies
-     * @param  graphics the graphic context*/
-    private void drawEnemies(Graphics graphics){
-
-    }
-
-    /** Draw the Player
-     * @param  graphics the graphic context*/
-    private void drawPlayer(Graphics graphics) {
-        // if condition to add for explosion animation
-        graphics.drawImage(player.getSprite(), player.getPosX(), player.getPosY(), this);
-
-    }
-
-    /** Update function called automatically whenever an action takes place
-     * @param  e the event*/
+    /**
+     * Update function called automatically whenever an action takes place
+     *
+     * @param e the event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
         // Update Player
         player.Update();
-        //updateEnemies();
+        if (System.currentTimeMillis() - enemyLastMove > enemyMoveTime)
+            updateEnemies();
         updateProjectiles();
 
         // collision checked during update to avoid calling multiple loops to go through each lists every time
@@ -126,21 +122,29 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     private void updateEnemies() {
-        Enemy left = getMostLeftEnemy();
+        enemyLastMove = System.currentTimeMillis();
 
+        Enemy left = getMostLeftEnemy();
         Enemy right = getMostRightEnemy();
 
-        if ((left.getPosX() <= Constants.GAME_MIN_WIDTH + 5) ||
-                (right.getPosX() >= Constants.GAME_MAX_WIDTH - 5)) {
+        if (!enemywentdown &&
+                ((getEnemyLeftPos() <= Constants.GAME_MIN_WIDTH ) ||
+                (getEnemyRightPos() >= Constants.GAME_MAX_WIDTH ))) {
             Reached_End();
+            enemywentdown = true;
         }
 
         // Actually move the enemies
-        for (Enemy e : enemies){
-            e.MoveSideways();
-            PlayerCollision(e);     // Check Collision
+        else {
+            enemywentdown = false;
+            for (Enemy e : enemies) {
+                e.MoveSideways();
+                PlayerCollision(e);     // Check Collision
+            }
         }
+
     }
+
 
     private void updateProjectiles() {
         for (Projectile proj: player.getProjectiles()) {
@@ -202,13 +206,14 @@ public class GameScene extends JPanel implements ActionListener {
         }
     }
 
+    // Get the enemy block left coordinate
     private Enemy getMostLeftEnemy(){
         Enemy enemy = null;
         int minX = Constants.GAME_MAX_WIDTH;
         int tmp;
         for (Enemy e : enemies){
             tmp = e.getPosX();
-            if (tmp < minX){
+            if (tmp <= minX){
                 minX = tmp;
                 enemy = e;
             }
@@ -216,13 +221,14 @@ public class GameScene extends JPanel implements ActionListener {
             return enemy;
     }
 
+    // Get the enemy block right coordinate
     private Enemy getMostRightEnemy() {
         Enemy enemy = null;
         int maxX = Constants.GAME_MIN_WIDTH;
         int tmp;
         for (Enemy e : enemies) {
             tmp = e.getPosX();
-            if (tmp > maxX) {
+            if (tmp >= maxX) {
                 maxX = tmp;
                 enemy = e;
             }
