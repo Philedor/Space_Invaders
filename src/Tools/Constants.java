@@ -53,7 +53,7 @@ public class Constants {
     public static final int PLAYER_HP =                 3;
     public static final int PROJECTILE_SPEED =          15;         // Pixel per Update
     public static final int PLAYER_DAMAGE =             1;
-    public static final long PLAYER_ATTACK_SPEED =      100;          //  time in ms between attacks
+    public static final long PLAYER_ATTACK_SPEED =      150;       //  time in ms between attacks
     public static final int PLAYER_SPEED =              5;
     public static final double PLAYER_TURN_SPEED =      2;
 
