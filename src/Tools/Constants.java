@@ -23,8 +23,8 @@ public class Constants {
 
     // Image importation infos
     //Player
-    public static final String  PLAYER_SPRITE =                     "resources/sprites/player.png";
-    public static final int     NB_PLAYER_SPRITE =                  1;
+    public static final String  PLAYER_SPRITE =                     "resources/sprites/player/player.png";
+    public static final int     NB_PLAYER_SPRITE =                  9;
     public static final String  PLAYER_DEATH_SPRITE =               "resources/sprites/player.png";
     public static final int     NB_PLAYER_DEATH_SPRITE =            1;
     // Enemy
