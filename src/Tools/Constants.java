@@ -29,7 +29,7 @@ public class Constants {
     public static final int     NB_PLAYER_DEATH_SPRITE =            1;
     // Enemy
     public static final String  ENEMY_SPRITE =                      "resources/sprites/enemies/enemy.png";
-    public static final int     NB_ENEMY_SPRITE =                   1;
+    public static final int     NB_ENEMY_SPRITE =                   2;
     public static final String  ENEMY_DEATH_SPRITE =                "resources/sprites/alien.png";
     public static final int     NB_ENEMY_DEATH_SPRITE =             1;
 
