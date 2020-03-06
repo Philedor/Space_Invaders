@@ -12,7 +12,7 @@ public class Main {
 
 
     public static void Run(){
-        //Gen_enemyblock(6, 10);
+        //Gen_enemyblock(6, 6);
         EventQueue.invokeLater(() -> {
             Game game = new Game();
             game.setVisible(true);

@@ -1,8 +1,7 @@
 
 TODO :
-    - Projectile Management
+    - Remove team enum if not used
     - Make Projectile Manager so that they when the enemy that shot die the projectiledoesn't disappear, Take projectiles out of enemy class
-    - Enemies Generation
     - Bonus Generation
 
 

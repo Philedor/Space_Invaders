@@ -170,7 +170,7 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     /**
-     * Chack Collision between enemy projetile and player
+     * Chack Collision between enemy projectile and player
      * @param projectile the projectile we re checking
      */
     private void ProjectileCollisionCheck(Projectile projectile) {

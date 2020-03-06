@@ -42,12 +42,20 @@ public class Enemy extends Entity {
             live = false;
     }
 
-    public void MoveSideways()  { posX += moveSpeed;}
+    public void MoveSideways()  {
+        posX += moveSpeed;
+        if (posX < Constants.GAME_MIN_WIDTH)
+            posX = Constants.GAME_MIN_WIDTH;
+        if(posX > Constants.GAME_MAX_WIDTH)
+            posX = Constants.GAME_MAX_WIDTH;
+    }
     public void MoveDown() { posY += Constants.GRAVITY;}
 
     // Used to modify movements of the enemy
     public void InvertDirection()    {moveSpeed = -moveSpeed;}
 
     public List<Projectile> getProjectiles(){return projectiles;}
+    public void destroyProj(Projectile projectile) {projectiles.remove(projectile);}
+    public void destroyProj(int i) { projectiles.remove(i);}
 
 }
