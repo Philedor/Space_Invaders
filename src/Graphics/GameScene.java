@@ -82,8 +82,7 @@ public class GameScene extends JPanel implements ActionListener {
         graphics.drawImage(back, 0, 0, this);
 
         // animating player
-        player.animate();
-        graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
+
 
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
@@ -91,7 +90,8 @@ public class GameScene extends JPanel implements ActionListener {
         for (Projectile proj : player.getProjectiles()) {
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
         }
-
+        player.animate();
+        graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
         Toolkit.getDefaultToolkit().sync();
     }
 

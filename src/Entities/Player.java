@@ -40,7 +40,7 @@ public class Player extends Entity{
 
     public void Shoot(){
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
-            projectiles.add(new Projectile(team, posX+14, posY, angle, dmg));
+            projectiles.add(new Projectile(team, posX+14, posY+35, angle, dmg));
             lastShoot = System.currentTimeMillis();
         }
     }
