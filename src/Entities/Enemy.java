@@ -10,7 +10,7 @@ public class Enemy extends Entity {
     private static List<Projectile> projectiles = new ArrayList<>();
     private int hp;
     private int shootdmg;
-    private int contactdmg;
+    public int contactdmg;
     private int moveSpeed;
     private long atkSpeed;
     private long lastShoot;
@@ -38,8 +38,11 @@ public class Enemy extends Entity {
 
     public void damage(int dmg){
         hp -= dmg;
-        if (hp <= 0)
+        if (hp <= 0) {
             live = false;
+            System.out.println("KILL");
+        }
+        // TODO load death animation
     }
 
     public void MoveSideways()  {
@@ -54,7 +57,7 @@ public class Enemy extends Entity {
     // Used to modify movements of the enemy
     public void InvertDirection()    {moveSpeed = -moveSpeed;}
 
-    public List<Projectile> getProjectiles(){return projectiles;}
+    public static List<Projectile> getProjectiles(){return projectiles;}
     public void destroyProj(Projectile projectile) {projectiles.remove(projectile);}
     public void destroyProj(int i) { projectiles.remove(i);}
 

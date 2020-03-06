@@ -105,9 +105,9 @@ public class GameScene extends JPanel implements ActionListener {
 
         // Update Player
         player.Update();
-        if (System.currentTimeMillis() - enemyLastMove > enemyMoveTime)
-            updateEnemies();
+        updateEnemies();
         updateProjectiles();
+        ContactCheck();
 
         // collision checked during update to avoid calling multiple loops to go through each lists every time
         repaint();
@@ -123,89 +123,92 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     private void updateEnemies() {
-        enemyLastMove = System.currentTimeMillis();
 
-        Enemy left = getMostLeftEnemy();
-        Enemy right = getMostRightEnemy();
+        // TODO add check if end animation done or replace the condition here
+        enemies.removeIf(enemy -> !enemy.isLive());
 
-        if (!enemywentdown &&
-                ((getEnemyLeftPos() <= Constants.GAME_MIN_WIDTH ) ||
-                (getEnemyRightPos() >= Constants.GAME_MAX_WIDTH ))) {
-            Reached_End();
-            enemywentdown = true;
-        }
+        if (System.currentTimeMillis() - enemyLastMove > enemyMoveTime){
+                enemyLastMove = System.currentTimeMillis();
 
-        // Actually move the enemies
-        else {
-            enemywentdown = false;
-            for (Enemy e : enemies) {
-                e.MoveSideways();
-                PlayerCollision(e);     // Check Collision
+            Enemy left = getMostLeftEnemy();
+            Enemy right = getMostRightEnemy();
+
+            if (!enemywentdown &&
+                    ((getEnemyLeftPos() <= Constants.GAME_MIN_WIDTH ) ||
+                    (getEnemyRightPos() >= Constants.GAME_MAX_WIDTH ))) {
+                Reached_End();
+                enemywentdown = true;
+            }
+
+            // Actually move the enemies
+            else {
+                enemywentdown = false;
+                for (Enemy e : enemies) {
+                    e.MoveSideways();
+                }
             }
         }
 
     }
 
 
+    /**
+     * Projectile update and collision check
+     */
     private void updateProjectiles() {
+
+        // Check player's projectile
         for (Projectile proj: player.getProjectiles()) {
             // if condition to add for explosion animation
             proj.Update();
+            ProjectileCollisionCheck(proj, Entity.Team.PLAYER);
+
             if (!proj.isLive()){
                 player.getProjectiles().remove(proj);
-                ProjectileCollisionCheck(proj);
             }
         }
 
-        /*for(Enemy enemy : enemies) {
-            for (Projectile proj : enemy.getProjectiles()) {
-                // if condition to add for explosion animation
-                proj.Update();
-                if (proj.isLive()){
-                    player.getProjectiles().remove(proj);
-                    ProjectileCollisionCheck(proj);
-                }
+        // Check enemy projectiles
+        for (Projectile proj : Enemy.getProjectiles()) {
+            proj.Update();
+            if (proj.isLive()){
+                ProjectileCollisionCheck(proj, Entity.Team.ENEMIES);
             }
-        }*/
+        }
+
+    }
+
+    public void ContactCheck(){
+        Rectangle playerHitbox = player.getHitbox();
+        for (Enemy enemy : enemies){
+            if (playerHitbox.intersects(enemy.getHitbox()))
+                player.damage(enemy.contactdmg);
+        }
     }
 
     /**
      * Chack Collision between enemy projectile and player
      * @param projectile the projectile we re checking
      */
-    private void ProjectileCollisionCheck(Projectile projectile) {
-        Rectangle playerHitbox = player.getHitbox();
-        if (playerHitbox.intersects(projectile.getHitbox())){
-            projectile.Kill();
-            player.damage(projectile.getDmg());
-        }
-    }
-
-    /**
-     * collision check between player and enemies
-     * @param e the enemy with which we're checking
-     */
-    private void PlayerCollision(Enemy e){
-        Rectangle playerHitbox = player.getHitbox();
-        if (playerHitbox.intersects(e.getHitbox()))
-            player.damage(Constants.CONTACT_DAMAGE);
-    }
-
-    /**
-     * Checking if the player projectiles hit the enemies
-     * Call this function in the player update loop to get the projectiles tht he's shooting
-     * @param p the projectile we're checking
-     */
-    // TODO check the collision
-    private void AlienCollision(Projectile p){
-        Rectangle projectileHitBox = p.getHitbox();
-        for (Enemy e : enemies){
-            if (projectileHitBox.intersects(e.getHitbox())){
-                p.Kill();
-                e.damage(p.getDmg());
+    private void ProjectileCollisionCheck(Projectile projectile, Entity.Team team) {
+        Rectangle projectilehitbox = projectile.getHitbox();
+        if (team == Entity.Team.PLAYER) {
+            for (Enemy enemy : enemies) {
+                if (projectilehitbox.intersects(enemy.getHitbox())){
+                    enemy.damage(projectile.getDmg());
+                    projectile.Kill();
+                    System.out.println("HIT");
+                }
             }
         }
+        else if (projectilehitbox.intersects(player.getHitbox())){
+                player.damage(projectile.getDmg());
+                projectile.Kill();
+                System.out.println("HIT");
+        }
+
     }
+
 
     // Get the enemy block left coordinate
     private Enemy getMostLeftEnemy(){

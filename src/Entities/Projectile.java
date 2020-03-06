@@ -1,12 +1,12 @@
 package Entities;
 
+import Graphics.GameScene;
 import Tools.Constants;
 
 public class Projectile extends Entity {
 
     private int hp;
     private int dmg;
-    private int moveSpeed;
 
     public Projectile(Team team, int posX, int posY, double angle, int pdmg) {
         super(team, posX, posY, angle, Constants.PROJECTILE_SPRITE, Constants.NB_PROJECTILE_SPRITE,
@@ -14,19 +14,18 @@ public class Projectile extends Entity {
 
         hp = 1;
         dmg = pdmg;
-        moveSpeed = Constants.PROJECTILE_SPEED;
     }
 
     public void Update(){
         if (live){
             posX += dx;
             posY += dy;
-
         }
 
     }
 
     public void Kill(){
+        hp = 0;
         live = false;
         dx = 0;
         dy = 0;

@@ -29,9 +29,9 @@ public class Main {
 
         System.out.println("{ ");
         for (int i = 0 ; i < rows; i++){
+            int y = height * i / rows + minh;
             for (int j = 0; j < columns; j++){
                 int x = width * j /columns + minw;
-                int y = height * i / rows + minh;
                 System.out.println("{" + x + ", " + y +"},");
             }
         }
