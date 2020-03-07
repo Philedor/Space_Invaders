@@ -4,6 +4,7 @@ import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
+import Tools.Audio;
 import Tools.Constants;
 import com.sun.source.tree.ArrayAccessTree;
 
@@ -55,6 +56,8 @@ public class GameScene extends JPanel implements ActionListener {
         requestFocus();
 
         InitEntities();
+        //playing background music. No music here yet, also need to figure out stopping music (pause state and such)
+        //Audio.playSoundLoop(Constants.BACKGROUND_MUSIC);
 
         timer = new Timer(DELAY, this);
         timer.start();
@@ -82,8 +85,7 @@ public class GameScene extends JPanel implements ActionListener {
         graphics.drawImage(back, 0, 0, this);
 
         // animating player
-        player.animate();
-        graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
+
 
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
@@ -91,7 +93,8 @@ public class GameScene extends JPanel implements ActionListener {
         for (Projectile proj : player.getProjectiles()) {
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
         }
-
+        player.animate();
+        graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
         Toolkit.getDefaultToolkit().sync();
     }
 
