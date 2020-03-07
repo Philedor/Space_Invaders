@@ -2,7 +2,6 @@ package Game;
 
 import Tools.Constants;
 
-import javax.management.monitor.GaugeMonitorMBean;
 import java.awt.*;
 
 public class Main {
@@ -12,7 +11,7 @@ public class Main {
 
 
     public static void Run(){
-        //Gen_enemyblock(6, 6);
+        Gen_enemyblock(6, 6);
         EventQueue.invokeLater(() -> {
             Game game = new Game();
             game.setVisible(true);
@@ -24,7 +23,7 @@ public class Main {
     private static void Gen_enemyblock(int rows, int columns){
         int width = Constants.GAME_MAX_WIDTH * 3 / 4 - Constants.GAME_MIN_WIDTH;
         int height = Constants.GAME_MIN_HEIGHT / 3 - Constants.GAME_MAX_HEIGHT;
-        int minw = Constants.GAME_MIN_WIDTH;
+        int minw = 0;
         int minh = Constants.GAME_MAX_HEIGHT;
 
         System.out.println("{ ");

@@ -2,6 +2,7 @@ package Entities;
 
 import Tools.Constants;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,6 @@ public class Enemy extends Entity {
         hp -= dmg;
         if (hp <= 0) {
             live = false;
-            System.out.println("KILL");
         }
         // TODO load death animation
     }
@@ -49,7 +49,7 @@ public class Enemy extends Entity {
         posX += moveSpeed;
         if (posX < Constants.GAME_MIN_WIDTH)
             posX = Constants.GAME_MIN_WIDTH;
-        if(posX > Constants.GAME_MAX_WIDTH)
+        if(posX > Constants.GAME_MAX_WIDTH - width)
             posX = Constants.GAME_MAX_WIDTH;
     }
     public void MoveDown() { posY += Constants.GRAVITY;}

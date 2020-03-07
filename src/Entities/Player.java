@@ -1,5 +1,6 @@
 package Entities;
 
+import Game.Game;
 import Graphics.GameScene;
 import Tools.Audio;
 import Tools.Constants;
@@ -44,7 +45,7 @@ public class Player extends Entity{
 
     public void Shoot(){
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
-            Audio.playSound(ATTACK_SOUND);
+            //Audio.playSound(ATTACK_SOUND);
             //y-offset to make rotation easier later, x-offset due to generation
             projectiles.add(new Projectile(team, posX+14, posY+35, angle, dmg));
             lastShoot = System.currentTimeMillis();
@@ -79,7 +80,7 @@ public class Player extends Entity{
 
         if     (key == keycodes[6])    isShooting = true;
 
-        if (key == VK_Y) System.out.println(posX + "  " + posY);
+        //if (key == VK_Y) System.out.println(GameScene.enemies.size());
 
     }
 

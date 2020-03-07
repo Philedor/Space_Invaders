@@ -42,7 +42,6 @@ public class Entity {
     protected int width;
     protected int height;
 
-    // TODO make another construtor with dx and dy as parameter and/or dangle
     public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites){
 
         team = pteam;
@@ -109,5 +108,5 @@ public class Entity {
     }
 
 
-    public Rectangle getHitbox() { return new Rectangle(posX, posY, width, height);}
+    public Rectangle getHitbox() { return new Rectangle(posX, posY , width, height);}
 }

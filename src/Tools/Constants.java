@@ -55,18 +55,19 @@ public class Constants {
     public static final double GAME_FPS =            64.0;
 
     // Game Balancing
+    public static final int PROJECTILE_SPEED =          10;         // Pixel per Update
+
     public static final int PLAYER_HP =                 3;
-    public static final int PROJECTILE_SPEED =          15;         // Pixel per Update
     public static final int PLAYER_DAMAGE =             5;
-    public static final long PLAYER_ATTACK_SPEED =      150;       //  time in ms between attacks
-    public static final int PLAYER_SPEED =              5;
-    public static final double PLAYER_TURN_SPEED =      2;
+    public static final long PLAYER_ATTACK_SPEED =      200;       //  time in ms between attacks
+    public static final int PLAYER_SPEED =              2;
+    public static final double PLAYER_TURN_SPEED =      5;
 
     public static final int ENEMY_HP =                  1;
     public static final int ENEMY_SHOOT_DMG =           1;
     public static final long ENEMY_ATTACK_SPEED =       10000;
-    public static final int ENEMY_SPEED =               10;
-    public static final int GRAVITY =                   10;
+    public static final int ENEMY_SPEED =               63;
+    public static final int GRAVITY =                   15;
     public static final int CONTACT_DAMAGE =            1;
 
 

@@ -34,7 +34,7 @@ public class GameScene extends JPanel implements ActionListener {
     public static List<Enemy> enemies = new ArrayList<>();
     private Player player;
     private long enemyLastMove;
-    private long enemyMoveTime = 1000;
+    private long enemyMoveTime = 800;
     private boolean enemywentdown = false;
 
 
@@ -108,7 +108,8 @@ public class GameScene extends JPanel implements ActionListener {
 
         // Update Player
         player.Update();
-        updateEnemies();
+        if (enemies.size() > 0)
+            updateEnemies();
         updateProjectiles();
         ContactCheck();
 
@@ -197,14 +198,12 @@ public class GameScene extends JPanel implements ActionListener {
                 if (projectilehitbox.intersects(enemy.getHitbox())){
                     enemy.damage(projectile.getDmg());
                     projectile.Kill();
-                    System.out.println("HIT");
                 }
             }
         }
         else if (projectilehitbox.intersects(player.getHitbox())){
                 player.damage(projectile.getDmg());
                 projectile.Kill();
-                System.out.println("HIT");
         }
 
     }
