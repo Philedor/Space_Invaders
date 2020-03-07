@@ -79,8 +79,9 @@ public class GameScene extends JPanel implements ActionListener {
     // Is called by repaint()
     // Use to draw different game states (Menu, In Game, Pause, End Screen...)
     @Override
-    public void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
+    public void paintComponent(Graphics graphics1) {
+        Graphics2D graphics = (Graphics2D) graphics1;
+        super.paintComponent(graphics1);
         // different drawing functions for different game states
         graphics.drawImage(back, 0, 0, this);
 
@@ -91,12 +92,22 @@ public class GameScene extends JPanel implements ActionListener {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
         }
         for (Projectile proj : player.getProjectiles()) {
+            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
+            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
+
+
         }
         player.animate();
+        graphics.rotate(Math.PI/2 - Math.toRadians(player.getAngle() ),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
         graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
+        graphics.rotate(-(Math.PI/2 - Math.toRadians(player.getAngle() )),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
+
+        graphics.dispose();
+
         Toolkit.getDefaultToolkit().sync();
     }
+
 
     /**
      * Update function called automatically whenever an action takes place
@@ -180,10 +191,14 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     public void ContactCheck(){
-        Rectangle playerHitbox = player.getHitbox();
-        for (Enemy enemy : enemies){
-            if (playerHitbox.intersects(enemy.getHitbox()))
-                player.damage(enemy.contactdmg);
+        if (!player.invincible){
+            Rectangle playerHitbox = player.getHitbox();
+            for (Enemy enemy : enemies){
+                if (playerHitbox.intersects(enemy.getHitbox())){
+                    player.damage(enemy.contactdmg);
+                    System.out.println("Player hit");
+                }
+            }
         }
     }
 

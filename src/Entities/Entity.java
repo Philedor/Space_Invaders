@@ -100,13 +100,12 @@ public class Entity {
     public int getHP()    {return this.hp;}
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
+    public double getAngle() {return angle;}
     public boolean isLive() {return live;}
-
-    public Image getSprite(int currentSprite){
-
-        return sprites.get(currentSprite);
-    }
+    public int getwidth() {return width;}
+    public int getwheight() {return height;}
 
 
+    public Image getSprite(int currentSprite){return sprites.get(currentSprite); }
     public Rectangle getHitbox() { return new Rectangle(posX, posY , width, height);}
 }

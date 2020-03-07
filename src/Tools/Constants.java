@@ -52,16 +52,15 @@ public class Constants {
     public static final int GAME_MIN_WIDTH =         10;
     public static final double MAX_RIGHT_ROTATION =  45;
     public static final double MAX_LEFT_ROTATION =   135;
-    public static final double GAME_FPS =            64.0;
 
     // Game Balancing
     public static final int PROJECTILE_SPEED =          10;         // Pixel per Update
 
     public static final int PLAYER_HP =                 3;
     public static final int PLAYER_DAMAGE =             5;
-    public static final long PLAYER_ATTACK_SPEED =      200;       //  time in ms between attacks
-    public static final int PLAYER_SPEED =              2;
-    public static final double PLAYER_TURN_SPEED =      5;
+    public static final long PLAYER_ATTACK_SPEED =      100;       //  time in ms between attacks
+    public static final int PLAYER_SPEED =              3;
+    public static final double PLAYER_TURN_SPEED =      2;
 
     public static final int ENEMY_HP =                  1;
     public static final int ENEMY_SHOOT_DMG =           1;

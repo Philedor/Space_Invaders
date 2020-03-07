@@ -20,7 +20,10 @@ public class Player extends Entity{
     public boolean rightPressed = false;
     private boolean upPressed = false;
     private boolean downPressed = false;
+    private boolean turnrightpressed = false;
+    private boolean turnleftpressed = false;
     public boolean isShooting = false;
+    public boolean invincible = false;
 
     private int hp;
     private int dmg;
@@ -62,8 +65,10 @@ public class Player extends Entity{
 
     public void damage(int dmg){
         hp -= dmg;
-        if (hp <= 0)
+        if (hp <= 0){
             live = false;
+            System.out.println("player dead");
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -75,8 +80,8 @@ public class Player extends Entity{
         if     (key == keycodes[2] )     {dx = -moveSpeed;      leftPressed = true;}
         if     (key == keycodes[3] )     {dx =  moveSpeed;      rightPressed = true;}
 
-        if     (key == keycodes[4] )     dangle = -turnSpeed;
-        if     (key == keycodes[5] )     dangle = turnSpeed;
+        if     (key == keycodes[4] )     {dangle = -turnSpeed;  turnrightpressed = true;}
+        if     (key == keycodes[5] )     {dangle = turnSpeed;   turnleftpressed = true;}
 
         if     (key == keycodes[6])    isShooting = true;
 
@@ -117,8 +122,18 @@ public class Player extends Entity{
         }
 
         // Turn
-        if     (key == keycodes[4] )     dangle = 0;
-        if     (key == keycodes[5] )     dangle = 0;
+        if     (key == keycodes[4] )     {
+            turnrightpressed = false;
+            if (!turnleftpressed)
+                dangle = 0;
+            else dangle = turnSpeed;
+        }
+        if     (key == keycodes[5] )     {
+            turnleftpressed = false;
+            if (!turnrightpressed)
+                dangle = 0;
+            else dangle = -turnSpeed;
+        }
 
         if     (key == keycodes[6])    isShooting = false;
 
