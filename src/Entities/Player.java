@@ -4,6 +4,8 @@ import Game.Game;
 import Graphics.GameScene;
 import Tools.Audio;
 import Tools.Constants;
+
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +78,13 @@ public class Player extends Entity{
     private long time;
 
     public void Update() {
+        //TODO add death animation managementthing
         if (invincible){
             imunitycd -= 1;
-        if (imunitycd <= 0){
+            if (imunitycd%2 == 1)
+                opacity = 0.4f;
+            else opacity = 1;
+            if (imunitycd <= 0){
                 imunitycd = 0;
                 invincible = false;
                 System.out.println("normal");
@@ -104,9 +110,8 @@ public class Player extends Entity{
 
     public void setinvincible(){
         System.out.println("invinicble");
-
         invincible = true;
-        imunitycd = 68 * 2;
+        imunitycd = (int)(68 * 1.5); // 68 time nbsecondds we want it to last
     }
 
     public void keyPressed(KeyEvent e) {
