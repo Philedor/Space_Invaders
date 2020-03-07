@@ -58,7 +58,7 @@ public class Constants {
 
     public static final int PLAYER_HP =                 3;
     public static final int PLAYER_DAMAGE =             5;
-    public static final long PLAYER_ATTACK_SPEED =      100;       //  time in ms between attacks
+    public static final long PLAYER_ATTACK_SPEED =      10;       //  time in ms between attacks
     public static final int PLAYER_SPEED =              3;
     public static final double PLAYER_TURN_SPEED =      2;
 
@@ -77,49 +77,30 @@ public class Constants {
             VK_A,       // 2 = LEFT
             VK_D,       // 3 = RIGHT
             VK_E,       // 4 = TURN RIGHT
-            VK_Q,       // 5 =TURN LEFT
-            VK_SPACE,   // 6 =SHOOT
+            VK_Q,       // 5 = TURN LEFT
+            VK_SPACE,   // 6 = SHOOT
+            VK_M,       // M = SWITCH SHOOT MODE
     };
 
 
     //levels
 
-    public static final int[][] LEVEL1 = {
-            {10, 10},
-            {94, 10},
-            {179, 10},
-            {263, 10},
-            {348, 10},
-            {432, 10},
-            {10, 63},
-            {94, 63},
-            {179, 63},
-            {263, 63},
-            {348, 63},
-            {432, 63},
-            {10, 116},
-            {94, 116},
-            {179, 116},
-            {263, 116},
-            {348, 116},
-            {432, 116},
-            {10, 170},
-            {94, 170},
-            {179, 170},
-            {263, 170},
-            {348, 170},
-            {432, 170},
-            {10, 223},
-            {94, 223},
-            {179, 223},
-            {263, 223},
-            {348, 223},
-            {432, 223},
-            {10, 276},
-            {94, 276},
-            {179, 276},
-            {263, 276},
-            {348, 276},
-            {432, 276},
-    };
+    public static int[][] LEVEL1 = Gen_enemyblock(6, 6);
+
+    public static int[][]  Gen_enemyblock(int rows, int columns){
+        int[][] ans = new int[rows*columns][2];
+        int width = Constants.GAME_MAX_WIDTH * 3 / 4 - (Constants.GAME_MIN_WIDTH);
+        int height = Constants.GAME_MIN_HEIGHT / 3 - Constants.GAME_MAX_HEIGHT;
+
+        System.out.println("{ ");
+        for (int i = 0 ; i < rows; i++){
+            int y = height * i / rows + Constants.GAME_MAX_HEIGHT;
+            for (int j = 0; j < columns; j++){
+                int x = width * j /columns + Constants.GAME_MIN_WIDTH;
+                ans[i * columns + j][0] = x;
+                ans[i * columns + j][1] = y;
+            }
+        }
+        return ans;
+    }
 }

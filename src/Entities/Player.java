@@ -24,6 +24,7 @@ public class Player extends Entity{
     private boolean turnleftpressed = false;
     public boolean isShooting = false;
     public boolean invincible = false;
+    private int shootingmode = 0;
 
     private int hp;
     private int dmg;
@@ -49,8 +50,21 @@ public class Player extends Entity{
     public void Shoot(){
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
             //Audio.playSound(ATTACK_SOUND);
-            //y-offset to make rotation easier later, x-offset due to generation
-            projectiles.add(new Projectile(team, posX+14, posY+35, angle, dmg));
+            if (shootingmode == 0){
+                projectiles.add(new Projectile(team, posX+(width/2), posY+(height/2), angle, dmg));
+            }
+
+            if (shootingmode == 1) {
+                projectiles.add(new Projectile(team, posX + (width / 2), posY + (height / 2), angle, dmg));
+                projectiles.add(new Projectile(team, posX + (width / 2), posY + (height / 2), angle + ((double)(45 / 2)), dmg));
+                projectiles.add(new Projectile(team, posX + (width / 2), posY + (height / 2), angle - ((double)(45 / 2)), dmg));
+            }
+
+            if (shootingmode == 2) {
+                projectiles.add(new Projectile(team, posX + (width / 2), posY + (height / 2), angle, dmg));
+                projectiles.add(new Projectile(team, posX + (width / 5), posY + (height / 2), angle, dmg));
+                projectiles.add(new Projectile(team, posX + (4 * width / 5), posY + (height / 2), angle, dmg));
+            }
             lastShoot = System.currentTimeMillis();
         }
     }
@@ -84,6 +98,7 @@ public class Player extends Entity{
         if     (key == keycodes[5] )     {dangle = turnSpeed;   turnleftpressed = true;}
 
         if     (key == keycodes[6])    isShooting = true;
+        if     (key == keycodes[7])      {shootingmode = (shootingmode + 1) % 3;}
 
         //if (key == VK_Y) System.out.println(GameScene.enemies.size());
 
