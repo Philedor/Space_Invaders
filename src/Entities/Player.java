@@ -1,5 +1,6 @@
 package Entities;
 
+import Graphics.GameScene;
 import Tools.Audio;
 import Tools.Constants;
 import java.awt.event.KeyEvent;
@@ -44,6 +45,7 @@ public class Player extends Entity{
     public void Shoot(){
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
             Audio.playSound(ATTACK_SOUND);
+            //y-offset to make rotation easier later, x-offset due to generation
             projectiles.add(new Projectile(team, posX+14, posY+35, angle, dmg));
             lastShoot = System.currentTimeMillis();
         }
