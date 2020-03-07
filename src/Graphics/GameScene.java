@@ -4,6 +4,7 @@ import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
+import Tools.Audio;
 import Tools.Constants;
 import com.sun.source.tree.ArrayAccessTree;
 
@@ -55,6 +56,8 @@ public class GameScene extends JPanel implements ActionListener {
         requestFocus();
 
         InitEntities();
+        //playing background music. No music here yet, also need to figure out stopping music (pause state and such)
+        //Audio.playSoundLoop(Constants.BACKGROUND_MUSIC);
 
         timer = new Timer(DELAY, this);
         timer.start();

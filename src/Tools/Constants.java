@@ -39,6 +39,11 @@ public class Constants {
     public static final String  PROJECTILE_EXPLOSION_SPRITE =       "resources/sprites/projectile_explosion.png";
     public static final int     NB_PROJECTILE_EXPLOSION_SPRITE=     1;
 
+    //Audio
+    public static final String AUDIO_LOCATION=                        "resources/audio/";
+    public static final String ATTACK_SOUND =                         "pew.wav";
+    public static final String BACKGROUND_MUSIC=                      "bg_loop.wav";
+
 
     // Game Settings
     public static final int GAME_MAX_HEIGHT =        10;
