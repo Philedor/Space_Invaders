@@ -58,7 +58,6 @@ public class Enemy extends Entity {
     public void InvertDirection()    {moveSpeed = -moveSpeed;}
 
     public static List<Projectile> getProjectiles(){return projectiles;}
-    public void destroyProj(Projectile projectile) {projectiles.remove(projectile);}
-    public void destroyProj(int i) { projectiles.remove(i);}
+    public int getwidth() {return width;}
 
 }

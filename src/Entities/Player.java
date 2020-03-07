@@ -53,8 +53,8 @@ public class Player extends Entity{
 
 
     public void Update() {
-        posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH), Constants.GAME_MIN_WIDTH) ;
-        posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT);
+        posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH - width), Constants.GAME_MIN_WIDTH) ;
+        posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT - height);
         angle = Math.max(Math.min(angle + dangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
         if (isShooting) Shoot();
     }

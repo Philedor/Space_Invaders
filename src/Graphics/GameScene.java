@@ -138,7 +138,7 @@ public class GameScene extends JPanel implements ActionListener {
 
             if (!enemywentdown &&
                     ((getEnemyLeftPos() <= Constants.GAME_MIN_WIDTH ) ||
-                    (getEnemyRightPos() >= Constants.GAME_MAX_WIDTH ))) {
+                    (getEnemyRightPos() >= Constants.GAME_MAX_WIDTH - right.getwidth() ))) {
                 Reached_End();
                 enemywentdown = true;
             }

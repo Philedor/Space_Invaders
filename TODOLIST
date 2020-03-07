@@ -1,24 +1,29 @@
 
 TODO :
-    - Remove team enum if not used
-    - Make Projectile Manager so that they when the enemy that shot die the projectiledoesn't disappear, Take projectiles out of enemy class
-    - Bonus Generation
+    - Background "Skybox" + movements to make it look like it's moving
+    - Stages genereation
+    - Infinite mode
+    - Score
+    - Main menu with start, settings and exit
+    - Start menu ( loaded when you press start in main menu) with
+        normal/infinite/ load save
+    - Pause the game
+    - Pause menu
 
+TO DISCUSS :
 
+    - Story mode
+    - Save progress ( define what to save)
+    - Bonus System
+        - How it appears
+        - What bonuses
+        - Duration, effects, drop rate etc...
+        - Display (Say what bonus is currently in use, time left...)
+    - Big bad boss ?
 
-Basic Game :
-    Characters movements : Rotation, lateral movement, vertical movements
-    Enemy actions : Based on basic character movements
-    Character action : Shooting
-    Game Management : Collision management, timer, score, (player HP?)
-    UI : Score, Pause button (even if it's not working), start Menu
-
-- Make the movements fluent
-- Decide the window size, if it will be scalable or fixed?
 
 
 Low prio tasks :
-    - Graphics (Sprites)
     - Themes
     - Level Design for story mode
     - Different characters with stats design
