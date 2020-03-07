@@ -24,6 +24,7 @@ public class Player extends Entity{
     private boolean turnleftpressed = false;
     public boolean isShooting = false;
     public boolean invincible = false;
+    private int imunitycd = 0;
     private int shootingmode = 0;
 
     private int hp;
@@ -32,6 +33,8 @@ public class Player extends Entity{
     private double turnSpeed;
     private long atkSpeed;
     private long lastShoot;
+
+    public float opacity = 1;
 
 
 
@@ -70,7 +73,18 @@ public class Player extends Entity{
     }
 
 
+    private long time;
+
     public void Update() {
+        if (invincible){
+            imunitycd -= 1;
+        if (imunitycd <= 0){
+                imunitycd = 0;
+                invincible = false;
+                System.out.println("normal");
+                System.out.println(System.currentTimeMillis() - time);
+            }
+        }
         posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH - width), Constants.GAME_MIN_WIDTH) ;
         posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT - height);
         angle = Math.max(Math.min(angle + dangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
@@ -78,11 +92,21 @@ public class Player extends Entity{
     }
 
     public void damage(int dmg){
+        setinvincible();
+        time = System.currentTimeMillis();
         hp -= dmg;
         if (hp <= 0){
             live = false;
             System.out.println("player dead");
+
         }
+    }
+
+    public void setinvincible(){
+        System.out.println("invinicble");
+
+        invincible = true;
+        imunitycd = 68 * 2;
     }
 
     public void keyPressed(KeyEvent e) {

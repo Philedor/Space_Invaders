@@ -1,8 +1,8 @@
 
 TODO :
+    - Enemies shooting
     - Death Animation loading
     - Contact damage for player
-    - Give player like 1-2 sec immunity when he takes contact damage
     - Game management (restart or load next stage when stage cleared)
     - Background "Skybox" + movements to make it look like it's moving
     - Stages genereation

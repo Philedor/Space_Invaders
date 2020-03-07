@@ -100,6 +100,7 @@ public class GameScene extends JPanel implements ActionListener {
         }
         player.animate();
         graphics.rotate(Math.PI/2 - Math.toRadians(player.getAngle() ),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
         graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
         graphics.rotate(-(Math.PI/2 - Math.toRadians(player.getAngle() )),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
 
