@@ -163,9 +163,6 @@ public class GameScene extends JPanel implements ActionListener {
             proj.Update();
             ProjectileCollisionCheck(proj, Entity.Team.PLAYER);
 
-            if (!proj.isLive()){
-                player.getProjectiles().remove(proj);
-            }
         }
 
         // Check enemy projectiles
@@ -240,9 +237,18 @@ public class GameScene extends JPanel implements ActionListener {
         return enemy;
     }
 
-    private int getEnemyLeftPos(){ return getMostLeftEnemy().getPosX();}
-    private int getEnemyRightPos(){ return getMostRightEnemy().getPosX();}
-
+    private int getEnemyLeftPos(){
+        Enemy enemy = getMostLeftEnemy();
+        if(enemy != null)
+            return enemy.getPosX();
+        else return 0;
+    }
+    private int getEnemyRightPos() {
+        Enemy enemy = getMostRightEnemy();
+        if (enemy != null)
+            return enemy.getPosX();
+        else return 0;
+    }
 
     // Key pressed Management redirected to player Input
     private class InputManager extends KeyAdapter {

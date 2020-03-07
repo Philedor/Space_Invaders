@@ -20,6 +20,12 @@ public class Projectile extends Entity {
         if (live){
             posX += dx;
             posY += dy;
+
+            if (posX < 0||
+            posX > Constants.GAME_MAX_WIDTH ||
+            posY < 0 ||
+            posY > Constants.GAME_MIN_HEIGHT)
+                Kill();
         }
 
     }
