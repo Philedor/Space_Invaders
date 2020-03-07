@@ -66,7 +66,7 @@ public class Constants {
     public static final int ENEMY_HP =                  1;
     public static final int ENEMY_SHOOT_DMG =           1;
     public static final long ENEMY_ATTACK_SPEED =       10000;
-    public static final int ENEMY_SPEED =               63;
+    public static final int ENEMY_SPEED =               15;
     public static final int GRAVITY =                   15;
     public static final int CONTACT_DAMAGE =            1;
 

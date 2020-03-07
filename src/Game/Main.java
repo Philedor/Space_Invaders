@@ -21,9 +21,9 @@ public class Main {
 
     // Used to generate enemy coordinates and just copy paste them
     private static void Gen_enemyblock(int rows, int columns){
-        int width = Constants.GAME_MAX_WIDTH * 3 / 4 - Constants.GAME_MIN_WIDTH;
+        int width = Constants.GAME_MAX_WIDTH * 3 / 4 - (Constants.GAME_MIN_WIDTH*2);
         int height = Constants.GAME_MIN_HEIGHT / 3 - Constants.GAME_MAX_HEIGHT;
-        int minw = 0;
+        int minw = width + Constants.GAME_MIN_WIDTH * 2;
         int minh = Constants.GAME_MAX_HEIGHT;
 
         System.out.println("{ ");

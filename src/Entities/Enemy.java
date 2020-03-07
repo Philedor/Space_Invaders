@@ -23,7 +23,7 @@ public class Enemy extends Entity {
         hp = Constants.ENEMY_HP;
         shootdmg = Constants.ENEMY_SHOOT_DMG;
         contactdmg = Constants.CONTACT_DAMAGE;
-        moveSpeed = Constants.ENEMY_SPEED;
+        moveSpeed = - Constants.ENEMY_SPEED;
         atkSpeed = Constants.ENEMY_ATTACK_SPEED;
         lastShoot = (long) (System.currentTimeMillis() + (Math.random() * 100));
     }
@@ -49,7 +49,7 @@ public class Enemy extends Entity {
         posX += moveSpeed;
         if (posX < Constants.GAME_MIN_WIDTH)
             posX = Constants.GAME_MIN_WIDTH;
-        if(posX > Constants.GAME_MAX_WIDTH - width)
+        if(posX > Constants.GAME_MAX_WIDTH)
             posX = Constants.GAME_MAX_WIDTH;
     }
     public void MoveDown() { posY += Constants.GRAVITY;}
