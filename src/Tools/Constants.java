@@ -19,6 +19,12 @@ public class Constants {
     public static final int PLAYER_STARTING_Y =         600;
     public static final double PLAYER_STARTING_ANGLE =   90;     // In degrees
 
+
+    public static final int PLAYER1_STARTING_X =         180;
+    public static final int PLAYER1_STARTING_Y =         600;
+    public static final int PLAYER2_STARTING_X =         280;
+    public static final int PLAYER2_STARTING_Y =         600;
+
     public static final double ENEMY_STARTING_ANGLE =    -90;
 
     // Image importation infos
@@ -81,6 +87,18 @@ public class Constants {
             VK_E,       // 4 = TURN RIGHT
             VK_Q,       // 5 = TURN LEFT
             VK_SPACE,   // 6 = SHOOT
+            VK_M,       // M = SWITCH SHOOT MODE
+    };
+
+    // Bindings : their number is their index in the keycode list
+    public static int[] keycodes2 = {
+            VK_NUMPAD8,       // 0 = UP
+            VK_NUMPAD5,       // 1 = DOWN
+            VK_NUMPAD4,       // 2 = LEFT
+            VK_NUMPAD6,       // 3 = RIGHT
+            VK_NUMPAD7,       // 4 = TURN RIGHT
+            VK_NUMPAD9,       // 5 = TURN LEFT
+            VK_DECIMAL,       // 6 = SHOOT
             VK_M,       // M = SWITCH SHOOT MODE
     };
 

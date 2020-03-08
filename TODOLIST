@@ -1,6 +1,5 @@
 
 TODO :
-    - Death when enemies reach the bottom
     - Death Animation loading
     - Game management (restart or load next stage when stage cleared)
     - Background "Skybox" + movements to make it look like it's moving
@@ -11,7 +10,6 @@ TODO :
     - Main menu with start, settings and exit
     - Start menu ( loaded when you press start in main menu) with
         normal/infinite/ load save
-    - Pause the game
     - Pause menu
     - Blockades
 

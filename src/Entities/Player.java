@@ -1,20 +1,18 @@
 package Entities;
 
-import Game.Game;
+
 import Graphics.GameScene;
 import Tools.Audio;
 import Tools.Constants;
 
-import java.awt.*;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static Tools.Constants.ATTACK_SOUND;
-import static Tools.Constants.keycodes;
+
 import static java.awt.event.KeyEvent.VK_P;
-import static java.awt.event.KeyEvent.VK_Y;
 
 public class Player extends Entity{
 
@@ -39,10 +37,12 @@ public class Player extends Entity{
 
     public float opacity = 1;
 
+    public int[] keycodes;
 
 
-    public Player() {
-        super(Team.PLAYER, Constants.PLAYER_STARTING_X, Constants.PLAYER_STARTING_Y, Constants.PLAYER_STARTING_ANGLE, Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE);
+
+    public Player(Team team) {
+        super(team, Constants.PLAYER_STARTING_X, Constants.PLAYER_STARTING_Y, Constants.PLAYER_STARTING_ANGLE, Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE);
 
         projectiles = new ArrayList<>();
         hp = Constants.PLAYER_HP;
@@ -51,6 +51,10 @@ public class Player extends Entity{
         turnSpeed = Constants.PLAYER_TURN_SPEED;
         atkSpeed = Constants.PLAYER_ATTACK_SPEED;
         lastShoot = System.currentTimeMillis() - atkSpeed;  // To allow te player to shoot from the beginning
+        if (team == Team.PLAYER1)
+            keycodes = Constants.keycodes;
+        else
+            keycodes = Constants.keycodes2;
     }
 
     public void Shoot(){
@@ -79,7 +83,7 @@ public class Player extends Entity{
     private long time;
 
     public void Update() {
-        //TODO add death animation managementthing
+        //TODO add death animation management thing
         if (invincible){
             imunitycd -= 1;
             if (imunitycd%2 == 1)
@@ -103,6 +107,10 @@ public class Player extends Entity{
         hp -= dmg;
         if (hp <= 0){
             live = false;
+            if (team == Team.PLAYER1)
+                System.out.println("p1 dead");
+            else
+                System.out.println("p2 dead");
         }
     }
 
@@ -132,6 +140,7 @@ public class Player extends Entity{
     }
 
     public void keyReleased(KeyEvent e) {
+
 
         int key = e.getKeyCode();
         // Up/Down

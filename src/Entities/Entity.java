@@ -13,7 +13,8 @@ public class Entity {
 
     // Used to identify which side an entity belongs to
     public enum Team {
-        PLAYER,
+        PLAYER1,
+        PLAYER2,
         ENEMIES
     }
 
@@ -102,6 +103,7 @@ public class Entity {
     public boolean isLive() {return live;}
     public int getwidth() {return width;}
     public int getwheight() {return height;}
+    public Team getTeam() {return team;}
 
 
     public Image getSprite(int currentSprite){return sprites.get(currentSprite); }

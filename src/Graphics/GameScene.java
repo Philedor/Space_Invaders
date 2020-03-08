@@ -5,6 +5,7 @@ import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.Constants;
+import Tools.InputManager;
 
 
 import javax.swing.*;
@@ -24,6 +25,9 @@ public class GameScene extends JPanel implements ActionListener {
     public static int width;
     public static int height;
 
+    public int P1Score = 0;
+    public int P2Score = 0;
+
     private Image back;
     private boolean running = true;
     private static boolean pause = false;
@@ -31,11 +35,11 @@ public class GameScene extends JPanel implements ActionListener {
     int DELAY = 15;
 
     public static List<Enemy> enemies = new ArrayList<>();
-    private Player player;
+    public static List<Player> players = new ArrayList<>();
 
 
     // Init the game Scene
-    public GameScene(int w, int h) {
+    public GameScene(int w, int h, int nb_players) {
         width = w;
         height = h;
 
@@ -48,7 +52,7 @@ public class GameScene extends JPanel implements ActionListener {
         setFocusable(true);
         requestFocus();
 
-        InitEntities();
+        InitEntities(nb_players);
         //playing background music. No music here yet, also need to figure out stopping music (pause state and such)
         //Audio.playSoundLoop(Constants.BACKGROUND_MUSIC);
 
@@ -56,8 +60,9 @@ public class GameScene extends JPanel implements ActionListener {
         timer.start();
     }
 
-    private void InitEntities() {
-        player = new Player();
+    private void InitEntities(int nb_players) {
+        for (int i = 0; i < nb_players; i ++)
+            players.add(new Player(Team.values()[i]));
 
         // Enemies generation
         enemies = new ArrayList<>();
@@ -92,12 +97,13 @@ public class GameScene extends JPanel implements ActionListener {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
         }
 
-        for (Projectile proj : player.getProjectiles()) {
-            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
-            graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
-            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
+        for (Player player : players) {
+            for (Projectile proj : player.getProjectiles()) {
+                graphics.rotate(Math.PI / 2 - Math.toRadians(proj.getAngle()), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
+                graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
+                graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
+            }
         }
-
         for (Projectile proj : Enemy.getProjectiles()) {
             graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
@@ -105,12 +111,14 @@ public class GameScene extends JPanel implements ActionListener {
         }
 
         // animating player
-        player.animate();
-        graphics.rotate(Math.PI/2 - Math.toRadians(player.getAngle() ),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
-        if (running && !pause)
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
-        graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
-        graphics.rotate(-(Math.PI/2 - Math.toRadians(player.getAngle() )),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
+        for (Player player : players) {
+            player.animate();
+            graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
+            if (running && !pause)
+                graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
+            graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
+            graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
+        }
 
         if(pause){
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
@@ -151,11 +159,12 @@ public class GameScene extends JPanel implements ActionListener {
             InitEnemies();
             // TODO Next level
         }
-        if (getlowerposX() >= Constants.GAME_OVER_Y || !player.isLive())
+        if (getlowerposX() >= Constants.GAME_OVER_Y || !playerlive())
             running = false;
         if (running && !pause) {
             // Update Player
-            player.Update();
+            for (Player player : players)
+                player.Update();
             if (enemies.size() > 0)
                 updateEnemies();
             updateProjectiles();
@@ -166,6 +175,13 @@ public class GameScene extends JPanel implements ActionListener {
 
     }
 
+    private boolean playerlive(){
+        for (Player player : players)
+            if (player.isLive()) {
+                return true;
+            }
+        return false;
+    }
 
     /**
      * Whenever the enemy block reached a side, makes them go down
@@ -215,10 +231,12 @@ public class GameScene extends JPanel implements ActionListener {
 
         Enemy.getProjectiles().removeIf(enemy -> !enemy.isLive());
         // Check player's projectile
-        for (Projectile proj: player.getProjectiles()) {
-            // if condition to add for explosion animation
-            proj.Update();
-            ProjectileCollisionCheck(proj, Entity.Team.PLAYER);
+        for (Player player : players) {
+            for (Projectile proj : player.getProjectiles()) {
+                // if condition to add for explosion animation
+                proj.Update();
+                ProjectileCollisionCheck(proj, player.getTeam());
+            }
         }
 
         // Check enemy projectiles
@@ -231,11 +249,13 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     public void ContactCheck(){
-        if (!player.invincible){
-            Rectangle playerHitbox = player.getHitbox();
-            for (Enemy enemy : enemies){
-                if (playerHitbox.intersects(enemy.getHitbox())){
-                    player.damage(enemy.contactdmg);
+        for (Player player : players) {
+            if (!player.invincible){
+                Rectangle playerHitbox = player.getHitbox();
+                for (Enemy enemy : enemies){
+                    if (playerHitbox.intersects(enemy.getHitbox())){
+                        player.damage(enemy.contactdmg);
+                    }
                 }
             }
         }
@@ -247,17 +267,26 @@ public class GameScene extends JPanel implements ActionListener {
      */
     private void ProjectileCollisionCheck(Projectile projectile, Entity.Team team) {
         Rectangle projectilehitbox = projectile.getHitbox();
-        if (team == Entity.Team.PLAYER) {
-            for (Enemy enemy : enemies) {
-                if (projectilehitbox.intersects(enemy.getHitbox())){
-                    enemy.damage(projectile.getDmg());
+        if (team == Team.ENEMIES){
+            for (Player player : players) {
+                if (projectilehitbox.intersects(player.getHitbox())) {
+                    player.damage(projectile.getDmg());
                     projectile.damage(1);
                 }
             }
         }
-        else if (projectilehitbox.intersects(player.getHitbox())){
-                player.damage(projectile.getDmg());
-                projectile.damage(1);
+
+        else {
+            for (Enemy enemy : enemies) {
+                if (projectilehitbox.intersects(enemy.getHitbox())) {
+                    enemy.damage(projectile.getDmg());
+                    projectile.damage(1);
+                    if (team == Team.PLAYER1)
+                        P1Score += 1;
+                    else
+                        P2Score += 1;
+                }
+            }
         }
 
     }
@@ -316,17 +345,7 @@ public class GameScene extends JPanel implements ActionListener {
     }
     public static boolean getPause(){return pause;}
 
-    // Key pressed Management redirected to player Input
-    private class InputManager extends KeyAdapter {
 
-        @Override
-        public void keyPressed(KeyEvent e) {
-            player.keyPressed(e);
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) { player.keyReleased(e);}
-    }
 
 
 }
