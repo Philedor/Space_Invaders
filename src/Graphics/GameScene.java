@@ -5,6 +5,7 @@ import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.Constants;
+import com.sun.source.tree.IfTree;
 
 
 import javax.swing.*;
@@ -109,8 +110,6 @@ public class GameScene extends JPanel implements ActionListener {
 
     /**
      * Update function called automatically whenever an action takes place
-     *
-     * @param e the event
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -127,7 +126,9 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
 
-    // Apply when enemies reach end of line
+    /**
+     * Whenever the enemy block reached a side, makes them go down
+      */
     private void Reached_End() {
         for (Enemy enemy : enemies) {
             enemy.InvertDirection();
@@ -146,6 +147,7 @@ public class GameScene extends JPanel implements ActionListener {
             //Enemy left = getMostLeftEnemy();
             Enemy right = getMostRightEnemy();
 
+            // If the enemy is at the end of the line and didn't move down already
             if (!enemywentdown &&
                     ((getEnemyLeftPos() <= Constants.GAME_MIN_WIDTH ) ||
                     (getEnemyRightPos() >= Constants.GAME_MAX_WIDTH - right.getwidth() ))) {
@@ -176,7 +178,6 @@ public class GameScene extends JPanel implements ActionListener {
             // if condition to add for explosion animation
             proj.Update();
             ProjectileCollisionCheck(proj, Entity.Team.PLAYER);
-
         }
 
         // Check enemy projectiles
@@ -186,7 +187,6 @@ public class GameScene extends JPanel implements ActionListener {
                 ProjectileCollisionCheck(proj, Entity.Team.ENEMIES);
             }
         }
-
     }
 
     public void ContactCheck(){

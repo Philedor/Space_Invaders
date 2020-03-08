@@ -1,0 +1,7 @@
+Bonus :
+    - Extra damage
+    - Different shooting mode, scatter shot, multiple bullets
+    - Life system (very rare bonus, like on boss fight drop)
+    - Extra atkspeed
+    - Piercing bullets
+    - 

@@ -1,8 +1,6 @@
 
 TODO :
-    - Enemies shooting
     - Death Animation loading
-    - Contact damage for player
     - Game management (restart or load next stage when stage cleared)
     - Background "Skybox" + movements to make it look like it's moving
     - Stages genereation
