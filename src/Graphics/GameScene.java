@@ -162,6 +162,7 @@ public class GameScene extends JPanel implements ActionListener {
         if (getlowerposX() >= Constants.GAME_OVER_Y || !playerlive())
             running = false;
         if (running && !pause) {
+            players.removeIf(player -> !player.isLive());
             // Update Player
             for (Player player : players)
                 player.Update();
@@ -232,6 +233,7 @@ public class GameScene extends JPanel implements ActionListener {
         Enemy.getProjectiles().removeIf(enemy -> !enemy.isLive());
         // Check player's projectile
         for (Player player : players) {
+            player.getProjectiles().removeIf(projectile -> !projectile.isLive());
             for (Projectile proj : player.getProjectiles()) {
                 // if condition to add for explosion animation
                 proj.Update();

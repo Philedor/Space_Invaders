@@ -96,8 +96,8 @@ public class Constants {
             VK_NUMPAD5,       // 1 = DOWN
             VK_NUMPAD4,       // 2 = LEFT
             VK_NUMPAD6,       // 3 = RIGHT
-            VK_NUMPAD7,       // 4 = TURN RIGHT
-            VK_NUMPAD9,       // 5 = TURN LEFT
+            VK_NUMPAD9,       // 4 = TURN RIGHT
+            VK_NUMPAD7,       // 5 = TURN LEFT
             VK_DECIMAL,       // 6 = SHOOT
             VK_M,       // M = SWITCH SHOOT MODE
     };

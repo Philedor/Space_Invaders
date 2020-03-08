@@ -42,7 +42,7 @@ public class Player extends Entity{
 
 
     public Player(Team team) {
-        super(team, Constants.PLAYER_STARTING_X, Constants.PLAYER_STARTING_Y, Constants.PLAYER_STARTING_ANGLE, Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE);
+        super(team, team == Team.PLAYER1? Constants.PLAYER1_STARTING_X : Constants.PLAYER2_STARTING_X, Constants.PLAYER_STARTING_Y, Constants.PLAYER_STARTING_ANGLE, Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE);
 
         projectiles = new ArrayList<>();
         hp = Constants.PLAYER_HP;
