@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 import static Entities.Enemy.*;
@@ -26,6 +27,7 @@ public class GameScene extends JPanel implements ActionListener {
     public static int height;
 
     private Image back;
+    private boolean running = true;
 
     int DELAY = 15;
 
@@ -114,15 +116,17 @@ public class GameScene extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        // Update Player
-        player.Update();
-        if (enemies.size() > 0)
-            updateEnemies();
-        updateProjectiles();
-        ContactCheck();
+        if (running){
+            // Update Player
+            player.Update();
+            if (enemies.size() > 0)
+                updateEnemies();
+            updateProjectiles();
+            ContactCheck();
 
-        // collision checked during update to avoid calling multiple loops to go through each lists every time
-        repaint();
+            // collision checked during update to avoid calling multiple loops to go through each lists every time
+            repaint();
+        }
     }
 
 
@@ -173,6 +177,7 @@ public class GameScene extends JPanel implements ActionListener {
      */
     private void updateProjectiles() {
 
+        Enemy.getProjectiles().removeIf(enemy -> !enemy.isLive());
         // Check player's projectile
         for (Projectile proj: player.getProjectiles()) {
             // if condition to add for explosion animation
@@ -264,6 +269,11 @@ public class GameScene extends JPanel implements ActionListener {
         if (enemy != null)
             return enemy.getPosX();
         else return 0;
+    }
+
+    public int getlowerposX(){
+        Enemy enemy = enemies.get(enemies.size()-1);
+        return enemy.getPosY();
     }
 
     // Key pressed Management redirected to player Input

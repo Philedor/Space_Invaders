@@ -1,7 +1,41 @@
+
+    Melanie
+    - 2nd shooter
+    - Next lvl
+    - Infinite
+    - Bonus
+
+    Nelius :
+    - Menus
+
+    Philip :
+    - Death animations
+    - Game HUD
+    - Score (Top left)
+    - Lives (3 Lives)
+
+Additions :
+    - Leader Board
+    - Bonus
+    - Move differently : Move faster, different directions
+    - More HP
+    - 3 different waves with increasing movement speed
+    - combination of all
+
 Bonus :
+    - Appear : Kill an enemy (drop rate) drop a "package"
+    - Duration for now
     - Extra damage
     - Different shooting mode, scatter shot, multiple bullets
     - Life system (very rare bonus, like on boss fight drop)
     - Extra atkspeed
     - Piercing bullets
-    - 
+
+Blockades :
+    - 4 blockades, a bit larger than the spaceship
+
+
+Later :
+    - Harder Level : More random movements? Coming from all over
+
+

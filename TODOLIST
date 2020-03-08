@@ -1,5 +1,6 @@
 
 TODO :
+    - Death when enemies reach the bottom
     - Death Animation loading
     - Game management (restart or load next stage when stage cleared)
     - Background "Skybox" + movements to make it look like it's moving
@@ -11,6 +12,7 @@ TODO :
         normal/infinite/ load save
     - Pause the game
     - Pause menu
+    - Blockades
 
 TO DISCUSS :
 
@@ -32,3 +34,4 @@ Low prio tasks :
     - Different characters with stats design
     - Powerups, obstacles/barricades
     - Sound effects, music
+    - Blockades
