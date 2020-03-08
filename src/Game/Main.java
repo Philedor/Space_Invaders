@@ -1,7 +1,5 @@
 package Game;
 
-import Tools.Constants;
-
 import java.awt.*;
 
 public class Main {

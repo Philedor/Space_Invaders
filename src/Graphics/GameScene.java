@@ -4,20 +4,19 @@ import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
-import Tools.Audio;
 import Tools.Constants;
-import com.sun.source.tree.ArrayAccessTree;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import static Entities.Enemy.*;
 
 
 public class GameScene extends JPanel implements ActionListener {
@@ -27,24 +26,16 @@ public class GameScene extends JPanel implements ActionListener {
 
     private Image back;
 
-    private Timer timer;
     int DELAY = 15;
 
-    private boolean running = false;
     public static List<Enemy> enemies = new ArrayList<>();
     private Player player;
-    private long enemyLastMove;
-    private long enemyMoveTime = 800;
-    private boolean enemywentdown = false;
 
-
-    private Thread thread;
 
     // Init the game Scene
     public GameScene(int w, int h) {
         width = w;
         height = h;
-        running = true;
 
         back = new ImageIcon("resources/space.jpg").getImage();
 
@@ -59,7 +50,7 @@ public class GameScene extends JPanel implements ActionListener {
         //playing background music. No music here yet, also need to figure out stopping music (pause state and such)
         //Audio.playSoundLoop(Constants.BACKGROUND_MUSIC);
 
-        timer = new Timer(DELAY, this);
+        Timer timer = new Timer(DELAY, this);
         timer.start();
     }
 
@@ -91,6 +82,7 @@ public class GameScene extends JPanel implements ActionListener {
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
         }
+
         for (Projectile proj : player.getProjectiles()) {
             graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
@@ -146,7 +138,7 @@ public class GameScene extends JPanel implements ActionListener {
         if (System.currentTimeMillis() - enemyLastMove > enemyMoveTime){
                 enemyLastMove = System.currentTimeMillis();
 
-            Enemy left = getMostLeftEnemy();
+            //Enemy left = getMostLeftEnemy();
             Enemy right = getMostRightEnemy();
 
             if (!enemywentdown &&
@@ -213,13 +205,13 @@ public class GameScene extends JPanel implements ActionListener {
             for (Enemy enemy : enemies) {
                 if (projectilehitbox.intersects(enemy.getHitbox())){
                     enemy.damage(projectile.getDmg());
-                    projectile.Kill();
+                    projectile.damage(1);
                 }
             }
         }
         else if (projectilehitbox.intersects(player.getHitbox())){
                 player.damage(projectile.getDmg());
-                projectile.Kill();
+                projectile.damage(1);
         }
 
     }

@@ -1,6 +1,5 @@
 package Entities;
 
-import Graphics.GameScene;
 import Tools.Constants;
 
 public class Projectile extends Entity {
@@ -16,6 +15,14 @@ public class Projectile extends Entity {
         dmg = pdmg;
     }
 
+    public Projectile(Team team, int posX, int posY, double angle, int pdmg, int php) {
+        super(team, posX, posY, angle, Constants.PROJECTILE_SPRITE, Constants.NB_PROJECTILE_SPRITE,
+                (int) (CalculateDeltaX(angle, Constants.PROJECTILE_SPEED)), (int) (CalculateDeltaY(angle, Constants.PROJECTILE_SPEED)));
+
+        hp = php;
+        dmg = pdmg;
+    }
+
     public void Update(){
         if (live){
             posX += dx;
@@ -27,11 +34,15 @@ public class Projectile extends Entity {
             posY > Constants.GAME_MIN_HEIGHT)
                 Kill();
         }
+    }
 
+    public void damage(int dmg){
+        hp -= dmg;
+        if (hp <= 0)
+            Kill();
     }
 
     public void Kill(){
-        hp = 0;
         live = false;
         dx = 0;
         dy = 0;

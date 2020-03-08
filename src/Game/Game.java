@@ -25,10 +25,4 @@ public class Game extends JFrame {
     }
 
 
-    // For Settings puroposes
-    public void changesize(int width, int height) {
-        setPreferredSize(new Dimension(width, height));
-    }
-
-
 }

@@ -3,7 +3,6 @@ package Entities;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Entity {
     public enum Team {
         PLAYER,
         ENEMIES
-    };
+    }
 
     Team team;
     boolean live;
@@ -97,7 +96,6 @@ public class Entity {
 
 
 
-    public int getHP()    {return this.hp;}
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
     public double getAngle() {return angle;}
