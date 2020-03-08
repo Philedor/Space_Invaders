@@ -46,12 +46,14 @@ public class Constants {
 
 
     // Game Settings
-    public static final int GAME_MAX_HEIGHT =        10;
-    public static final int GAME_MIN_HEIGHT =        WINDOW_HEIGHT-10;
-    public static final int GAME_MAX_WIDTH =         WINDOW_WIDTH-10;
-    public static final int GAME_MIN_WIDTH =         10;
-    public static final double MAX_RIGHT_ROTATION =  45;
-    public static final double MAX_LEFT_ROTATION =   135;
+    public static final int GAME_MAX_HEIGHT =           10;
+    public static final int GAME_MIN_HEIGHT =           WINDOW_HEIGHT-10;
+    public static final int GAME_MAX_WIDTH =            WINDOW_WIDTH-10;
+    public static final int GAME_MIN_WIDTH =            10;
+    public static final double MAX_RIGHT_ROTATION =     45;
+    public static final double MAX_LEFT_ROTATION =      135;
+    public static final int GAME_OVER_Y =               GAME_MIN_HEIGHT - 150;
+
 
     // Game Balancing
     public static final int PROJECTILE_SPEED =          10;         // Pixel per Update
@@ -91,8 +93,7 @@ public class Constants {
         int[][] ans = new int[rows*columns][2];
         int width = Constants.GAME_MAX_WIDTH * 3 / 4 - (Constants.GAME_MIN_WIDTH);
         int height = Constants.GAME_MIN_HEIGHT / 3 - Constants.GAME_MAX_HEIGHT;
-
-        System.out.println("{ ");
+        
         for (int i = 0 ; i < rows; i++){
             int y = height * i / rows + Constants.GAME_MAX_HEIGHT;
             for (int j = 0; j < columns; j++){

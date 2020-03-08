@@ -5,7 +5,6 @@ import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.Constants;
-import com.sun.source.tree.IfTree;
 
 
 import javax.swing.*;
@@ -15,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.List;
 
 import static Entities.Enemy.*;
@@ -28,6 +26,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     private Image back;
     private boolean running = true;
+    private static boolean pause = false;
 
     int DELAY = 15;
 
@@ -62,7 +61,11 @@ public class GameScene extends JPanel implements ActionListener {
 
         // Enemies generation
         enemies = new ArrayList<>();
+        InitEnemies();
 
+    }
+
+    private void InitEnemies(){
         for (int i = 0; i < Constants.LEVEL1.length; i++) {
             int[] en = Constants.LEVEL1[i];
             enemies.add(new Enemy(en[0], en[1]));
@@ -77,9 +80,12 @@ public class GameScene extends JPanel implements ActionListener {
         Graphics2D graphics = (Graphics2D) graphics1;
         super.paintComponent(graphics1);
         // different drawing functions for different game states
+        if (!running || pause)
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
         graphics.drawImage(back, 0, 0, this);
 
-        // animating player
+        if (!running || pause)
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, System.currentTimeMillis()%7 == 0? 0.3f : 0.5f));
 
 
         for (Enemy enemy : enemies) {
@@ -98,11 +104,36 @@ public class GameScene extends JPanel implements ActionListener {
             graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
         }
 
+        // animating player
         player.animate();
         graphics.rotate(Math.PI/2 - Math.toRadians(player.getAngle() ),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
+        if (running && !pause)
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
         graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
         graphics.rotate(-(Math.PI/2 - Math.toRadians(player.getAngle() )),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
+
+        if(pause){
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            graphics.setColor(Color.WHITE);
+            Font font = new Font("Helvetica", Font.BOLD, 80);
+            graphics.setFont(font);
+            FontMetrics fm = graphics.getFontMetrics();
+            int x = ((getWidth() - fm.stringWidth("PAUSE")) / 2);
+            int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+            graphics.drawString("PAUSE", x, y);
+        }
+
+        else if (!running){
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            graphics.setColor(Color.WHITE);
+            Font font = new Font("Helvetica", Font.BOLD, 80);
+            graphics.setFont(font);
+            FontMetrics fm = graphics.getFontMetrics();
+            int x = ((getWidth() - fm.stringWidth("GAME OVER")) / 2);
+            int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+            graphics.drawString("GAME OVER", x, y);
+        }
+
 
         graphics.dispose();
 
@@ -116,17 +147,23 @@ public class GameScene extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (running){
+        if (enemies.size() == 0){
+            InitEnemies();
+            // TODO Next level
+        }
+        if (getlowerposX() >= Constants.GAME_OVER_Y || !player.isLive())
+            running = false;
+        if (running && !pause) {
             // Update Player
             player.Update();
             if (enemies.size() > 0)
                 updateEnemies();
             updateProjectiles();
             ContactCheck();
-
-            // collision checked during update to avoid calling multiple loops to go through each lists every time
-            repaint();
         }
+        // collision checked during update to avoid calling multiple loops to go through each lists every time
+        repaint();
+
     }
 
 
@@ -168,7 +205,6 @@ public class GameScene extends JPanel implements ActionListener {
                 }
             }
         }
-
     }
 
 
@@ -200,7 +236,6 @@ public class GameScene extends JPanel implements ActionListener {
             for (Enemy enemy : enemies){
                 if (playerHitbox.intersects(enemy.getHitbox())){
                     player.damage(enemy.contactdmg);
-                    System.out.println("Player hit");
                 }
             }
         }
@@ -275,6 +310,11 @@ public class GameScene extends JPanel implements ActionListener {
         Enemy enemy = enemies.get(enemies.size()-1);
         return enemy.getPosY();
     }
+
+    public static void setPause(boolean x){
+        pause = x;
+    }
+    public static boolean getPause(){return pause;}
 
     // Key pressed Management redirected to player Input
     private class InputManager extends KeyAdapter {

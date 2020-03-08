@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static Tools.Constants.ATTACK_SOUND;
 import static Tools.Constants.keycodes;
+import static java.awt.event.KeyEvent.VK_P;
 import static java.awt.event.KeyEvent.VK_Y;
 
 public class Player extends Entity{
@@ -87,7 +88,6 @@ public class Player extends Entity{
             if (imunitycd <= 0){
                 imunitycd = 0;
                 invincible = false;
-                System.out.println("normal");
                 System.out.println(System.currentTimeMillis() - time);
             }
         }
@@ -103,13 +103,10 @@ public class Player extends Entity{
         hp -= dmg;
         if (hp <= 0){
             live = false;
-            System.out.println("player dead");
-
         }
     }
 
     public void setinvincible(){
-        System.out.println("invinicble");
         invincible = true;
         imunitycd = (int)(68 * 1.5); // 68 time nbsecondds we want it to last
     }
@@ -128,6 +125,7 @@ public class Player extends Entity{
 
         if     (key == keycodes[6])    isShooting = true;
         if     (key == keycodes[7])      {shootingmode = (shootingmode + 1) % 3;}
+        if     (key == VK_P)            {GameScene.setPause(!GameScene.getPause());}
 
         //if (key == VK_Y) System.out.println(GameScene.enemies.size());
 
