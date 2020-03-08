@@ -4,7 +4,6 @@ import Tools.Constants;
 
 public class Projectile extends Entity {
 
-    private int hp;
     private int dmg;
 
     public Projectile(Team team, int posX, int posY, double angle, int pdmg) {

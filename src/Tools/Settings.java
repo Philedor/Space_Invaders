@@ -9,9 +9,5 @@ public class Settings {
         Constants.keycodes[control] = newBinding;
     }
 
-    public void WindowSize(int width, int height){
-
-        // Change window size
-    }
 
 }
