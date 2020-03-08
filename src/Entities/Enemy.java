@@ -26,12 +26,13 @@ public class Enemy extends Entity {
         shootdmg = Constants.ENEMY_SHOOT_DMG;
         contactdmg = Constants.CONTACT_DAMAGE;
         moveSpeed = - Constants.ENEMY_SPEED;
-        atkSpeed = Constants.ENEMY_ATTACK_SPEED;
+        atkSpeed = (int)(Math.random() * 230958);   // just added arandom number
         lastShoot = (long) (System.currentTimeMillis() + (Math.random() * 100));
     }
 
 
     public void Shoot(){
+
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
             projectiles.add(new Projectile(team, posX, posY, angle, shootdmg));
             lastShoot = System.currentTimeMillis();

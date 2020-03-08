@@ -87,9 +87,14 @@ public class GameScene extends JPanel implements ActionListener {
             graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
             graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
-
-
         }
+
+        for (Projectile proj : Enemy.getProjectiles()) {
+            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
+            graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
+            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
+        }
+
         player.animate();
         graphics.rotate(Math.PI/2 - Math.toRadians(player.getAngle() ),  (double) player.getwidth() /2 + player.getPosX(), (double) player.getwheight()/2 + player.getPosY());
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
@@ -152,6 +157,7 @@ public class GameScene extends JPanel implements ActionListener {
             else {
                 enemywentdown = false;
                 for (Enemy e : enemies) {
+                    e.Shoot();
                     e.MoveSideways();
                 }
             }
