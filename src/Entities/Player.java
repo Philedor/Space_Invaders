@@ -38,6 +38,7 @@ public class Player extends Entity{
     public float opacity = 1;
 
     public int[] keycodes;
+    public int score = 0;
 
 
 
@@ -107,10 +108,12 @@ public class Player extends Entity{
         hp -= dmg;
         if (hp <= 0){
             live = false;
+
             if (team == Team.PLAYER1)
                 System.out.println("p1 dead");
             else
                 System.out.println("p2 dead");
+            System.out.println(score);
         }
     }
 

@@ -25,9 +25,6 @@ public class GameScene extends JPanel implements ActionListener {
     public static int width;
     public static int height;
 
-    public int P1Score = 0;
-    public int P2Score = 0;
-
     private Image back;
     private boolean running = true;
     private static boolean pause = false;
@@ -159,7 +156,7 @@ public class GameScene extends JPanel implements ActionListener {
             InitEnemies();
             // TODO Next level
         }
-        if (getlowerposX() >= Constants.GAME_OVER_Y || !playerlive())
+        if (getlowerposX() >= Constants.GAME_OVER_Y || players.size() == 0)
             running = false;
         if (running && !pause) {
             players.removeIf(player -> !player.isLive());
@@ -176,13 +173,6 @@ public class GameScene extends JPanel implements ActionListener {
 
     }
 
-    private boolean playerlive(){
-        for (Player player : players)
-            if (player.isLive()) {
-                return true;
-            }
-        return false;
-    }
 
     /**
      * Whenever the enemy block reached a side, makes them go down
@@ -283,10 +273,10 @@ public class GameScene extends JPanel implements ActionListener {
                 if (projectilehitbox.intersects(enemy.getHitbox())) {
                     enemy.damage(projectile.getDmg());
                     projectile.damage(1);
-                    if (team == Team.PLAYER1)
-                        P1Score += 1;
-                    else
-                        P2Score += 1;
+                    if (team ==  players.get(0).getTeam())
+                        players.get(0).score += 1;
+                    else if (players.size() == 2 && team == players.get(1).getTeam())
+                        players.get(1).score += 1;
                 }
             }
         }
