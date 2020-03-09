@@ -26,6 +26,7 @@ public class Enemy extends Entity {
         shootdmg = Constants.ENEMY_SHOOT_DMG;
         contactdmg = Constants.CONTACT_DAMAGE;
         moveSpeed = - Constants.ENEMY_SPEED;
+        currentSprite = (int) (Math.random()*2);
         atkSpeed = (int)(Math.random() * Math.random() * Math.random() * 1000000);   // just added a random number
         lastShoot = (long) (System.currentTimeMillis() + (Math.random() * 100));
     }
@@ -43,9 +44,16 @@ public class Enemy extends Entity {
     public void damage(int dmg){
         hp -= dmg;
         if (hp <= 0) {
-            live = false;
+            Kill();
         }
-        // TODO load death animation
+    }
+
+    public void Kill() {
+        dx = 0;
+        dy = 0;
+        LoadSprites(Constants.NB_ENEMY_DEATH_SPRITE, Constants.ENEMY_DEATH_SPRITE);
+
+        dying = true;
     }
 
     public void MoveSideways()  {
