@@ -31,7 +31,7 @@ public class Projectile extends Entity {
             posX > Constants.GAME_MAX_WIDTH ||
             posY < 0 ||
             posY > Constants.GAME_MIN_HEIGHT)
-                Kill();
+                live = false;
         }
     }
 
