@@ -81,8 +81,6 @@ public class Player extends Entity{
     }
 
 
-    private long time;
-
     public void Update() {
         //TODO add death animation management thing
         if (invincible){
@@ -93,7 +91,6 @@ public class Player extends Entity{
             if (imunitycd <= 0){
                 imunitycd = 0;
                 invincible = false;
-                System.out.println(System.currentTimeMillis() - time);
             }
         }
         posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH - width), Constants.GAME_MIN_WIDTH) ;
@@ -104,7 +101,6 @@ public class Player extends Entity{
 
     public void damage(int dmg){
         setinvincible();
-        time = System.currentTimeMillis();
         hp -= dmg;
         if (hp <= 0){
             live = false;
@@ -136,7 +132,6 @@ public class Player extends Entity{
 
         if     (key == keycodes[6])    isShooting = true;
         if     (key == keycodes[7])      {shootingmode = (shootingmode + 1) % 3;}
-        if     (key == VK_P)            {GameScene.setPause(!GameScene.getPause());}
 
         //if (key == VK_Y) System.out.println(GameScene.enemies.size());
 

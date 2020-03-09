@@ -1,29 +1,25 @@
 
 TODO :
-    - Death Animation loading
+    Melanie
+    - Next lvl
+    - Infinite
+    - Bonus
     - Game management (restart or load next stage when stage cleared)
-    - Background "Skybox" + movements to make it look like it's moving
     - Stages genereation
     - Infinite mode
-    - Hp display
+
+    Nelius :
     - Main menu with start, settings and exit
     - Start menu ( loaded when you press start in main menu) with
         normal/infinite/ load save
     - Pause menu
-    - Blockades
 
-
-TO DISCUSS :
-
-    - Story mode
-    - Save progress ( define what to save)
-    - Bonus System
-        - How it appears
-        - What bonuses
-        - Duration, effects, drop rate etc...
-        - Display (Say what bonus is currently in use, time left...)
-    - Big bad boss ?
-
+    Philip :
+    - Death animations
+    - Game HUD
+    - Score (Top left)
+    - Lives (3 lives) Hp display
+    - Background "Skybox" + movements to make it look like it's moving
 
 
 Low prio tasks :

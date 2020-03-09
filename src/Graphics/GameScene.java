@@ -32,6 +32,14 @@ public class GameScene extends JPanel implements ActionListener {
     public static List<Enemy> enemies = new ArrayList<>();
     public static List<Player> players = new ArrayList<>();
 
+    private int p1score = 0;
+    private int p2score = 0;
+    int px = 10;
+    int p1y = 20;
+    int p2y = 40;
+
+    private String p1 = "Player 1 : ";
+    private String p2 = "Player 2 : ";
 
     // Init the game Scene
     public GameScene(int w, int h, int nb_players) {
@@ -107,6 +115,14 @@ public class GameScene extends JPanel implements ActionListener {
 
         // animating player
         for (Player player : players) {
+
+            // Update display score
+            if (player.getTeam() == Team.PLAYER2){
+                p2score = player.score;
+            }
+            else p1score = player.score;
+
+
             player.animate();
             graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
             if (running && !pause)
@@ -115,11 +131,17 @@ public class GameScene extends JPanel implements ActionListener {
             graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
         }
 
+        // Display score
+        graphics.setColor(Color.WHITE);
+        Font font = new Font("Helvetica", Font.BOLD, 20);
+        graphics.setFont(font);        graphics.drawString(p1 + p1score, px, p1y);
+        graphics.drawString(p2 + p2score, px, p2y);
+
         if(pause){
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             graphics.setColor(Color.WHITE);
-            Font font = new Font("Helvetica", Font.BOLD, 80);
-            graphics.setFont(font);
+            Font font2 = new Font("Helvetica", Font.BOLD, 80);
+            graphics.setFont(font2);
             FontMetrics fm = graphics.getFontMetrics();
             int x = ((getWidth() - fm.stringWidth("PAUSE")) / 2);
             int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
@@ -129,8 +151,8 @@ public class GameScene extends JPanel implements ActionListener {
         else if (!running){
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             graphics.setColor(Color.WHITE);
-            Font font = new Font("Helvetica", Font.BOLD, 80);
-            graphics.setFont(font);
+            Font font3 = new Font("Helvetica", Font.BOLD, 80);
+            graphics.setFont(font3);
             FontMetrics fm = graphics.getFontMetrics();
             int x = ((getWidth() - fm.stringWidth("GAME OVER")) / 2);
             int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
