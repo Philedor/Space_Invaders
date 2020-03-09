@@ -1,6 +1,8 @@
 package Entities;
 
 
+import Tools.Constants;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -35,8 +37,8 @@ public class Entity {
     protected int nbSprites;
     protected List<Image> sprites;
     public int currentSprite;
-    public static int animation_counter = 0;
-    public static int animationframe;
+    protected long lastFrame;
+    protected int animationFrame;
 
 
     protected int width;
@@ -46,9 +48,13 @@ public class Entity {
 
         team = pteam;
         live = true;
+        dying = false;
         posX = x;
         posY = y;
         angle = pangle;
+        currentSprite = 0;
+        animationFrame = 0;
+        lastFrame = System.currentTimeMillis();
 
         dangle = 0;
         dx = 0;
@@ -95,7 +101,17 @@ public class Entity {
 
     }
 
-
+    public void animateLoop(int nbSprites) {
+        if(System.currentTimeMillis()-lastFrame > Constants.TIME_BETWEEN_ANIMATIONS) {
+            if(animationFrame < nbSprites-1) {
+                animationFrame++;
+            }
+            else {
+                animationFrame = 0;
+            }
+            lastFrame = System.currentTimeMillis();
+        }
+    }
 
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
