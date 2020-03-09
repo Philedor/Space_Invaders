@@ -24,6 +24,9 @@ public class GameScene extends JPanel implements ActionListener {
     public static int height;
 
     private Image back;
+    private Image back2;
+    private int bg_posy = 0;
+    private int bg_posy2 = -1000;
     private boolean running = true;
     private static boolean pause = false;
 
@@ -46,7 +49,8 @@ public class GameScene extends JPanel implements ActionListener {
         width = w;
         height = h;
 
-        back = new ImageIcon("resources/space.jpg").getImage();
+        back = new ImageIcon("resources/bg0.png").getImage();
+        back2 = new ImageIcon("resources/bg1.png").getImage();
 
         addKeyListener(new InputManager());
 
@@ -90,7 +94,15 @@ public class GameScene extends JPanel implements ActionListener {
         // different drawing functions for different game states
         if (!running || pause)
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-        graphics.drawImage(back, 0, 0, this);
+            graphics.drawImage(back2, 0, bg_posy2, this);
+            graphics.drawImage(back, 0, bg_posy, this);
+
+            //scrolling down backgrounds
+            bg_posy = bg_posy + Constants.BACKGROUND_SPEED;
+            bg_posy2 = bg_posy2 + Constants.BACKGROUND_SPEED;
+            //moving each individual image to the top
+            if(bg_posy == 1000) { bg_posy = -1000;}
+            if(bg_posy2 == 1000) { bg_posy2 = -1000;}
 
         if (!running || pause)
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, System.currentTimeMillis()%7 == 0? 0.3f : 0.5f));

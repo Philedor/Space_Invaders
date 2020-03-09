@@ -46,6 +46,7 @@ public class Constants {
     public static final int     NB_PROJECTILE_EXPLOSION_SPRITE =    4;
 
     public static final int     TIME_BETWEEN_ANIMATIONS =           150;
+    public static final int     BACKGROUND_SPEED =                  2;
 
     //Audio
     public static final String AUDIO_LOCATION=                        "resources/audio/";
