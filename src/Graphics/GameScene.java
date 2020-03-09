@@ -98,6 +98,9 @@ public class GameScene extends JPanel implements ActionListener {
 
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
+            if(enemy.isDying()) {
+                enemy.currentSprite = enemy.dyingAnimation(Constants.NB_ENEMY_DEATH_SPRITE);
+            }
         }
 
         for (Player player : players) {
@@ -298,7 +301,7 @@ public class GameScene extends JPanel implements ActionListener {
 
         else {
             for (Enemy enemy : enemies) {
-                if (projectilehitbox.intersects(enemy.getHitbox()) && !projectile.isDying()) {
+                if (projectilehitbox.intersects(enemy.getHitbox()) && !projectile.isDying() && !enemy.isDying()) {
                     enemy.damage(projectile.getDmg());
                     projectile.damage(1);
                     if (team ==  players.get(0).getTeam())
