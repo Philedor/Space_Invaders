@@ -26,7 +26,7 @@ public class Enemy extends Entity {
         shootdmg = Constants.ENEMY_SHOOT_DMG;
         contactdmg = Constants.CONTACT_DAMAGE;
         moveSpeed = - Constants.ENEMY_SPEED;
-        atkSpeed = (int)(Math.random() * Math.random() * Math.random() * 100000);   // just added arandom number
+        atkSpeed = (int)(Math.random() * Math.random() * Math.random() * 100000000);   // just added arandom number
         lastShoot = (long) (System.currentTimeMillis() + (Math.random() * 100));
     }
 

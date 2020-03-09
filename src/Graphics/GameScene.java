@@ -102,15 +102,22 @@ public class GameScene extends JPanel implements ActionListener {
 
         for (Player player : players) {
             for (Projectile proj : player.getProjectiles()) {
-                graphics.rotate(Math.PI / 2 - Math.toRadians(proj.getAngle()), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
-                graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
-                graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
+                graphics.rotate(Math.PI / 2 - Math.toRadians(proj.getAngle()), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getheight() / 2 + proj.getPosY());
+                graphics.drawImage(proj.getSprite(proj.currentSprite), proj.getPosX(), proj.getPosY(), this);
+                graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getheight() / 2 + proj.getPosY());
+                //death animation for projectile
+                if(proj.isLive() && proj.isDying()) {
+                    proj.animateLoop(Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
+                    proj.currentSprite = proj.animationFrame;
+                    if(proj.currentSprite == Constants.NB_PROJECTILE_EXPLOSION_SPRITE-1) {proj.Remove();}
+                }
             }
         }
         for (Projectile proj : Enemy.getProjectiles()) {
-            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
-            graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
-            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
+            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
+            graphics.drawImage(proj.getSprite(proj.currentSprite), proj.getPosX(), proj.getPosY(), this);
+            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
+
         }
 
         // animating player
@@ -124,11 +131,11 @@ public class GameScene extends JPanel implements ActionListener {
 
 
             player.animate();
-            graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
+            graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getheight() / 2 + player.getPosY());
             if (running && !pause)
                 graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
             graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
-            graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
+            graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getheight() / 2 + player.getPosY());
         }
 
         // Display score

@@ -22,6 +22,7 @@ public class Entity {
 
     Team team;
     boolean live;
+    boolean dying;
 
 
     protected int posX;
@@ -38,7 +39,7 @@ public class Entity {
     protected List<Image> sprites;
     public int currentSprite;
     protected long lastFrame;
-    protected int animationFrame;
+    public int animationFrame;
 
 
     protected int width;
@@ -67,6 +68,7 @@ public class Entity {
 
         team = pteam;
         live = true;
+        dying = false;
         posX = x;
         posY = y;
         angle = pangle;
@@ -117,8 +119,9 @@ public class Entity {
     public int getPosY()   {return posY;}
     public double getAngle() {return angle;}
     public boolean isLive() {return live;}
+    public boolean isDying() {return dying;}
     public int getwidth() {return width;}
-    public int getwheight() {return height;}
+    public int getheight() {return height;}
     public Team getTeam() {return team;}
 
 
