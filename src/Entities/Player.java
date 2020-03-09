@@ -185,7 +185,7 @@ public class Player extends Entity{
 
     public List<Projectile> getProjectiles(){return projectiles;}
 
-    public void animate() {
+    public void animateMovement() {
         animateLoop(Constants.NB_PLAYER_SPRITE/3);
         // if condition to add for left, right and explosion animation
         if (dx > 0) {

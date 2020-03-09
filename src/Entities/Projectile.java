@@ -50,10 +50,6 @@ public class Projectile extends Entity {
         posX = posX - getwidth()/2;
         dying = true;
     }
-    public void Remove() {
-        live = false;
-    }
-
 
     public int getDmg() {return dmg;}
 

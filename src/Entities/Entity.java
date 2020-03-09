@@ -104,7 +104,7 @@ public class Entity {
     }
 
     public void animateLoop(int nbSprites) {
-        if(System.currentTimeMillis()-lastFrame > Constants.TIME_BETWEEN_ANIMATIONS) {
+        if(System.currentTimeMillis() - lastFrame > Constants.TIME_BETWEEN_ANIMATIONS) {
             if(animationFrame < nbSprites-1) {
                 animationFrame++;
             }
@@ -115,11 +115,17 @@ public class Entity {
         }
     }
 
+    public int dyingAnimation(int nbSprites) {
+        animateLoop(nbSprites);
+        if(animationFrame == nbSprites-1) {live = false;}
+        return animationFrame;
+    }
+
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
     public double getAngle() {return angle;}
     public boolean isLive() {return live;}
-    public boolean isDying() {return dying;}
+    public boolean isDying() {return dying && isLive();}
     public int getwidth() {return width;}
     public int getheight() {return height;}
     public Team getTeam() {return team;}

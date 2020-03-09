@@ -106,10 +106,8 @@ public class GameScene extends JPanel implements ActionListener {
                 graphics.drawImage(proj.getSprite(proj.currentSprite), proj.getPosX(), proj.getPosY(), this);
                 graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getheight() / 2 + proj.getPosY());
                 //death animation for projectile
-                if(proj.isLive() && proj.isDying()) {
-                    proj.animateLoop(Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
-                    proj.currentSprite = proj.animationFrame;
-                    if(proj.currentSprite == Constants.NB_PROJECTILE_EXPLOSION_SPRITE-1) {proj.Remove();}
+                if(proj.isDying()) {
+                    proj.currentSprite = proj.dyingAnimation(Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
                 }
             }
         }
@@ -117,7 +115,10 @@ public class GameScene extends JPanel implements ActionListener {
             graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
             graphics.drawImage(proj.getSprite(proj.currentSprite), proj.getPosX(), proj.getPosY(), this);
             graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
-
+            //death animation for projectile
+            if(proj.isDying()) {
+                proj.currentSprite = proj.dyingAnimation(Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
+            }
         }
 
         // animating player
@@ -130,7 +131,7 @@ public class GameScene extends JPanel implements ActionListener {
             else p1score = player.score;
 
 
-            player.animate();
+            player.animateMovement();
             graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getheight() / 2 + player.getPosY());
             if (running && !pause)
                 graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
@@ -288,7 +289,7 @@ public class GameScene extends JPanel implements ActionListener {
         Rectangle projectilehitbox = projectile.getHitbox();
         if (team == Team.ENEMIES){
             for (Player player : players) {
-                if (projectilehitbox.intersects(player.getHitbox())) {
+                if (projectilehitbox.intersects(player.getHitbox()) && !projectile.isDying()) {
                     player.damage(projectile.getDmg());
                     projectile.damage(1);
                 }
@@ -297,7 +298,7 @@ public class GameScene extends JPanel implements ActionListener {
 
         else {
             for (Enemy enemy : enemies) {
-                if (projectilehitbox.intersects(enemy.getHitbox())) {
+                if (projectilehitbox.intersects(enemy.getHitbox()) && !projectile.isDying()) {
                     enemy.damage(projectile.getDmg());
                     projectile.damage(1);
                     if (team ==  players.get(0).getTeam())
@@ -363,8 +364,5 @@ public class GameScene extends JPanel implements ActionListener {
         pause = x;
     }
     public static boolean getPause(){return pause;}
-
-
-
 
 }
