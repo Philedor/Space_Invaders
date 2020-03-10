@@ -32,7 +32,6 @@ public class GameScene extends JPanel implements ActionListener {
 
     int DELAY = 15;
 
-    public int nb_players;
     public static List<Enemy> enemies = new ArrayList<>();
     public static List<Player> players = new ArrayList<>();
 
@@ -46,7 +45,7 @@ public class GameScene extends JPanel implements ActionListener {
     private String p2 = "Player 2 : ";
 
     // Init the game Scene
-    public GameScene(int w, int h, int pnb_players) {
+    public GameScene(int w, int h, int nb_players) {
         width = w;
         height = h;
 
@@ -60,7 +59,6 @@ public class GameScene extends JPanel implements ActionListener {
         setFocusable(true);
         requestFocus();
 
-        nb_players = pnb_players;
         InitEntities(nb_players);
         //playing background music. No music here yet, also need to figure out stopping music (pause state and such)
         //Audio.playSoundLoop(Constants.BACKGROUND_MUSIC);
@@ -117,17 +115,42 @@ public class GameScene extends JPanel implements ActionListener {
             }
         }
 
-        drawProjectiles(graphics);
+        for (Player player : players) {
+            for (Projectile proj : player.getProjectiles()) {
+                graphics.rotate(Math.PI / 2 - Math.toRadians(proj.getAngle()), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
+                graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
+                graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
+            }
+        }
+        for (Projectile proj : Enemy.getProjectiles()) {
+            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
+            graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
+            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
+        }
 
-        drawPlayer(graphics);
+        // animating player
+        for (Player player : players) {
+
+            // Update display score
+            if (player.getTeam() == Team.PLAYER2){
+                p2score = player.score;
+            }
+            else p1score = player.score;
+
+
+            player.animate();
+            graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
+            if (running && !pause)
+                graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
+            graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
+            graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
+        }
 
         // Display score
         graphics.setColor(Color.WHITE);
         Font font = new Font("Helvetica", Font.BOLD, 20);
-        graphics.setFont(font);
-        graphics.drawString(p1 + p1score, px, p1y);
-        if (nb_players == 2)
-            graphics.drawString(p2 + p2score, px, p2y);
+        graphics.setFont(font);        graphics.drawString(p1 + p1score, px, p1y);
+        graphics.drawString(p2 + p2score, px, p2y);
 
         if(pause){
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
@@ -157,40 +180,6 @@ public class GameScene extends JPanel implements ActionListener {
         Toolkit.getDefaultToolkit().sync();
     }
 
-    private void drawPlayer(Graphics2D graphics){
-        // animating player
-        for (Player player : players) {
-
-            // Update display score
-            if (player.getTeam() == Team.PLAYER2){
-                p2score = player.score;
-            }
-            else p1score = player.score;
-
-
-            player.animate();
-            graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
-            if (running && !pause)
-                graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
-            graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
-            graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
-        }
-    }
-
-    private void drawProjectiles(Graphics2D graphics){
-        for (Player player : players) {
-            for (Projectile proj : player.getProjectiles()) {
-                graphics.rotate(Math.PI / 2 - Math.toRadians(proj.getAngle()), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
-                graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
-                graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
-            }
-        }
-        for (Projectile proj : Enemy.getProjectiles()) {
-            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
-            graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
-            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
-        }
-    }
 
     /**
      * Update function called automatically whenever an action takes place

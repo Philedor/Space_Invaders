@@ -18,14 +18,12 @@ public class Game extends JFrame {
 
         // To call to start the game
         add(new GameScene(width, height, 2));
-        setResizable(false);
+        setResizable(true);
         pack();
 
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
-
 
 
 }
