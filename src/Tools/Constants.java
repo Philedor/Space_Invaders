@@ -13,6 +13,7 @@ public class Constants {
     public static final int WINDOW_HEIGHT =   1000;
     public static final int WINDOW_WIDTH =    700;
     public static final String WINDOW_NAME =  "Space Invaders";
+    public static final int     BACKGROUND_SPEED =         1;
 
     // Game Initialisation constants
     public static final int PLAYER_STARTING_X =         230;
@@ -33,17 +34,19 @@ public class Constants {
     public static final int     NB_PLAYER_SPRITE =                  9;
     public static final String  PLAYER_DEATH_SPRITE =               "resources/sprites/player.png";
     public static final int     NB_PLAYER_DEATH_SPRITE =            1;
+    public static final int     TIME_BETWEEN_ANIMATIONS =           150;
     // Enemy
     public static final String  ENEMY_SPRITE =                      "resources/sprites/enemies/enemy.png";
     public static final int     NB_ENEMY_SPRITE =                   2;
-    public static final String  ENEMY_DEATH_SPRITE =                "resources/sprites/alien.png";
-    public static final int     NB_ENEMY_DEATH_SPRITE =             1;
+    public static final String  ENEMY_DEATH_SPRITE =                "resources/sprites/enemies/explosion/explosion.png";
+    public static final int     NB_ENEMY_DEATH_SPRITE =             5;
 
     // Projectile
     public static final String  PROJECTILE_SPRITE =                 "resources/sprites/missiles/missile.png";
     public static final int     NB_PROJECTILE_SPRITE =              1;
-    public static final String  PROJECTILE_EXPLOSION_SPRITE =       "resources/sprites/projectile_explosion.png";
-    public static final int     NB_PROJECTILE_EXPLOSION_SPRITE=     6;
+    public static final String  PROJECTILE_EXPLOSION_SPRITE =       "resources/sprites/missiles/explosion/explosion.png";
+    public static final int     NB_PROJECTILE_EXPLOSION_SPRITE =    4;
+
 
     //Audio
     public static final String AUDIO_LOCATION=                        "resources/audio/";

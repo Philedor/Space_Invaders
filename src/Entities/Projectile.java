@@ -31,7 +31,7 @@ public class Projectile extends Entity {
             posX > Constants.GAME_MAX_WIDTH ||
             posY < 0 ||
             posY > Constants.GAME_MIN_HEIGHT)
-                Kill();
+                live = false;
         }
     }
 
@@ -42,11 +42,13 @@ public class Projectile extends Entity {
     }
 
     public void Kill(){
-        live = false;
         dx = 0;
         dy = 0;
 
         LoadSprites(Constants.NB_PROJECTILE_EXPLOSION_SPRITE, Constants.PROJECTILE_EXPLOSION_SPRITE);
+        //adjusting for new hitbox size
+        posX = posX - getwidth()/2;
+        dying = true;
     }
 
     public int getDmg() {return dmg;}

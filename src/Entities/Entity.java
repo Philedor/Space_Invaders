@@ -1,6 +1,8 @@
 package Entities;
 
 
+import Tools.Constants;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class Entity {
 
     Team team;
     boolean live;
+    boolean dying;
 
 
     protected int posX;
@@ -35,8 +38,8 @@ public class Entity {
     protected int nbSprites;
     protected List<Image> sprites;
     public int currentSprite;
-    public static int animation_counter = 0;
-    public static int animationframe;
+    protected long lastFrame;
+    public int animationFrame;
 
 
     protected int width;
@@ -46,9 +49,13 @@ public class Entity {
 
         team = pteam;
         live = true;
+        dying = false;
         posX = x;
         posY = y;
         angle = pangle;
+        currentSprite = 0;
+        animationFrame = 0;
+        lastFrame = System.currentTimeMillis();
 
         dangle = 0;
         dx = 0;
@@ -61,6 +68,7 @@ public class Entity {
 
         team = pteam;
         live = true;
+        dying = false;
         posX = x;
         posY = y;
         angle = pangle;
@@ -95,14 +103,31 @@ public class Entity {
 
     }
 
+    public void animateLoop(int nbSprites) {
+        if(System.currentTimeMillis() - lastFrame > Constants.TIME_BETWEEN_ANIMATIONS) {
+            if(animationFrame < nbSprites-1) {
+                animationFrame++;
+            }
+            else {
+                animationFrame = 0;
+            }
+            lastFrame = System.currentTimeMillis();
+        }
+    }
 
+    public int dyingAnimation(int nbSprites) {
+        animateLoop(nbSprites);
+        if(animationFrame == nbSprites-1) {live = false;}
+        return animationFrame;
+    }
 
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
     public double getAngle() {return angle;}
     public boolean isLive() {return live;}
+    public boolean isDying() {return dying && isLive();}
     public int getwidth() {return width;}
-    public int getwheight() {return height;}
+    public int getheight() {return height;}
     public Team getTeam() {return team;}
 
 

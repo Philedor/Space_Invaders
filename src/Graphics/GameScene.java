@@ -24,6 +24,9 @@ public class GameScene extends JPanel implements ActionListener {
     public static int height;
 
     private Image back;
+    private Image back2;
+    private int bg_posy = 0;
+    private int bg_posy2 = -1000;
     private boolean running = true;
     private static boolean pause = false;
 
@@ -47,7 +50,8 @@ public class GameScene extends JPanel implements ActionListener {
         width = w;
         height = h;
 
-        back = new ImageIcon("resources/space.jpg").getImage();
+        back = new ImageIcon("resources/bg0.png").getImage();
+        back2 = new ImageIcon("resources/bg1.png").getImage();
 
         addKeyListener(new InputManager());
 
@@ -92,7 +96,15 @@ public class GameScene extends JPanel implements ActionListener {
         // different drawing functions for different game states
         if (!running || pause)
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-        graphics.drawImage(back, 0, 0, this);
+            graphics.drawImage(back2, 0, bg_posy2, this);
+            graphics.drawImage(back, 0, bg_posy, this);
+
+            //scrolling down backgrounds
+            bg_posy = bg_posy + Constants.BACKGROUND_SPEED;
+            bg_posy2 = bg_posy2 + Constants.BACKGROUND_SPEED;
+            //moving each individual image to the top
+            if(bg_posy == 1000) { bg_posy = -1000;}
+            if(bg_posy2 == 1000) { bg_posy2 = -1000;}
 
         if (!running || pause)
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, System.currentTimeMillis()%7 == 0? 0.3f : 0.5f));
@@ -100,6 +112,9 @@ public class GameScene extends JPanel implements ActionListener {
 
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
+            if(enemy.isDying()) {
+                enemy.currentSprite = enemy.dyingAnimation(Constants.NB_ENEMY_DEATH_SPRITE);
+            }
         }
 
         drawProjectiles(graphics);
@@ -292,7 +307,7 @@ public class GameScene extends JPanel implements ActionListener {
         Rectangle projectilehitbox = projectile.getHitbox();
         if (team == Team.ENEMIES){
             for (Player player : players) {
-                if (!player.invincible && projectilehitbox.intersects(player.getHitbox())) {
+                if (projectilehitbox.intersects(player.getHitbox()) && !projectile.isDying()) {
                     player.damage(projectile.getDmg());
                     projectile.damage(1);
                 }
@@ -301,7 +316,7 @@ public class GameScene extends JPanel implements ActionListener {
 
         else {
             for (Enemy enemy : enemies) {
-                if (projectilehitbox.intersects(enemy.getHitbox())) {
+                if (projectilehitbox.intersects(enemy.getHitbox()) && !projectile.isDying() && !enemy.isDying()) {
                     enemy.damage(projectile.getDmg());
                     projectile.damage(1);
                     if (team ==  players.get(0).getTeam())
@@ -367,8 +382,5 @@ public class GameScene extends JPanel implements ActionListener {
         pause = x;
     }
     public static boolean getPause(){return pause;}
-
-
-
 
 }

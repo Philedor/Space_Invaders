@@ -1,18 +1,12 @@
 package Entities;
 
 
-import Graphics.GameScene;
-import Tools.Audio;
 import Tools.Constants;
 
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import static Tools.Constants.ATTACK_SOUND;
-
-import static java.awt.event.KeyEvent.VK_P;
 
 public class Player extends Entity{
 
@@ -51,7 +45,7 @@ public class Player extends Entity{
         moveSpeed = Constants.PLAYER_SPEED;
         turnSpeed = Constants.PLAYER_TURN_SPEED;
         atkSpeed = Constants.PLAYER_ATTACK_SPEED;
-        lastShoot = System.currentTimeMillis() - atkSpeed;  // To allow te player to shoot from the beginning
+        lastShoot = System.currentTimeMillis() - atkSpeed;  // To allow the player to shoot from the beginning
         if (team == Team.PLAYER1)
             keycodes = Constants.keycodes;
         else
@@ -191,30 +185,17 @@ public class Player extends Entity{
 
     public List<Projectile> getProjectiles(){return projectiles;}
 
-    public void animate(){
-        if (animation_counter < 24) {
-            //animation counter is used to display one frame per animation for a little longer
-            ++animation_counter;
-            if (animation_counter < 8) {
-                animationframe = 0;
-            } else if (animation_counter < 16) {
-                animationframe = 1;
-            } else if (animation_counter < 24) {
-                animationframe = 2;
-            }
-        } else {
-            animation_counter = 0;
-        }
-
+    public void animateMovement() {
+        animateLoop(Constants.NB_PLAYER_SPRITE/3);
         // if condition to add for left, right and explosion animation
         if (dx > 0) {
             //at player3.png the right flying animation starts and has 3 animations
-            currentSprite = 3 + animationframe;
+            currentSprite = 3 + animationFrame;
         } else if (dx < 0) {
             //at player6.png the left flying animation starts and has 3 animations
-            currentSprite = 6 + animationframe;
+            currentSprite = 6 + animationFrame;
         } else {
-            currentSprite = animationframe;
+            currentSprite = animationFrame;
         }
     }
 
