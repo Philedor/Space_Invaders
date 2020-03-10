@@ -20,7 +20,7 @@ public class Enemy extends Entity {
 
 
     public Enemy(int x, int y) {
-        super(Team.ENEMIES, x, y, Constants.ENEMY_STARTING_ANGLE, Constants.ENEMY_SPRITE, Constants.NB_ENEMY_SPRITE);
+        super(Team.ENEMIES, x, y, Constants.ENEMY_STARTING_ANGLE, Constants.ENEMY_SPRITE, Constants.NB_ENEMY_SPRITE, Constants.NB_ENEMY_DEATH_SPRITE);
 
         hp = Constants.ENEMY_HP;
         shootdmg = Constants.ENEMY_SHOOT_DMG;
@@ -57,12 +57,21 @@ public class Enemy extends Entity {
     }
 
     public void MoveSideways()  {
-        posX += moveSpeed;
-        if (posX < Constants.GAME_MIN_WIDTH)
-            posX = Constants.GAME_MIN_WIDTH;
-        if(posX > Constants.GAME_MAX_WIDTH)
-            posX = Constants.GAME_MAX_WIDTH;
+        if (!dying){
+            posX += moveSpeed;
+            if (posX < Constants.GAME_MIN_WIDTH)
+                posX = Constants.GAME_MIN_WIDTH;
+            if(posX > Constants.GAME_MAX_WIDTH)
+                posX = Constants.GAME_MAX_WIDTH;
+        }
+        else {
+            if (deathframes <= 0)
+                live = false;
+            deathframes -= 1;
+        }
+
     }
+
     public void MoveDown() { posY += Constants.GRAVITY;}
 
     // Used to modify movements of the enemy
