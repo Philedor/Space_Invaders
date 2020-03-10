@@ -8,7 +8,7 @@ public class Projectile extends Entity {
 
     public Projectile(Team team, int posX, int posY, double angle, int pdmg) {
         super(team, posX, posY, angle, Constants.PROJECTILE_SPRITE, Constants.NB_PROJECTILE_SPRITE,
-                (int) (CalculateDeltaX(angle, Constants.PROJECTILE_SPEED)), (int) (CalculateDeltaY(angle, Constants.PROJECTILE_SPEED)), Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
+                (int) (CalculateDeltaX(angle, Constants.PROJECTILE_SPEED)), (int) (CalculateDeltaY(angle, Constants.PROJECTILE_SPEED)));
 
         hp = 1;
         dmg = pdmg;
@@ -16,14 +16,14 @@ public class Projectile extends Entity {
 
     public Projectile(Team team, int posX, int posY, double angle, int pdmg, int php) {
         super(team, posX, posY, angle, Constants.PROJECTILE_SPRITE, Constants.NB_PROJECTILE_SPRITE,
-                (int) (CalculateDeltaX(angle, Constants.PROJECTILE_SPEED)), (int) (CalculateDeltaY(angle, Constants.PROJECTILE_SPEED)), Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
+                (int) (CalculateDeltaX(angle, Constants.PROJECTILE_SPEED)), (int) (CalculateDeltaY(angle, Constants.PROJECTILE_SPEED)));
 
         hp = php;
         dmg = pdmg;
     }
 
     public void Update(){
-        if (!dying){
+        if (live){
             posX += dx;
             posY += dy;
 
@@ -32,11 +32,6 @@ public class Projectile extends Entity {
             posY < 0 ||
             posY > Constants.GAME_MIN_HEIGHT)
                 live = false;
-        }
-        else {
-            if (deathframes <= 0)
-                live = false;
-            deathframes -= 1;
         }
     }
 

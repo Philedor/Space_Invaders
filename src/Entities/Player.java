@@ -37,7 +37,7 @@ public class Player extends Entity{
 
 
     public Player(Team team) {
-        super(team, team == Team.PLAYER1? Constants.PLAYER1_STARTING_X : Constants.PLAYER2_STARTING_X, Constants.PLAYER_STARTING_Y, Constants.PLAYER_STARTING_ANGLE, Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE, Constants.NB_PLAYER_DEATH_SPRITE);
+        super(team, team == Team.PLAYER1? Constants.PLAYER1_STARTING_X : Constants.PLAYER2_STARTING_X, Constants.PLAYER_STARTING_Y, Constants.PLAYER_STARTING_ANGLE, Constants.PLAYER_SPRITE, Constants.NB_PLAYER_SPRITE);
 
         projectiles = new ArrayList<>();
         hp = Constants.PLAYER_HP;
@@ -50,7 +50,6 @@ public class Player extends Entity{
             keycodes = Constants.keycodes;
         else
             keycodes = Constants.keycodes2;
-
     }
 
     public void Shoot(){
@@ -78,28 +77,20 @@ public class Player extends Entity{
 
     public void Update() {
         //TODO add death animation management thing
-        if (!dying) {
-            if (invincible) {
-                imunitycd -= 1;
-                if (imunitycd % 2 == 1)
-                    opacity = 0.4f;
-                else opacity = 1;
-                if (imunitycd <= 0) {
-                    imunitycd = 0;
-                    invincible = false;
-                }
+        if (invincible){
+            imunitycd -= 1;
+            if (imunitycd%2 == 1)
+                opacity = 0.4f;
+            else opacity = 1;
+            if (imunitycd <= 0){
+                imunitycd = 0;
+                invincible = false;
             }
-            posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH - width), Constants.GAME_MIN_WIDTH);
-            posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT - height);
-            angle = Math.max(Math.min(angle + dangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
-            if (isShooting) Shoot();
         }
-        else {
-            if (deathframes <= 0)
-                live = false;
-            deathframes -= 1;
-        }
-
+        posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH - width), Constants.GAME_MIN_WIDTH) ;
+        posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT - height);
+        angle = Math.max(Math.min(angle + dangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
+        if (isShooting) Shoot();
     }
 
     public void damage(int dmg){
@@ -108,12 +99,17 @@ public class Player extends Entity{
         if (hp <= 0){
             live = false;
 
+            if (team == Team.PLAYER1)
+                System.out.println("p1 dead");
+            else
+                System.out.println("p2 dead");
+            System.out.println(score);
         }
     }
 
     public void setinvincible(){
         invincible = true;
-        imunitycd = (int)(68 * 1.5); // 68 time nbseconds we want it to last
+        imunitycd = (int)(68 * 1.5); // 68 time nbsecondds we want it to last
     }
 
     public void keyPressed(KeyEvent e) {

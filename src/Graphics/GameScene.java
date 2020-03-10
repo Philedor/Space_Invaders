@@ -93,10 +93,8 @@ public class GameScene extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics1) {
         Graphics2D graphics = (Graphics2D) graphics1;
         super.paintComponent(graphics1);
-
         // different drawing functions for different game states
-        // Scrolling background drawing
-        if (!running || !pause)
+        if (!running || pause)
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
             graphics.drawImage(back2, 0, bg_posy2, this);
             graphics.drawImage(back, 0, bg_posy, this);
@@ -107,31 +105,56 @@ public class GameScene extends JPanel implements ActionListener {
             //moving each individual image to the top
             if(bg_posy == 1000) { bg_posy = -1000;}
             if(bg_posy2 == 1000) { bg_posy2 = -1000;}
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 
-        // Pause / game over flickering
         if (!running || pause)
             graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, System.currentTimeMillis()%7 == 0? 0.3f : 0.5f));
 
-        // Draw components
-        drawEnemies(graphics);
-        drawProjectiles(graphics);
-        drawPlayer(graphics);
-        drawScore(graphics);
-        if (pause)                  drawPause(graphics);
-        else if (!running)          drawGameOver(graphics);
 
-        graphics.dispose();
-        Toolkit.getDefaultToolkit().sync();
-    }
-
-    private void drawEnemies(Graphics2D graphics){
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
             if(enemy.isDying()) {
                 enemy.currentSprite = enemy.dyingAnimation(Constants.NB_ENEMY_DEATH_SPRITE);
             }
         }
+
+        drawProjectiles(graphics);
+
+        drawPlayer(graphics);
+
+        // Display score
+        graphics.setColor(Color.WHITE);
+        Font font = new Font("Helvetica", Font.BOLD, 20);
+        graphics.setFont(font);
+        graphics.drawString(p1 + p1score, px, p1y);
+        if (nb_players == 2)
+            graphics.drawString(p2 + p2score, px, p2y);
+
+        if(pause){
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            graphics.setColor(Color.WHITE);
+            Font font2 = new Font("Helvetica", Font.BOLD, 80);
+            graphics.setFont(font2);
+            FontMetrics fm = graphics.getFontMetrics();
+            int x = ((getWidth() - fm.stringWidth("PAUSE")) / 2);
+            int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+            graphics.drawString("PAUSE", x, y);
+        }
+
+        else if (!running){
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            graphics.setColor(Color.WHITE);
+            Font font3 = new Font("Helvetica", Font.BOLD, 80);
+            graphics.setFont(font3);
+            FontMetrics fm = graphics.getFontMetrics();
+            int x = ((getWidth() - fm.stringWidth("GAME OVER")) / 2);
+            int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+            graphics.drawString("GAME OVER", x, y);
+        }
+
+
+        graphics.dispose();
+
+        Toolkit.getDefaultToolkit().sync();
     }
 
     private void drawPlayer(Graphics2D graphics){
@@ -145,61 +168,28 @@ public class GameScene extends JPanel implements ActionListener {
             else p1score = player.score;
 
 
-            player.animateMovement();
-            graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getheight() / 2 + player.getPosY());
+            player.animate();
+            graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
             if (running && !pause)
                 graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
             graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
-            graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getheight() / 2 + player.getPosY());
+            graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getwheight() / 2 + player.getPosY());
         }
     }
 
     private void drawProjectiles(Graphics2D graphics){
         for (Player player : players) {
             for (Projectile proj : player.getProjectiles()) {
-                graphics.rotate(Math.PI / 2 - Math.toRadians(proj.getAngle()), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getheight() / 2 + proj.getPosY());
+                graphics.rotate(Math.PI / 2 - Math.toRadians(proj.getAngle()), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
                 graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
-                graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getheight() / 2 + proj.getPosY());
+                graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getwheight() / 2 + proj.getPosY());
             }
         }
         for (Projectile proj : Enemy.getProjectiles()) {
-            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
+            graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
             graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
-            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
+            graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getwheight()/2 + proj.getPosY());
         }
-    }
-
-    public void drawScore(Graphics2D graphics){
-        // Display score
-        graphics.setColor(Color.WHITE);
-        Font font = new Font("Helvetica", Font.BOLD, 20);
-        graphics.setFont(font);
-        graphics.drawString(p1 + p1score, px, p1y);
-        if (nb_players == 2)
-            graphics.drawString(p2 + p2score, px, p2y);
-    }
-
-    private void drawGameOver(Graphics2D graphics){
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-        graphics.setColor(Color.WHITE);
-        Font font3 = new Font("Helvetica", Font.BOLD, 80);
-        graphics.setFont(font3);
-        FontMetrics fm = graphics.getFontMetrics();
-        int x = ((getWidth() - fm.stringWidth("GAME OVER")) / 2);
-        int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
-        graphics.drawString("GAME OVER", x, y);
-    }
-
-    private void drawPause(Graphics2D graphics){
-
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-        graphics.setColor(Color.WHITE);
-        Font font2 = new Font("Helvetica", Font.BOLD, 80);
-        graphics.setFont(font2);
-        FontMetrics fm = graphics.getFontMetrics();
-        int x = ((getWidth() - fm.stringWidth("PAUSE")) / 2);
-        int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
-        graphics.drawString("PAUSE", x, y);
     }
 
     /**

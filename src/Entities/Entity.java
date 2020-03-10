@@ -40,13 +40,12 @@ public class Entity {
     public int currentSprite;
     protected long lastFrame;
     public int animationFrame;
-    public int deathframes;
 
 
     protected int width;
     protected int height;
 
-    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdf){
+    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites){
 
         team = pteam;
         live = true;
@@ -62,11 +61,10 @@ public class Entity {
         dx = 0;
         dy = 0;
 
-        deathframes = pdf;
         LoadSprites(nbSprites, path);
     }
 
-    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdx, int pdy, int pdf){
+    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdx, int pdy){
 
         team = pteam;
         live = true;
@@ -79,7 +77,6 @@ public class Entity {
         dx = pdx;
         dy = pdy;
 
-        deathframes = pdf;
         LoadSprites(nbSprites, path);
     }
 
