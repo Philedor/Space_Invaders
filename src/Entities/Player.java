@@ -56,7 +56,7 @@ public class Player extends Entity{
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
             //Audio.playSound(ATTACK_SOUND);
             if (shootingmode == 0){
-                projectiles.add(new Projectile(team, posX+(width/2), posY+(height/2), angle, dmg));
+                projectiles.add(new Projectile(team, posX+(width/2)-1, posY+(height/2), angle, dmg));
             }
 
             if (shootingmode == 1) {
