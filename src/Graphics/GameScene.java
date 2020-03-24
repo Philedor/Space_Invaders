@@ -25,6 +25,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     private Image back;
     private Image back2;
+    private Entity health;
     private int bg_posy = 0;
     private int bg_posy2 = -1000;
     private boolean running = true;
@@ -52,6 +53,8 @@ public class GameScene extends JPanel implements ActionListener {
         back = new ImageIcon("resources/bg0.png").getImage();
         back2 = new ImageIcon("resources/bg1.png").getImage();
 
+        InitHUD();
+
         addKeyListener(new InputManager());
 
         setBackground(Color.BLACK);
@@ -68,7 +71,7 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     private void InitEntities(int nb_players) {
-        for (int i = 0; i < nb_players; i ++)
+        for (int i = 0; i < 1; i ++)
             players.add(new Player(Team.values()[i]));
 
         // Enemies generation
@@ -84,6 +87,11 @@ public class GameScene extends JPanel implements ActionListener {
         }
     }
 
+    private void InitHUD(){
+        //loading health HUD
+        health = new Entity(510, 937, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY);
+    }
+
 
     // Is called by repaint()
     // Use to draw different game states (Menu, In Game, Pause, End Screen...)
@@ -92,8 +100,10 @@ public class GameScene extends JPanel implements ActionListener {
         Graphics2D graphics = (Graphics2D) graphics1;
         super.paintComponent(graphics1);
         // different drawing functions for different game states
-        if (!pause)
+        if (!pause) {
             ScrollBG(graphics);
+            drawHUD(graphics);
+        }
 
         // Flickering
         if (!running || pause)
@@ -160,6 +170,14 @@ public class GameScene extends JPanel implements ActionListener {
         if(bg_posy == 1000) { bg_posy = -1000;}
         if(bg_posy2 == 1000) { bg_posy2 = -1000;}
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+    }
+
+    private void drawHUD(Graphics2D graphics){
+        //update hp display
+        for (Player player : players) {
+            graphics.drawImage(health.getSprite(player.getHp()), health.getPosX(), health.getPosY(), this);
+        }
 
     }
 

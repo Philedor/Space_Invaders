@@ -47,6 +47,9 @@ public class Constants {
     public static final String  PROJECTILE_EXPLOSION_SPRITE =       "resources/sprites/missiles/explosion/explosion.png";
     public static final int     NB_PROJECTILE_EXPLOSION_SPRITE =    4;
 
+    //HUD Elements
+    public static final String  HP_DISPLAY =                        "resources/sprites/hud/health/health.png";
+    public static final int     NB_HP_DISPLAY =                     4;
 
     //Audio
     public static final String AUDIO_LOCATION=                        "resources/audio/";

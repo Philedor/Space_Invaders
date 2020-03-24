@@ -80,6 +80,13 @@ public class Entity {
         LoadSprites(nbSprites, path);
     }
 
+    public Entity(int x, int y, String path, int nbSprites){
+        posX = x;
+        posY = y;
+
+        LoadSprites(nbSprites, path);
+    }
+
 
     protected void LoadSprites(int nb, String path){
 

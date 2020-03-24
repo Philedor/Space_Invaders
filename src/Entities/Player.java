@@ -199,5 +199,6 @@ public class Player extends Entity{
         }
     }
 
+    public int getHp(){ return hp;}
 
 }
