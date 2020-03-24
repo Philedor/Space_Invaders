@@ -71,7 +71,7 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     private void InitEntities(int nb_players) {
-        for (int i = 0; i < 1; i ++)
+        for (int i = 0; i < nb_players; i ++)
             players.add(new Player(Team.values()[i]));
 
         // Enemies generation
@@ -102,7 +102,6 @@ public class GameScene extends JPanel implements ActionListener {
         // different drawing functions for different game states
         if (!pause) {
             ScrollBG(graphics);
-            drawHUD(graphics);
         }
 
         // Flickering
@@ -120,9 +119,12 @@ public class GameScene extends JPanel implements ActionListener {
         drawProjectiles(graphics);
         drawPlayer(graphics);
 
+
         // Displays depending on the state
         if(pause) Pause(graphics);
         else if (!running) GameOver(graphics);
+
+        drawHUD(graphics);
 
         // Display score
         graphics.setColor(Color.WHITE);
@@ -176,7 +178,7 @@ public class GameScene extends JPanel implements ActionListener {
     private void drawHUD(Graphics2D graphics){
         //update hp display
         for (Player player : players) {
-            graphics.drawImage(health.getSprite(player.getHp()), health.getPosX(), health.getPosY(), this);
+            graphics.drawImage(health.getSprite(player.getHp()), health.getPosX(), health.getPosY()-(health.getheight()*players.indexOf(player)), this);
         }
 
     }
