@@ -132,7 +132,7 @@ public class Entity {
     public int getPosY()   {return posY;}
     public double getAngle() {return angle;}
     public boolean isLive() {return live;}
-    public boolean isDying() {return dying && isLive();}
+    public boolean isDying() {return dying;}
     public int getwidth() {return width;}
     public int getheight() {return height;}
     public Team getTeam() {return team;}

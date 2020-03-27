@@ -7,11 +7,16 @@ import java.io.File;
 
 public class Audio {
     private static Clip clip;
+    private static String source;
 
-    public static void playSound(final String audio) {
+    public Audio(String path){
+        source = path;
+    }
+
+    public void playSound() {
         try {
             clip = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + audio).getAbsoluteFile());
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + source).getAbsoluteFile());
             clip.open(inputStream);
             clip.start();
         } catch (Exception e) {
@@ -20,10 +25,10 @@ public class Audio {
     }
 
 
-    public static void playSoundLoop(final String audio) {
+    public void playSoundLoop() {
         try {
             clip = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + audio).getAbsoluteFile());
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + source).getAbsoluteFile());
             clip.open(inputStream);
             clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -31,7 +36,7 @@ public class Audio {
             System.err.println(e.getMessage());
         }
     }
-    public static void stopAudio() {
+    public void stopAudio() {
         clip.stop();
         clip.close();
     }

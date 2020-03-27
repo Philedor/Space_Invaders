@@ -97,6 +97,7 @@ public class Player extends Entity{
         setinvincible();
         hp -= dmg;
         if (hp <= 0){
+            dying = true;
             live = false;
 
             if (team == Team.PLAYER1)

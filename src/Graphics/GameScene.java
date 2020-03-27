@@ -4,6 +4,7 @@ import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
+import Tools.Audio;
 import Tools.Constants;
 import Tools.InputManager;
 
@@ -25,6 +26,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     private Image back;
     private Image back2;
+    private Audio backsong;
     private Entity health;
     private int bg_posy = 0;
     private int bg_posy2 = -1000;
@@ -52,6 +54,8 @@ public class GameScene extends JPanel implements ActionListener {
 
         back = new ImageIcon("resources/bg0.png").getImage();
         back2 = new ImageIcon("resources/bg1.png").getImage();
+        backsong = new Audio("bg_loop2.wav");
+        backsong.playSoundLoop();
 
         InitHUD();
 
@@ -242,7 +246,8 @@ public class GameScene extends JPanel implements ActionListener {
             players.removeIf(player -> !player.isLive());
             // Update Player
             for (Player player : players)
-                player.Update();
+                if(player.isLive())
+                    player.Update();
             if (enemies.size() > 0)
                 updateEnemies();
             updateProjectiles();
@@ -322,7 +327,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     public void ContactCheck(){
         for (Player player : players) {
-            if (!player.invincible){
+            if (!player.invincible && !player.isDying()){
                 Rectangle playerHitbox = player.getHitbox();
                 for (Enemy enemy : enemies){
                     if (playerHitbox.intersects(enemy.getHitbox())){
@@ -341,7 +346,7 @@ public class GameScene extends JPanel implements ActionListener {
         Rectangle projectilehitbox = projectile.getHitbox();
         if (team == Team.ENEMIES){
             for (Player player : players) {
-                if (projectilehitbox.intersects(player.getHitbox()) && !projectile.isDying()) {
+                if (projectilehitbox.intersects(player.getHitbox()) && !projectile.isDying() && !player.isDying()) {
                     player.damage(projectile.getDmg());
                     projectile.damage(1);
                 }
