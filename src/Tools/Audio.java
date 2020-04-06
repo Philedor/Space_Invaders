@@ -22,10 +22,12 @@ public class Audio {
         }
     }
 
-    public void playSound() {
+    public void playSound(float volume) {
+        setVolume(volume);
         clip.start();
     }
-    public void playSoundLoop() {
+    public void playSoundLoop(float volume) {
+        setVolume(volume);
         clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
@@ -35,7 +37,7 @@ public class Audio {
     public void closeAudio() {
         clip.close();
     }
-    public void setVolume(float volume){
+    private void setVolume(float volume){
         if(volume < 0f || volume > 1f)
             throw new IllegalArgumentException("Volume not valid: "+ volume);
         gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);

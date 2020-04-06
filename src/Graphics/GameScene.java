@@ -55,7 +55,7 @@ public class GameScene extends JPanel implements ActionListener {
         back = new ImageIcon("resources/bg0.png").getImage();
         back2 = new ImageIcon("resources/bg1.png").getImage();
         backsong = new Audio("bg_loop2.wav");
-        backsong.playSoundLoop();
+        backsong.playSoundLoop(0.5f);
 
         InitHUD();
 
@@ -107,7 +107,7 @@ public class GameScene extends JPanel implements ActionListener {
         if (!pause) {
             ScrollBG(graphics);
             if(!backsong.isRunning()) {
-                backsong.playSoundLoop();
+                backsong.playSoundLoop(0.5f);
             }
         }
 
