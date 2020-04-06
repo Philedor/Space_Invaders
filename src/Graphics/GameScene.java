@@ -227,7 +227,7 @@ public class GameScene extends JPanel implements ActionListener {
         }
         for (Projectile proj : Enemy.getProjectiles()) {
             graphics.rotate(Math.PI/2 - Math.toRadians(proj.getAngle() ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
-            graphics.drawImage(proj.getSprite(0), proj.getPosX(), proj.getPosY(), this);
+            graphics.drawImage(proj.getSprite(proj.currentSprite), proj.getPosX(), proj.getPosY(), this);
             graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
             //death animation for projectile
             if(proj.isDying()) {
