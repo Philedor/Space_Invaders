@@ -106,11 +106,16 @@ public class GameScene extends JPanel implements ActionListener {
         // different drawing functions for different game states
         if (!pause) {
             ScrollBG(graphics);
+            if(!backsong.isRunning()) {
+                backsong.playSoundLoop();
+            }
         }
 
         // Flickering
-        if (!running || pause)
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, System.currentTimeMillis()%7 == 0? 0.3f : 0.5f));
+        if (!running || pause) {
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, System.currentTimeMillis() % 7 == 0 ? 0.3f : 0.5f));
+            backsong.stopAudio();
+        }
 
 
         for (Enemy enemy : enemies) {
@@ -162,6 +167,7 @@ public class GameScene extends JPanel implements ActionListener {
         int x = ((getWidth() - fm.stringWidth("GAME OVER")) / 2);
         int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
         graphics.drawString("GAME OVER", x, y);
+        backsong.closeAudio();
     }
 
     private void ScrollBG(Graphics2D graphics){

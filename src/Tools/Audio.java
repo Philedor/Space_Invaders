@@ -2,17 +2,17 @@ package Tools;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.IOException;
-import java.rmi.server.ExportException;
+import javax.sound.sampled.FloatControl;
 
 public class Audio {
-    Clip clip;
+    private Clip clip;
     AudioInputStream audioInputStream;
-    private static String source;
-    private long currentFrame;
+    String source;
+    FloatControl gainControl;
 
     public Audio(String path) {
         source = path;
+
         try {
             audioInputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + source).getAbsoluteFile());
             clip = AudioSystem.getClip();
@@ -23,51 +23,26 @@ public class Audio {
     }
 
     public void playSound() {
-        try {
-            clip.start();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+        clip.start();
     }
-
-
     public void playSoundLoop() {
-        try {
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
     public void stopAudio() {
         clip.stop();
+    }
+    public void closeAudio() {
         clip.close();
     }
-
-    public void pauseAudio() {
-        currentFrame = clip.getMicrosecondPosition();
-        stopAudio();
+    public void setVolume(float volume){
+        if(volume < 0f || volume > 1f)
+            throw new IllegalArgumentException("Volume not valid: "+ volume);
+        gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        //convert volume to linear scale for easier usage
+        gainControl.setValue(20f * (float) Math.log10(volume));
     }
-
-    public void resumeAudio() {
-        try {
-            resetAudio();
-            clip.setMicrosecondPosition(currentFrame);
-            playSoundLoop();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    public void resetAudio() {
-        try {
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + source).getAbsoluteFile());
-            clip.open(inputStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-    }
+    public boolean isRunning(){ return clip.isRunning();}
 }
 
 

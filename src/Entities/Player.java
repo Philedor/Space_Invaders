@@ -56,6 +56,7 @@ public class Player extends Entity{
     public void Shoot(){
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
             Audio shoot = new Audio("shoot.wav");
+            shoot.setVolume(0.1f);
             shoot.playSound();
 
             if (shootingmode == 0){
