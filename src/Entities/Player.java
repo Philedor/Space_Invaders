@@ -1,6 +1,7 @@
 package Entities;
 
 
+import Tools.Audio;
 import Tools.Constants;
 
 
@@ -54,7 +55,9 @@ public class Player extends Entity{
 
     public void Shoot(){
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
-            //Audio.playSound(ATTACK_SOUND);
+            Audio shoot = new Audio("shoot.wav");
+            shoot.playSound();
+
             if (shootingmode == 0){
                 projectiles.add(new Projectile(team, posX+(width/2)-1, posY+(height/2), angle, dmg));
             }
