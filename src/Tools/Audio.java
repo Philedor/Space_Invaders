@@ -7,18 +7,23 @@ import java.rmi.server.ExportException;
 
 public class Audio {
     Clip clip;
+    AudioInputStream audioInputStream;
     private static String source;
     private long currentFrame;
 
-    public Audio(String path){
+    public Audio(String path) {
         source = path;
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + source).getAbsoluteFile());
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public void playSound() {
         try {
-            clip = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + source).getAbsoluteFile());
-            clip.open(inputStream);
             clip.start();
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -28,9 +33,6 @@ public class Audio {
 
     public void playSoundLoop() {
         try {
-            clip = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Constants.AUDIO_LOCATION + source).getAbsoluteFile());
-            clip.open(inputStream);
             clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
@@ -38,7 +40,7 @@ public class Audio {
         }
     }
     public void stopAudio() {
-        this.clip.stop();
+        clip.stop();
         clip.close();
     }
 
