@@ -51,7 +51,7 @@ public class Enemy extends Entity {
     public void Kill() {
         dx = 0;
         dy = 0;
-        LoadSprites(Constants.NB_ENEMY_DEATH_SPRITE, Constants.ENEMY_DEATH_SPRITE);
+        LoadSpriteSheet(Constants.NB_ENEMY_DEATH_SPRITE, Constants.ENEMY_DEATH_SPRITE, 0);
 
         dying = true;
     }

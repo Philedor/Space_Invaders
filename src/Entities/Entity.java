@@ -69,7 +69,7 @@ public class Entity {
     }
 
     public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdx, int pdy){
-
+        //used for loading missiles
         team = pteam;
         live = true;
         dying = false;
@@ -80,8 +80,10 @@ public class Entity {
         dangle = 0;
         dx = pdx;
         dy = pdy;
-
-        LoadSpriteSheet(nbSprites, path, 0);
+        if(getTeam() == Team.ENEMIES)
+            LoadSpriteSheet(nbSprites, path, 1);
+        else
+            LoadSpriteSheet(nbSprites, path, 0);
     }
 
     public Entity(int x, int y, String path, int nbSprites){
