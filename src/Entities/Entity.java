@@ -86,11 +86,11 @@ public class Entity {
             LoadSpriteSheet(nbSprites, path, 0);
     }
 
-    public Entity(int x, int y, String path, int nbSprites){
+    public Entity(int x, int y, String path, int nbSprites, int num){
         posX = x;
         posY = y;
 
-        LoadSpriteSheet(nbSprites, path, 0);
+        LoadSpriteSheet(nbSprites, path, num);
     }
 
 

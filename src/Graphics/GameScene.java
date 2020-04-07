@@ -27,7 +27,7 @@ public class GameScene extends JPanel implements ActionListener {
     private Image back;
     private Image back2;
     private Audio backsong;
-    private Entity health;
+    private Entity[] health = new Entity[2];
     private int bg_posy = 0;
     private int bg_posy2 = -1000;
     private boolean running = true;
@@ -93,7 +93,9 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void InitHUD(){
         //loading health HUD
-        health = new Entity(543, 948, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY);
+        for(int i = 0; i < 2; i++) {
+            health[i] = new Entity(543, 948, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY, i);
+        }
     }
 
 
@@ -193,7 +195,7 @@ public class GameScene extends JPanel implements ActionListener {
             hp[players.indexOf(player)] = player.getHp();
         }
         for (int i = 0; i < 2; i++) {
-            graphics.drawImage(health.getSprite(hp[i]), health.getPosX(), health.getPosY() - (health.getheight() * i), this);
+            graphics.drawImage(health[i].getSprite(hp[i]), health[i].getPosX(), health[i].getPosY() - (health[i].getheight() * i), this);
         }
     }
 
