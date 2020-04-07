@@ -18,6 +18,7 @@ public class Player extends Entity{
     private boolean downPressed = false;
     private boolean turnrightpressed = false;
     private boolean turnleftpressed = false;
+    private boolean canMove = true;
     public boolean isShooting = false;
     public boolean invincible = false;
     private int imunitycd = 0;
@@ -100,8 +101,9 @@ public class Player extends Entity{
         setinvincible();
         hp -= dmg;
         if (hp <= 0){
+            LoadSpriteSheet(Constants.NB_PLAYER_DEATH_SPRITE, Constants.PLAYER_DEATH_SPRITE, 0);
+            canMove = false;
             dying = true;
-            live = false;
 
             if (team == Team.PLAYER1)
                 System.out.println("p1 dead");
@@ -119,18 +121,39 @@ public class Player extends Entity{
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if     (key == keycodes[0] )     {dy = -moveSpeed;      upPressed = true;}
-        if     (key == keycodes[1] )     {dy =  moveSpeed;      downPressed = true;}
+        if(canMove) {
+            if (key == keycodes[0]) {
+                dy = -moveSpeed;
+                upPressed = true;
+            }
+            if (key == keycodes[1]) {
+                dy = moveSpeed;
+                downPressed = true;
+            }
 
-        if     (key == keycodes[2] )     {dx = -moveSpeed;      leftPressed = true;}
-        if     (key == keycodes[3] )     {dx =  moveSpeed;      rightPressed = true;}
+            if (key == keycodes[2]) {
+                dx = -moveSpeed;
+                leftPressed = true;
+            }
+            if (key == keycodes[3]) {
+                dx = moveSpeed;
+                rightPressed = true;
+            }
 
-        if     (key == keycodes[4] )     {dangle = -turnSpeed;  turnrightpressed = true;}
-        if     (key == keycodes[5] )     {dangle = turnSpeed;   turnleftpressed = true;}
+            if (key == keycodes[4]) {
+                dangle = -turnSpeed;
+                turnrightpressed = true;
+            }
+            if (key == keycodes[5]) {
+                dangle = turnSpeed;
+                turnleftpressed = true;
+            }
 
-        if     (key == keycodes[6])    isShooting = true;
-        if     (key == keycodes[7])      {shootingmode = (shootingmode + 1) % 3;}
-
+            if (key == keycodes[6]) isShooting = true;
+            if (key == keycodes[7]) {
+                shootingmode = (shootingmode + 1) % 3;
+            }
+        }
         //if (key == VK_Y) System.out.println(GameScene.enemies.size());
 
     }
@@ -190,16 +213,21 @@ public class Player extends Entity{
     public List<Projectile> getProjectiles(){return projectiles;}
 
     public void animateMovement() {
-        animateLoop(Constants.NB_PLAYER_SPRITE/3);
+        animateLoop(Constants.NB_PLAYER_SPRITE / 3);
         // if condition to add for left, right and explosion animation
-        if (dx > 0) {
-            //at player3.png the right flying animation starts and has 3 animations
-            currentSprite = 3 + animationFrame;
-        } else if (dx < 0) {
-            //at player6.png the left flying animation starts and has 3 animations
-            currentSprite = 6 + animationFrame;
-        } else {
-            currentSprite = animationFrame;
+        if (!isDying()) {
+            if (dx > 0) {
+                //at player3.png the right flying animation starts and has 3 animations
+                currentSprite = 3 + animationFrame;
+            } else if (dx < 0) {
+                //at player6.png the left flying animation starts and has 3 animations
+                currentSprite = 6 + animationFrame;
+            } else {
+                currentSprite = animationFrame;
+            }
+        }
+        else {
+
         }
     }
 

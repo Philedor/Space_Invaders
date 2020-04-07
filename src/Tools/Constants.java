@@ -32,8 +32,8 @@ public class Constants {
     //Player
     public static final String  PLAYER_SPRITE =                     "resources/sprites/player/player.png";
     public static final int     NB_PLAYER_SPRITE =                  9;
-    public static final String  PLAYER_DEATH_SPRITE =               "resources/sprites/player.png";
-    public static final int     NB_PLAYER_DEATH_SPRITE =            1;
+    public static final String  PLAYER_DEATH_SPRITE =               "resources/sprites/player/explosion/explosion.png";
+    public static final int     NB_PLAYER_DEATH_SPRITE =            5;
     public static final int     TIME_BETWEEN_ANIMATIONS =           150;
     // Enemy
     public static final String  ENEMY_SPRITE =                      "resources/sprites/enemies/enemy.png";

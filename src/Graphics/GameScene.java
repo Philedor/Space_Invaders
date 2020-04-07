@@ -93,7 +93,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void InitHUD(){
         //loading health HUD
-        health = new Entity(510, 937, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY);
+        health = new Entity(543, 948, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY);
     }
 
 
@@ -187,10 +187,14 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void drawHUD(Graphics2D graphics){
         //update hp display
-        for (Player player : players) {
-            graphics.drawImage(health.getSprite(player.getHp()), health.getPosX(), health.getPosY()-(health.getheight()*players.indexOf(player)), this);
-        }
+        int[] hp= new int[2];
 
+        for (Player player : players) {
+            hp[players.indexOf(player)] = player.getHp();
+        }
+        for (int i = 0; i < 2; i++) {
+            graphics.drawImage(health.getSprite(hp[i]), health.getPosX(), health.getPosY() - (health.getheight() * i), this);
+        }
     }
 
     private void drawPlayer(Graphics2D graphics){
@@ -204,12 +208,18 @@ public class GameScene extends JPanel implements ActionListener {
             else p1score = player.score;
 
 
-            player.animateMovement();
+            if(player.isDying()) {
+                player.currentSprite = player.dyingAnimation(Constants.NB_PLAYER_DEATH_SPRITE);
+            }
+            else {
+                player.animateMovement();
+            }
             graphics.rotate(Math.PI / 2 - Math.toRadians(player.getAngle()), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getheight() / 2 + player.getPosY());
             if (running && !pause)
                 graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, player.opacity));
             graphics.drawImage(player.getSprite(player.currentSprite), player.getPosX(), player.getPosY(), this);
             graphics.rotate(-(Math.PI / 2 - Math.toRadians(player.getAngle())), (double) player.getwidth() / 2 + player.getPosX(), (double) player.getheight() / 2 + player.getPosY());
+
         }
     }
 
