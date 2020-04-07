@@ -3,8 +3,12 @@ package Entities;
 
 import Tools.Constants;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +49,8 @@ public class Entity {
     protected int width;
     protected int height;
 
-    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites){
-
+    public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites) {
+        //constructor used for players and enemies
         team = pteam;
         live = true;
         dying = false;
@@ -61,7 +65,7 @@ public class Entity {
         dx = 0;
         dy = 0;
 
-        LoadSprites(nbSprites, path);
+        LoadSpriteSheet(nbSprites, path);
     }
 
     public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdx, int pdy){
@@ -108,6 +112,36 @@ public class Entity {
         width = getSprite(0).getWidth(null);
         height = getSprite(0).getHeight(null);
 
+    }
+    protected void LoadSpriteSheet(int nb, String path) {
+        nbSprites = nb;
+        sprites = new ArrayList<>();
+        int n = path.length();
+        //for Different skins -needs implementation still
+        int character = 0;
+
+        String start = path.substring(0, n-4);
+        String end = path.substring(n-4);
+        String tmp = start + character + end;
+        try {
+
+            BufferedImage sheet = ImageIO.read(new File(tmp).getAbsoluteFile());
+            //size of separate images in sprite sheet
+            int img_width = sheet.getWidth(null)/nbSprites;
+            int img_height = sheet.getHeight(null);
+
+            for(int i = 0; i < nb; i++){
+                BufferedImage tmp_img = sheet.getSubimage(img_width * i,0, img_width, img_height);
+                sprites.add(new ImageIcon(tmp_img).getImage());
+            }
+
+        } catch (Exception e){
+            System.err.println(e);
+        }
+
+        currentSprite = 0;
+        width = getSprite(0).getWidth(null);
+        height = getSprite(0).getHeight(null);
     }
 
     public void animateLoop(int nbSprites) {
