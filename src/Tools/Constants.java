@@ -43,7 +43,7 @@ public class Constants {
 
     // Projectile
     public static final String  PROJECTILE_SPRITE =                 "resources/sprites/missiles/missile.png";
-    public static final int     NB_PROJECTILE_SPRITE =              1;
+    public static final int     NB_PROJECTILE_SPRITE =              2;
     public static final String  PROJECTILE_EXPLOSION_SPRITE =       "resources/sprites/missiles/explosion/explosion.png";
     public static final int     NB_PROJECTILE_EXPLOSION_SPRITE =    4;
 

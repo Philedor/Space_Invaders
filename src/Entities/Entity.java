@@ -65,7 +65,7 @@ public class Entity {
         dx = 0;
         dy = 0;
 
-        LoadSpriteSheet(nbSprites, path);
+        LoadSpriteSheet(nbSprites, path, 0);
     }
 
     public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdx, int pdy){
@@ -81,7 +81,7 @@ public class Entity {
         dx = pdx;
         dy = pdy;
 
-        LoadSprites(nbSprites, path);
+        LoadSpriteSheet(nbSprites, path, 0);
     }
 
     public Entity(int x, int y, String path, int nbSprites){
@@ -113,12 +113,12 @@ public class Entity {
         height = getSprite(0).getHeight(null);
 
     }
-    protected void LoadSpriteSheet(int nb, String path) {
+    protected void LoadSpriteSheet(int nb, String path, int num) {
         nbSprites = nb;
         sprites = new ArrayList<>();
         int n = path.length();
         //for Different skins -needs implementation still
-        int character = 0;
+        int character = num;
 
         String start = path.substring(0, n-4);
         String end = path.substring(n-4);

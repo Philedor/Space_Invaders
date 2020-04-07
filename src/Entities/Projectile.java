@@ -44,8 +44,11 @@ public class Projectile extends Entity {
     public void Kill(){
         dx = 0;
         dy = 0;
-
-        LoadSprites(Constants.NB_PROJECTILE_EXPLOSION_SPRITE, Constants.PROJECTILE_EXPLOSION_SPRITE);
+        //Loading different animation for different Team
+        if(getTeam() == Team.ENEMIES)
+            LoadSpriteSheet(Constants.NB_PROJECTILE_EXPLOSION_SPRITE, Constants.PROJECTILE_EXPLOSION_SPRITE, 1);
+        else
+            LoadSpriteSheet(Constants.NB_PROJECTILE_EXPLOSION_SPRITE, Constants.PROJECTILE_EXPLOSION_SPRITE, 0);
         //adjusting for new hitbox size
         posX = posX - getwidth()/2;
         dying = true;
