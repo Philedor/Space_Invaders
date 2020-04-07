@@ -91,9 +91,11 @@ public class Player extends Entity{
                 invincible = false;
             }
         }
-        posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH - width), Constants.GAME_MIN_WIDTH) ;
-        posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT - height);
-        angle = Math.max(Math.min(angle + dangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
+        if(canMove) {
+            posX = Math.max(Math.min(posX + dx, Constants.GAME_MAX_WIDTH - width), Constants.GAME_MIN_WIDTH);
+            posY = Math.min(Math.max(posY + dy, Constants.GAME_MAX_HEIGHT), Constants.GAME_MIN_HEIGHT - height);
+            angle = Math.max(Math.min(angle + dangle, Constants.MAX_LEFT_ROTATION), Constants.MAX_RIGHT_ROTATION);
+        }
         if (isShooting) Shoot();
     }
 
@@ -115,47 +117,42 @@ public class Player extends Entity{
 
     public void setinvincible(){
         invincible = true;
-        imunitycd = (int)(68 * 1.5); // 68 time nbsecondds we want it to last
+        imunitycd = (int)(68 * 1.5); // 68 time nbseconds we want it to last
     }
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if(canMove) {
-            if (key == keycodes[0]) {
-                dy = -moveSpeed;
-                upPressed = true;
-            }
-            if (key == keycodes[1]) {
-                dy = moveSpeed;
-                downPressed = true;
-            }
 
-            if (key == keycodes[2]) {
-                dx = -moveSpeed;
-                leftPressed = true;
-            }
-            if (key == keycodes[3]) {
-                dx = moveSpeed;
-                rightPressed = true;
-            }
-
-            if (key == keycodes[4]) {
-                dangle = -turnSpeed;
-                turnrightpressed = true;
-            }
-            if (key == keycodes[5]) {
-                dangle = turnSpeed;
-                turnleftpressed = true;
-            }
-
-            if (key == keycodes[6]) isShooting = true;
-            if (key == keycodes[7]) {
-                shootingmode = (shootingmode + 1) % 3;
-            }
+        if (key == keycodes[0]) {
+            dy = -moveSpeed;
+            upPressed = true;
+        }
+        if (key == keycodes[1]) {
+            dy = moveSpeed;
+            downPressed = true;
+        }
+        if (key == keycodes[2]) {
+            dx = -moveSpeed;
+            leftPressed = true;
+        }
+        if (key == keycodes[3]) {
+            dx = moveSpeed;
+            rightPressed = true;
+        }
+        if (key == keycodes[4]) {
+            dangle = -turnSpeed;
+            turnrightpressed = true;
+        }
+        if (key == keycodes[5]) {
+            dangle = turnSpeed;
+            turnleftpressed = true;
+        }
+        if (key == keycodes[6]) isShooting = true;
+        if (key == keycodes[7]) {
+            shootingmode = (shootingmode + 1) % 3;
         }
         //if (key == VK_Y) System.out.println(GameScene.enemies.size());
-
     }
 
     public void keyReleased(KeyEvent e) {

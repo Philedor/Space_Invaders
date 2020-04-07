@@ -94,7 +94,7 @@ public class GameScene extends JPanel implements ActionListener {
     private void InitHUD(){
         //loading health HUD
         for(int i = 0; i < 2; i++) {
-            health[i] = new Entity(543, 948, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY, i);
+            health[i] = new Entity(0, 928, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY, i);
         }
     }
 
@@ -138,7 +138,7 @@ public class GameScene extends JPanel implements ActionListener {
         drawHUD(graphics);
 
         // Display score
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(new Color(216, 97, 225));
         Font font = new Font("Helvetica", Font.BOLD, 20);
         graphics.setFont(font);
         graphics.drawString(p1 + p1score, px, p1y);
@@ -194,9 +194,10 @@ public class GameScene extends JPanel implements ActionListener {
         for (Player player : players) {
             hp[players.indexOf(player)] = player.getHp();
         }
-        for (int i = 0; i < 2; i++) {
-            graphics.drawImage(health[i].getSprite(hp[i]), health[i].getPosX(), health[i].getPosY() - (health[i].getheight() * i), this);
-        }
+
+        graphics.drawImage(health[0].getSprite(hp[0]), health[0].getPosX(), health[0].getPosY(), this);
+        graphics.drawImage(health[1].getSprite(hp[1]),health[1].getPosX() + 519, health[1].getPosY(), this);
+
     }
 
     private void drawPlayer(Graphics2D graphics){

@@ -119,7 +119,8 @@ public class Constants {
         int height = Constants.GAME_MIN_HEIGHT / 3 - Constants.GAME_MAX_HEIGHT;
         
         for (int i = 0 ; i < rows; i++){
-            int y = height * i / rows + Constants.GAME_MAX_HEIGHT;
+            //+50 to offset from the top
+            int y = height * i / rows + Constants.GAME_MAX_HEIGHT + 50;
             for (int j = 0; j < columns; j++){
                 int x = width * j /columns + Constants.GAME_MIN_WIDTH;
                 ans[i * columns + j][0] = x;
