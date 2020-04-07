@@ -195,8 +195,8 @@ public class GameScene extends JPanel implements ActionListener {
             hp[players.indexOf(player)] = player.getHp();
         }
 
-        graphics.drawImage(health[0].getSprite(hp[0]), health[0].getPosX(), health[0].getPosY(), this);
-        graphics.drawImage(health[1].getSprite(hp[1]),health[1].getPosX() + 519, health[1].getPosY(), this);
+        graphics.drawImage(health[0].getSprite(hp[1]), health[0].getPosX(), health[0].getPosY(), this);
+        graphics.drawImage(health[1].getSprite(hp[0]),health[1].getPosX() + 519, health[1].getPosY(), this);
 
     }
 
