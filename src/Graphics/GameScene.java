@@ -113,7 +113,7 @@ public class GameScene extends JPanel implements ActionListener {
 
         // Flickering
         if (!running || pause) {
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, System.currentTimeMillis() % 7 == 0 ? 0.3f : 0.5f));
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0));
             backsong.stopAudio();
         }
 

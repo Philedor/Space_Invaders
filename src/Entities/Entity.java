@@ -90,7 +90,7 @@ public class Entity {
         posX = x;
         posY = y;
 
-        LoadSprites(nbSprites, path);
+        LoadSpriteSheet(nbSprites, path, 0);
     }
 
 
