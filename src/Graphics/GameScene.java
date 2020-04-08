@@ -24,14 +24,15 @@ public class GameScene extends JPanel implements ActionListener {
     public static int width;
     public static int height;
 
-    private Image back;
-    private Image back2;
+    private Image[] back = new Image[2];
     private Audio backsong;
-    private Entity[] health = new Entity[2];
     private int bg_posy = 0;
     private int bg_posy2 = -1000;
     private boolean running = true;
     private static boolean pause = false;
+
+    private Entity[] health = new Entity[2];
+    private Entity sdisplay;
 
     int DELAY = 15;
 
@@ -52,10 +53,9 @@ public class GameScene extends JPanel implements ActionListener {
         width = w;
         height = h;
 
-        back = new ImageIcon("resources/bg0.png").getImage();
-        back2 = new ImageIcon("resources/bg1.png").getImage();
+        back[0] = new ImageIcon("resources/bg0.png").getImage();
+        back[1] = new ImageIcon("resources/bg1.png").getImage();
         backsong = new Audio("bg_loop2.wav");
-        backsong.playSoundLoop(0.5f);
 
         InitHUD();
 
@@ -96,6 +96,8 @@ public class GameScene extends JPanel implements ActionListener {
         for(int i = 0; i < 2; i++) {
             health[i] = new Entity(0, 928, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY, i);
         }
+        //loading small display
+        sdisplay = new Entity(0,0, Constants.SMALL_DISPLAY, Constants.NB_HP_DISPLAY, 0);
     }
 
 
@@ -176,8 +178,8 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void ScrollBG(Graphics2D graphics){
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-        graphics.drawImage(back2, 0, bg_posy2, this);
-        graphics.drawImage(back, 0, bg_posy, this);
+        graphics.drawImage(back[1], 0, bg_posy2, this);
+        graphics.drawImage(back[0], 0, bg_posy, this);
 
         //scrolling down backgrounds
         bg_posy = bg_posy + Constants.BACKGROUND_SPEED;
@@ -186,7 +188,6 @@ public class GameScene extends JPanel implements ActionListener {
         if(bg_posy == 1000) { bg_posy = -1000;}
         if(bg_posy2 == 1000) { bg_posy2 = -1000;}
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
     }
 
     private void drawHUD(Graphics2D graphics){

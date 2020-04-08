@@ -126,7 +126,6 @@ public class Entity {
         String end = path.substring(n-4);
         String tmp = start + character + end;
         try {
-
             BufferedImage sheet = ImageIO.read(new File(tmp).getAbsoluteFile());
             //size of separate images in sprite sheet
             int img_width = sheet.getWidth(null)/nbSprites;
