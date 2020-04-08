@@ -123,7 +123,9 @@ public class GameScene extends JPanel implements ActionListener {
         for (Enemy enemy : enemies) {
             graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
             if(enemy.isDying()) {
-                enemy.currentSprite = enemy.dyingAnimation(Constants.NB_ENEMY_DEATH_SPRITE);
+                if(enemy.animatedOnce(Constants.NB_ENEMY_DEATH_SPRITE)) {
+                    enemy.setLive(false);
+                }
             }
         }
 
@@ -212,7 +214,9 @@ public class GameScene extends JPanel implements ActionListener {
 
 
             if(player.isDying()) {
-                player.currentSprite = player.dyingAnimation(Constants.NB_PLAYER_DEATH_SPRITE);
+                if(player.animatedOnce(Constants.NB_PLAYER_DEATH_SPRITE)) {
+                    player.setLive(false);
+                }
             }
             else {
                 player.animateMovement();
@@ -234,7 +238,9 @@ public class GameScene extends JPanel implements ActionListener {
                 graphics.rotate(-(Math.PI / 2 - Math.toRadians(proj.getAngle())), (double) proj.getwidth() / 2 + proj.getPosX(), (double) proj.getheight() / 2 + proj.getPosY());
                 //death animation for projectile
                 if(proj.isDying()) {
-                    proj.currentSprite = proj.dyingAnimation(Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
+                    if(proj.animatedOnce(Constants.NB_PROJECTILE_EXPLOSION_SPRITE)) {
+                        proj.setLive(false);
+                    }
                 }
             }
         }
@@ -244,7 +250,9 @@ public class GameScene extends JPanel implements ActionListener {
             graphics.rotate(-(Math.PI/2 - Math.toRadians(proj.getAngle()) ),  (double) proj.getwidth() /2 + proj.getPosX(), (double) proj.getheight()/2 + proj.getPosY());
             //death animation for projectile
             if(proj.isDying()) {
-                proj.currentSprite = proj.dyingAnimation(Constants.NB_PROJECTILE_EXPLOSION_SPRITE);
+                if(proj.animatedOnce(Constants.NB_PROJECTILE_EXPLOSION_SPRITE)) {
+                    proj.setLive(false);
+                }
             }
         }
     }

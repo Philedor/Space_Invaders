@@ -158,16 +158,20 @@ public class Entity {
         }
     }
 
-    public int dyingAnimation(int nbSprites) {
+    public boolean animatedOnce(int nbSprites) {
         animateLoop(nbSprites);
-        if(animationFrame == nbSprites-1) {live = false;}
-        return animationFrame;
+        if(animationFrame == nbSprites-1) {return true;}
+
+        currentSprite = animationFrame;
+        return false;
     }
 
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
     public double getAngle() {return angle;}
+
     public boolean isLive() {return live;}
+    public void setLive(boolean set) {live = set;}
     public boolean isDying() {return dying;}
     public int getwidth() {return width;}
     public int getheight() {return height;}
