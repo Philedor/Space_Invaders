@@ -97,7 +97,7 @@ public class GameScene extends JPanel implements ActionListener {
             health[i] = new Entity(0, 928, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY, i);
         }
         //loading small display
-        sdisplay = new Entity(0,0, Constants.SMALL_DISPLAY, Constants.NB_HP_DISPLAY, 0);
+        sdisplay = new Entity(6,937, Constants.SMALL_DISPLAY, Constants.NB_SMALL_DISPLAY, 0);
     }
 
 
@@ -201,6 +201,23 @@ public class GameScene extends JPanel implements ActionListener {
         graphics.drawImage(health[0].getSprite(hp[1]), health[0].getPosX(), health[0].getPosY(), this);
         graphics.drawImage(health[1].getSprite(hp[0]),health[1].getPosX() + 519, health[1].getPosY(), this);
 
+        //updating the small display in the bottom left corner
+        if(!players.isEmpty()) {
+            //moving right
+            if(players.get(0).getDx() > 0){
+                sdisplay.currentSprite = 3;
+            }
+            else if(players.get(0).getDx() < 0) {
+                sdisplay.currentSprite = 5;
+            }
+            else {
+                sdisplay.currentSprite = 2;
+            }
+        } else {
+            sdisplay.currentSprite = 0;
+            sdisplay.animateLoop(2);
+        }
+        graphics.drawImage(sdisplay.getSprite(sdisplay.currentSprite), sdisplay.getPosX(), sdisplay.getPosY(), this);
     }
 
     private void drawPlayer(Graphics2D graphics){

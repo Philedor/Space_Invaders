@@ -167,6 +167,8 @@ public class Entity {
 
     public int getPosX()   {return posX;}
     public int getPosY()   {return posY;}
+    public int getDx()      {return dx;}
+    public int getDy()      {return dy;}
     public double getAngle() {return angle;}
 
     public boolean isLive() {return live;}
