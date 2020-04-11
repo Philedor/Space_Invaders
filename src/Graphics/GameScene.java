@@ -214,7 +214,12 @@ public class GameScene extends JPanel implements ActionListener {
         int[] hp= new int[2];
 
         for (Player player : players) {
-            hp[players.indexOf(player)] = player.getHp();
+            if(player.getHp() >= 0) {
+                hp[players.indexOf(player)] = player.getHp();
+            }
+            else {
+                hp[players.indexOf(player)] = 0;
+            }
         }
 
         graphics.drawImage(health[0].getSprite(hp[1]), health[0].getPosX(), health[0].getPosY(), this);
@@ -337,7 +342,6 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void updateEnemies() {
 
-        // TODO add check if end animation done or replace the condition here
         enemies.removeIf(enemy -> !enemy.isLive());
 
         if (System.currentTimeMillis() - enemyLastMove > enemyMoveTime){

@@ -15,7 +15,7 @@ public class Enemy extends Entity {
     private long atkSpeed;
     private long lastShoot;
     public static long enemyLastMove;
-    public static long enemyMoveTime = 800;
+    public static long enemyMoveTime = 1;
     public static boolean enemywentdown = false;
 
 
