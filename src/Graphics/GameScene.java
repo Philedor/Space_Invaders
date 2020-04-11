@@ -47,14 +47,14 @@ public class GameScene extends JPanel implements ActionListener {
     private int p1score = 0;
     private int p2score = 0;
     private StopWatch stopWatch = new StopWatch();
-    int px = 10;
-    int p1y = 40;
-    int p2y = 60;
+    int px = 30;
+    int p1y = 30;
+    int p2y = 50;
     int tx = 590;
     int ty = 50;
 
-    private String p1 = "Player 1 : ";
-    private String p2 = "Player 2 : ";
+    private String p1 = "PLAYER 1 : ";
+    private String p2 = "PLAYER 2 : ";
 
     // Init the game Scene
     public GameScene(int w, int h, int nb_players) {
@@ -158,8 +158,8 @@ public class GameScene extends JPanel implements ActionListener {
         graphics.setColor(new Color(216, 97, 225));
         Font font = new Font("Helvetica", Font.BOLD, 17);
         graphics.setFont(font);
-        graphics.drawString(p1 + p1score, px, p1y);
-        graphics.drawString(p2 + p2score, px, p2y);
+        graphics.drawString(p1 + String.format("%03d", p1score), px, p1y);
+        graphics.drawString(p2 + String.format("%03d", p2score), px, p2y);
         // Display time
         String time = stopWatch.toMinAndSecString();
         font = new Font("Helvetica", Font.BOLD, 30);

@@ -35,7 +35,7 @@ public class Enemy extends Entity {
     public void Shoot(){
 
         if(System.currentTimeMillis() - lastShoot > atkSpeed){
-            projectiles.add(new Projectile(team, posX, posY, angle, shootdmg));
+            projectiles.add(new Projectile(team, posX + (getwidth()/2), posY, angle, shootdmg));
             lastShoot = System.currentTimeMillis();
         }
     }
