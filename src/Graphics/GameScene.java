@@ -7,14 +7,18 @@ import Entities.Projectile;
 import Tools.Audio;
 import Tools.Constants;
 import Tools.InputManager;
+import Tools.StopWatch;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Formatter;
 
 import static Entities.Enemy.*;
 
@@ -33,6 +37,7 @@ public class GameScene extends JPanel implements ActionListener {
 
     private Entity[] health = new Entity[2];
     private Entity sdisplay;
+    private Entity topHUD;
 
     int DELAY = 15;
 
@@ -41,9 +46,12 @@ public class GameScene extends JPanel implements ActionListener {
 
     private int p1score = 0;
     private int p2score = 0;
+    private StopWatch stopWatch = new StopWatch();
     int px = 10;
-    int p1y = 20;
-    int p2y = 40;
+    int p1y = 40;
+    int p2y = 60;
+    int tx = 590;
+    int ty = 50;
 
     private String p1 = "Player 1 : ";
     private String p2 = "Player 2 : ";
@@ -55,7 +63,7 @@ public class GameScene extends JPanel implements ActionListener {
 
         back[0] = new ImageIcon("resources/bg0.png").getImage();
         back[1] = new ImageIcon("resources/bg1.png").getImage();
-        backsong = new Audio("bg_loop2.wav");
+        backsong = new Audio(Constants.BACKGROUND_MUSIC);
 
         InitHUD();
 
@@ -68,7 +76,6 @@ public class GameScene extends JPanel implements ActionListener {
 
         InitEntities(nb_players);
         //playing background music. No music here yet, also need to figure out stopping music (pause state and such)
-        //Audio.playSoundLoop(Constants.BACKGROUND_MUSIC);
 
         Timer timer = new Timer(DELAY, this);
         timer.start();
@@ -96,8 +103,13 @@ public class GameScene extends JPanel implements ActionListener {
         for(int i = 0; i < 2; i++) {
             health[i] = new Entity(0, 928, Constants.HP_DISPLAY, Constants.NB_HP_DISPLAY, i);
         }
+
         //loading small display
         sdisplay = new Entity(6,937, Constants.SMALL_DISPLAY, Constants.NB_SMALL_DISPLAY, 0);
+
+        //loading top HUD
+        stopWatch.start();
+        topHUD = new Entity(0, 0, Constants.TOP_HUD, Constants.NB_TOP_HUD, 0);
     }
 
 
@@ -110,6 +122,7 @@ public class GameScene extends JPanel implements ActionListener {
         // different drawing functions for different game states
         if (!pause) {
             ScrollBG(graphics);
+            stopWatch.resume();
             if(!backsong.isRunning()) {
                 backsong.playSoundLoop(0.5f);
             }
@@ -143,11 +156,15 @@ public class GameScene extends JPanel implements ActionListener {
 
         // Display score
         graphics.setColor(new Color(216, 97, 225));
-        Font font = new Font("Helvetica", Font.BOLD, 20);
+        Font font = new Font("Helvetica", Font.BOLD, 17);
         graphics.setFont(font);
         graphics.drawString(p1 + p1score, px, p1y);
         graphics.drawString(p2 + p2score, px, p2y);
-
+        // Display time
+        String time = stopWatch.toMinAndSecString();
+        font = new Font("Helvetica", Font.BOLD, 30);
+        graphics.setFont(font);
+        graphics.drawString(time, tx, ty);
 
         graphics.dispose();
         Toolkit.getDefaultToolkit().sync();
@@ -162,6 +179,7 @@ public class GameScene extends JPanel implements ActionListener {
         int x = ((getWidth() - fm.stringWidth("PAUSE")) / 2);
         int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
         graphics.drawString("PAUSE", x, y);
+        stopWatch.pause();
     }
 
     private void GameOver(Graphics2D graphics){
@@ -174,6 +192,7 @@ public class GameScene extends JPanel implements ActionListener {
         int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
         graphics.drawString("GAME OVER", x, y);
         backsong.closeAudio();
+        stopWatch.stop();
     }
 
     private void ScrollBG(Graphics2D graphics){
@@ -218,6 +237,8 @@ public class GameScene extends JPanel implements ActionListener {
             sdisplay.animateLoop(2);
         }
         graphics.drawImage(sdisplay.getSprite(sdisplay.currentSprite), sdisplay.getPosX(), sdisplay.getPosY(), this);
+        //drawing topHUD
+        graphics.drawImage(topHUD.getSprite(topHUD.currentSprite), topHUD.getPosX(), topHUD.getPosY(), this);
     }
 
     private void drawPlayer(Graphics2D graphics){

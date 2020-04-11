@@ -50,13 +50,15 @@ public class Constants {
     //HUD Elements
     public static final String  HP_DISPLAY =                        "resources/sprites/hud/health/health.png";
     public static final int     NB_HP_DISPLAY =                     4;
-    public static final String  SMALL_DISPLAY =                     "resources/sprites/hud/health/sdisplay.png";
+    public static final String  SMALL_DISPLAY =                     "resources/sprites/hud/sdisplay/sdisplay.png";
     public static final int     NB_SMALL_DISPLAY=                   7;
+    public static final String  TOP_HUD =                           "resources/sprites/hud/top/top.png";
+    public static final int     NB_TOP_HUD =                        1;
 
     //Audio
     public static final String AUDIO_LOCATION=                        "resources/audio/";
-    public static final String ATTACK_SOUND =                         "pew.wav";
-    public static final String BACKGROUND_MUSIC=                      "bg_loop.wav";
+    public static final String ATTACK_SOUND =                         "shoot.wav";
+    public static final String BACKGROUND_MUSIC=                      "bg_loop2.wav";
 
 
     // Game Settings
