@@ -4,10 +4,7 @@ import Entities.Enemy;
 import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
-import Tools.Audio;
-import Tools.Constants;
-import Tools.InputManager;
-import Tools.StopWatch;
+import Tools.*;
 
 
 import javax.swing.*;
@@ -61,8 +58,8 @@ public class GameScene extends JPanel implements ActionListener {
         width = w;
         height = h;
 
-        back[0] = new ImageIcon("resources/bg0.png").getImage();
-        back[1] = new ImageIcon("resources/bg1.png").getImage();
+        back[0] = new ImageIcon(Constants.BACKGROUND_IMAGE).getImage();
+        back[1] = new ImageIcon(ImageManipulation.flipHorizontally(Constants.BACKGROUND_IMAGE)).getImage();
         backsong = new Audio(Constants.BACKGROUND_MUSIC);
 
         InitHUD();

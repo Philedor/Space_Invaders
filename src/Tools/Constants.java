@@ -10,9 +10,9 @@ public class Constants {
 
 
     // Window Settings
-    public static final int WINDOW_HEIGHT =   1000;
-    public static final int WINDOW_WIDTH =    700;
-    public static final String WINDOW_NAME =  "Space Invaders";
+    public static final int     WINDOW_HEIGHT =         1000;
+    public static final int     WINDOW_WIDTH =           700;
+    public static final String  WINDOW_NAME =   "Space Invaders";
     public static final int     BACKGROUND_SPEED =         1;
 
     // Game Initialisation constants
@@ -48,6 +48,7 @@ public class Constants {
     public static final int     NB_PROJECTILE_EXPLOSION_SPRITE =    4;
 
     //HUD Elements
+    public static final String  BACKGROUND_IMAGE =                  "resources/background.png";
     public static final String  HP_DISPLAY =                        "resources/sprites/hud/health/health.png";
     public static final int     NB_HP_DISPLAY =                     4;
     public static final String  SMALL_DISPLAY =                     "resources/sprites/hud/sdisplay/sdisplay.png";
