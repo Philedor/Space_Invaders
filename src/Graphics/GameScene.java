@@ -290,6 +290,11 @@ public class GameScene extends JPanel implements ActionListener {
         graphics.drawImage(topHUD.getSprite(topHUD.currentSprite), topHUD.getPosX(), topHUD.getPosY(), this);
     }
 
+    /**
+     *  Calling animation, removing player and dying animation
+     *
+     * @param graphics The graphics object used to paint all images
+     */
     private void drawPlayer(Graphics2D graphics){
         // animating player
         for (Player player : players) {
@@ -300,7 +305,7 @@ public class GameScene extends JPanel implements ActionListener {
             }
             else p1score = player.score;
 
-
+            //kill player 
             if(player.isDying()) {
                 if(player.animatedOnce(Constants.NB_PLAYER_DEATH_SPRITE)) {
                     player.setLive(false);
@@ -318,6 +323,11 @@ public class GameScene extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Draws projectiles for both enemies and players
+     *
+     * @param graphics The graphics object used to paint all images
+     */
     private void drawProjectiles(Graphics2D graphics){
         for (Player player : players) {
             for (Projectile proj : player.getProjectiles()) {
@@ -385,12 +395,15 @@ public class GameScene extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Updating enemies, also removes from list
+     */
     private void updateEnemies() {
 
         enemies.removeIf(enemy -> !enemy.isLive());
 
         if (System.currentTimeMillis() - enemyLastMove > enemyMoveTime){
-                enemyLastMove = System.currentTimeMillis();
+            enemyLastMove = System.currentTimeMillis();
 
             //Enemy left = getMostLeftEnemy();
             Enemy right = getMostRightEnemy();
@@ -440,6 +453,9 @@ public class GameScene extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     *  Check collision between enemy and player
+     */
     public void ContactCheck(){
         for (Player player : players) {
             if (!player.invincible && !player.isDying()){
@@ -454,8 +470,8 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     /**
-     * Chack Collision between enemy projectile and player
-     * @param projectile the projectile we re checking
+     * Check Collision between enemy projectile and player, and player projectile and enemy
+     * @param projectile the projectile we're checking
      */
     private void ProjectileCollisionCheck(Projectile projectile, Entity.Team team) {
         Rectangle projectilehitbox = projectile.getHitbox();
