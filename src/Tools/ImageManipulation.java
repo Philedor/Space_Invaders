@@ -1,7 +1,6 @@
 package Tools;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -10,6 +9,11 @@ import java.io.File;
 
 public class ImageManipulation {
 
+    /**
+     *  Flips the image around the x-axis
+     *
+     * @return The flipped image as Image class
+     */
     public static Image flipHorizontally(String location) {
         Image image = new Image() {
             @Override

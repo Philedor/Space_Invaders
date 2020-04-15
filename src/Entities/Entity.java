@@ -64,8 +64,12 @@ public class Entity {
         dangle = 0;
         dx = 0;
         dy = 0;
-
-        LoadSpriteSheet(nbSprites, path, 0);
+        if(pteam == Team.PLAYER1) {
+            LoadSpriteSheet(nbSprites, path, 1);
+        }
+        else {
+            LoadSpriteSheet(nbSprites, path, 0);
+        }
     }
 
     public Entity(Team pteam, int x, int y, double pangle, String path, int nbSprites, int pdx, int pdy){
