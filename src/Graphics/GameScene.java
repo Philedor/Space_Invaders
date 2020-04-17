@@ -350,23 +350,24 @@ public class GameScene extends JPanel implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        if (enemies.size() == 0){
-            InitEnemies();
-            // TODO Next level
-        }
-        if (getlowerposX() >= Constants.GAME_OVER_Y || players.size() == 0)
-            running = false;
-        if (running && !pause) {
-            players.removeIf(player -> !player.isLive());
-            // Update Player
-            for (Player player : players)
-                if(player.isLive())
-                    player.Update();
-            if (enemies.size() > 0)
-                updateEnemies();
-            updateProjectiles();
-            ContactCheck();
+        if (State == STATE.GAME) {
+            if (enemies.size() == 0) {
+                InitEnemies();
+                // TODO Next level
+            }
+            if (getlowerposX() >= Constants.GAME_OVER_Y || players.size() == 0)
+                running = false;
+            if (running && !pause) {
+                players.removeIf(player -> !player.isLive());
+                // Update Player
+                for (Player player : players)
+                    if (player.isLive())
+                        player.Update();
+                if (enemies.size() > 0)
+                    updateEnemies();
+                updateProjectiles();
+                ContactCheck();
+            }
         }
         // collision checked during update to avoid calling multiple loops to go through each lists every time
         repaint();
@@ -544,6 +545,11 @@ public class GameScene extends JPanel implements ActionListener {
             Button = BUTTON.SETTINGS ;
         } else if (button == "EXIT") {
             Button = BUTTON.EXIT ;
+        }
+    }
+    public static void setState(String state) {
+        if (state == "GAME") {
+            State = STATE.GAME;
         }
     }
 

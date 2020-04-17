@@ -25,6 +25,10 @@ public class Menu {
                 GameScene.setButton("SETTINGS");
             }
             upPressed = true ;
+        } else if (key == KeyEvent.VK_ENTER) {
+            if (GameScene.getButton() == "PLAY") {
+                GameScene.setState("GAME");
+            }
         }
     }
 
