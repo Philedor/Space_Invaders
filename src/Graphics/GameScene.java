@@ -5,6 +5,7 @@ import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.*;
+import Tools.Menu;
 
 
 import javax.swing.*;
@@ -45,13 +46,22 @@ public class GameScene extends JPanel implements ActionListener {
     public static List<Enemy> enemies = new ArrayList<>();
     public static List<Player> players = new ArrayList<>();
 
+    public static Menu menu = new Menu();
+
     private enum STATE {
         MENU,
         GAME,
-        SETTING
+        SETTINGS
     } ;
 
-    private STATE State = STATE.MENU;
+    private enum BUTTON {
+        PLAY,
+        SETTINGS,
+        EXIT
+    } ;
+
+    private static STATE State = STATE.MENU;
+    private static BUTTON Button = BUTTON.PLAY;
 
     private int p1score = 0;
     private int p2score = 0;
@@ -109,10 +119,10 @@ public class GameScene extends JPanel implements ActionListener {
     }
 
     private void InitMenu(){
-        title = new Entity(168,50,Constants.TITLE,1,0) ;
-        play = new Entity(248,300,Constants.PLAY_BUTTON,2,0) ;
-        settings = new Entity(170,500,Constants.SETTINGS_BUTTON,2,0) ;
-        exit = new Entity(260,700,Constants.EXIT_BUTTON,2,0) ;
+        title = new Entity(168,50,Constants.TITLE,Constants.NB_TITLE,0) ;
+        play = new Entity(248,300,Constants.PLAY_BUTTON,Constants.NB_PLAY,0) ;
+        settings = new Entity(170,500,Constants.SETTINGS_BUTTON,Constants.NB_SETTINGS,0) ;
+        exit = new Entity(260,700,Constants.EXIT_BUTTON,Constants.NB_EXIT,0) ;
     }
 
     private void InitHUD(){
@@ -185,6 +195,19 @@ public class GameScene extends JPanel implements ActionListener {
 
     private void drawMenu(Graphics2D graphics) {
         graphics.drawImage(title.getSprite(title.currentSprite),title.getPosX(),title.getPosY(),this);
+        if (Button == BUTTON.PLAY) {
+            play.currentSprite = 1 ;
+            settings.currentSprite = 0 ;
+            exit.currentSprite = 0 ;
+        } else if (Button == BUTTON.SETTINGS) {
+            play.currentSprite = 0 ;
+            settings.currentSprite = 1 ;
+            exit.currentSprite = 0 ;
+        } else if (Button == BUTTON.EXIT) {
+            play.currentSprite = 0 ;
+            settings.currentSprite = 0 ;
+            exit.currentSprite = 1 ;
+        }
         graphics.drawImage(play.getSprite(play.currentSprite), play.getPosX(), play.getPosY(), this);
         graphics.drawImage(settings.getSprite(settings.currentSprite), settings.getPosX(), settings.getPosY(), this);
         graphics.drawImage(exit.getSprite(exit.currentSprite), exit.getPosX(), exit.getPosY(), this);
@@ -506,6 +529,22 @@ public class GameScene extends JPanel implements ActionListener {
     public int getlowerposX(){
         Enemy enemy = enemies.get(enemies.size()-1);
         return enemy.getPosY();
+    }
+
+    public static String getState() {
+        return State.toString() ;
+    }
+    public static String getButton() {
+        return Button.toString() ;
+    }
+    public static void setButton(String button) {
+        if (button == "PLAY") {
+            Button = BUTTON.PLAY ;
+        } else if (button == "SETTINGS") {
+            Button = BUTTON.SETTINGS ;
+        } else if (button == "EXIT") {
+            Button = BUTTON.EXIT ;
+        }
     }
 
     public static void setPause(boolean x){
