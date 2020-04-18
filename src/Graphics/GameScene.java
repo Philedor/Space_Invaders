@@ -5,7 +5,6 @@ import Entities.Entity;
 import Entities.Player;
 import Entities.Projectile;
 import Tools.*;
-import Tools.Menu;
 
 
 import javax.swing.*;
@@ -36,32 +35,11 @@ public class GameScene extends JPanel implements ActionListener {
     private Entity[] health = new Entity[2];
     private Entity sdisplay;
     private Entity topHUD;
-    private Entity title ;
-    private Entity play ;
-    private Entity settings ;
-    private Entity exit ;
 
     int DELAY = 15;
 
     public static List<Enemy> enemies = new ArrayList<>();
     public static List<Player> players = new ArrayList<>();
-
-    public static Menu menu = new Menu();
-
-    private enum STATE {
-        MENU,
-        GAME,
-        SETTINGS
-    } ;
-
-    private enum BUTTON {
-        PLAY,
-        SETTINGS,
-        EXIT
-    } ;
-
-    private static STATE State = STATE.MENU;
-    private static BUTTON Button = BUTTON.PLAY;
 
     private int p1score = 0;
     private int p2score = 0;
@@ -85,7 +63,6 @@ public class GameScene extends JPanel implements ActionListener {
         backsong = new Audio(Constants.BACKGROUND_MUSIC);
 
         InitHUD();
-        InitMenu();
 
         addKeyListener(new InputManager());
 
@@ -118,13 +95,6 @@ public class GameScene extends JPanel implements ActionListener {
         }
     }
 
-    private void InitMenu(){
-        title = new Entity(168,50,Constants.TITLE,Constants.NB_TITLE,0) ;
-        play = new Entity(248,300,Constants.PLAY_BUTTON,Constants.NB_PLAY,0) ;
-        settings = new Entity(170,500,Constants.SETTINGS_BUTTON,Constants.NB_SETTINGS,0) ;
-        exit = new Entity(260,700,Constants.EXIT_BUTTON,Constants.NB_EXIT,0) ;
-    }
-
     private void InitHUD(){
         //loading health HUD
         for(int i = 0; i < 2; i++) {
@@ -135,6 +105,7 @@ public class GameScene extends JPanel implements ActionListener {
         sdisplay = new Entity(6,937, Constants.SMALL_DISPLAY, Constants.NB_SMALL_DISPLAY, 0);
 
         //loading top HUD
+        stopWatch.start();
         topHUD = new Entity(0, 0, Constants.TOP_HUD, Constants.NB_TOP_HUD, 0);
     }
 
@@ -145,74 +116,56 @@ public class GameScene extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics1) {
         Graphics2D graphics = (Graphics2D) graphics1;
         super.paintComponent(graphics1);
-
         // different drawing functions for different game states
-        if (State == STATE.GAME) {
-            stopWatch.start();
-            if (!pause) {
-                ScrollBG(graphics);
-                stopWatch.resume();
-                if (!backsong.isRunning()) {
-                    backsong.playSoundLoop(0.5f);
+        if (!pause) {
+            ScrollBG(graphics);
+            stopWatch.resume();
+            if(!backsong.isRunning()) {
+                backsong.playSoundLoop(0.5f);
+            }
+        }
+
+        // Flickering
+        if (!running || pause) {
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0));
+            backsong.stopAudio();
+        }
+
+
+        for (Enemy enemy : enemies) {
+            graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
+            if(enemy.isDying()) {
+                if(enemy.animatedOnce(Constants.NB_ENEMY_DEATH_SPRITE)) {
+                    enemy.setLive(false);
                 }
             }
-            // Flickering
-            if (!running || pause) {
-                graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0));
-                backsong.stopAudio();
-            }
-            for (Enemy enemy : enemies) {
-                graphics.drawImage(enemy.getSprite(enemy.currentSprite), enemy.getPosX(), enemy.getPosY(), this);
-                if (enemy.isDying()) {
-                    if (enemy.animatedOnce(Constants.NB_ENEMY_DEATH_SPRITE)) {
-                        enemy.setLive(false);
-                    }
-                }
-            }
-            drawProjectiles(graphics);
-            drawPlayer(graphics);
-            // Displays depending on the state
-            if (pause) Pause(graphics);
-            else if (!running) GameOver(graphics);
-            drawHUD(graphics);
-            // Display score
-            graphics.setColor(new Color(216, 97, 225));
-            Font font = new Font("Helvetica", Font.BOLD, 17);
-            graphics.setFont(font);
-            graphics.drawString(p1 + String.format("%03d", p1score), px, p1y);
-            graphics.drawString(p2 + String.format("%03d", p2score), px, p2y);
-            // Display time
-            String time = stopWatch.toMinAndSecString();
-            font = new Font("Helvetica", Font.BOLD, 30);
-            graphics.setFont(font);
-            graphics.drawString(time, tx, ty);
-            graphics.dispose();
-            Toolkit.getDefaultToolkit().sync();
-        } else if (State == STATE.MENU) {
-            drawMenu(graphics);
         }
-    }
 
-    private void drawMenu(Graphics2D graphics) {
-        graphics.drawImage(title.getSprite(title.currentSprite),title.getPosX(),title.getPosY(),this);
-        if (Button == BUTTON.PLAY) {
-            play.currentSprite = 1 ;
-            settings.currentSprite = 0 ;
-            exit.currentSprite = 0 ;
-        } else if (Button == BUTTON.SETTINGS) {
-            play.currentSprite = 0 ;
-            settings.currentSprite = 1 ;
-            exit.currentSprite = 0 ;
-        } else if (Button == BUTTON.EXIT) {
-            play.currentSprite = 0 ;
-            settings.currentSprite = 0 ;
-            exit.currentSprite = 1 ;
-        }
-        graphics.drawImage(play.getSprite(play.currentSprite), play.getPosX(), play.getPosY(), this);
-        graphics.drawImage(settings.getSprite(settings.currentSprite), settings.getPosX(), settings.getPosY(), this);
-        graphics.drawImage(exit.getSprite(exit.currentSprite), exit.getPosX(), exit.getPosY(), this);
-    }
+        drawProjectiles(graphics);
+        drawPlayer(graphics);
 
+
+        // Displays depending on the state
+        if(pause) Pause(graphics);
+        else if (!running) GameOver(graphics);
+
+        drawHUD(graphics);
+
+        // Display score
+        graphics.setColor(new Color(216, 97, 225));
+        Font font = new Font("Helvetica", Font.BOLD, 17);
+        graphics.setFont(font);
+        graphics.drawString(p1 + String.format("%03d", p1score), px, p1y);
+        graphics.drawString(p2 + String.format("%03d", p2score), px, p2y);
+        // Display time
+        String time = stopWatch.toMinAndSecString();
+        font = new Font("Helvetica", Font.BOLD, 30);
+        graphics.setFont(font);
+        graphics.drawString(time, tx, ty);
+
+        graphics.dispose();
+        Toolkit.getDefaultToolkit().sync();
+    }
 
     private void Pause(Graphics2D graphics){
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
@@ -360,24 +313,23 @@ public class GameScene extends JPanel implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (State == STATE.GAME) {
-            if (enemies.size() == 0) {
-                InitEnemies();
-                // TODO Next level
-            }
-            if (getlowerposX() >= Constants.GAME_OVER_Y || players.size() == 0)
-                running = false;
-            if (running && !pause) {
-                players.removeIf(player -> !player.isLive());
-                // Update Player
-                for (Player player : players)
-                    if (player.isLive())
-                        player.Update();
-                if (enemies.size() > 0)
-                    updateEnemies();
-                updateProjectiles();
-                ContactCheck();
-            }
+
+        if (enemies.size() == 0){
+            InitEnemies();
+            // TODO Next level and move speed
+        }
+        if (getlowerposX() >= Constants.GAME_OVER_Y || players.size() == 0)
+            running = false;
+        if (running && !pause) {
+            players.removeIf(player -> !player.isLive());
+            // Update Player
+            for (Player player : players)
+                if(player.isLive())
+                    player.Update();
+            if (enemies.size() > 0)
+                updateEnemies();
+            updateProjectiles();
+            ContactCheck();
         }
         // collision checked during update to avoid calling multiple loops to go through each lists every time
         repaint();
@@ -546,27 +498,6 @@ public class GameScene extends JPanel implements ActionListener {
     public int getlowerposX(){
         Enemy enemy = enemies.get(enemies.size()-1);
         return enemy.getPosY();
-    }
-
-    public static String getState() {
-        return State.toString() ;
-    }
-    public static String getButton() {
-        return Button.toString() ;
-    }
-    public static void setButton(String button) {
-        if (button == "PLAY") {
-            Button = BUTTON.PLAY ;
-        } else if (button == "SETTINGS") {
-            Button = BUTTON.SETTINGS ;
-        } else if (button == "EXIT") {
-            Button = BUTTON.EXIT ;
-        }
-    }
-    public static void setState(String state) {
-        if (state == "GAME") {
-            State = STATE.GAME;
-        }
     }
 
     public static void setPause(boolean x){

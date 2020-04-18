@@ -57,12 +57,10 @@ public class StopWatch {
      * Starts the Stopwatch
      */
     public void start() {
-        if(!isRunning()) {
-            start = System.nanoTime();
-            running = true;
-            paused = false;
-            pausedStart = -1;
-        }
+        start = System.nanoTime();
+        running = true;
+        paused = false;
+        pausedStart = -1;
     }
 
     /**

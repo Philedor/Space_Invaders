@@ -13,25 +13,16 @@ public class InputManager extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (GameScene.getState() == "GAME") {
-            for (Player player : GameScene.players)
-                player.keyPressed(e);
-            int key = e.getKeyCode();
-            if (key == VK_P) {
-                GameScene.setPause(!GameScene.getPause());
-            }
-        } else if (GameScene.getState() == "MENU") {
-                GameScene.menu.keyPressed(e);
-            }
-        }
+        for(Player player : GameScene.players)
+            player.keyPressed(e);
+        int key = e.getKeyCode();
+        if     (key == VK_P)            {GameScene.setPause(!GameScene.getPause());}
+
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (GameScene.getState() == "GAME") {
-            for (Player player : GameScene.players)
-                player.keyReleased(e);
-        }else if (GameScene.getState() == "MENU") {
-            GameScene.menu.keyReleased(e);
-        }
+        for(Player player : GameScene.players)
+            player.keyReleased(e);
     }
 }

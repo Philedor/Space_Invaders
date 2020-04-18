@@ -56,16 +56,6 @@ public class Constants {
     public static final String  TOP_HUD =                           "resources/sprites/hud/top/top.png";
     public static final int     NB_TOP_HUD =                        1;
 
-    //Menu
-    public static final String TITLE =                              "resources/sprites/buttons/title.png" ;
-    public static final int    NB_TITLE =                           1;
-    public static final String PLAY_BUTTON =                        "resources/sprites/buttons/playsheet.png" ;
-    public static final int    NB_PLAY =                            2;
-    public static final String SETTINGS_BUTTON =                    "resources/sprites/buttons/settingssheet.png" ;
-    public static final int    NB_SETTINGS =                        2;
-    public static final String EXIT_BUTTON =                        "resources/sprites/buttons/exitsheet.png" ;
-    public static final int    NB_EXIT =                            2;
-
     //Audio
     public static final String AUDIO_LOCATION=                        "resources/audio/";
     public static final String ATTACK_SOUND =                         "shoot.wav";
