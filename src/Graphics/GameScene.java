@@ -135,7 +135,6 @@ public class GameScene extends JPanel implements ActionListener {
         sdisplay = new Entity(6,937, Constants.SMALL_DISPLAY, Constants.NB_SMALL_DISPLAY, 0);
 
         //loading top HUD
-        stopWatch.start();
         topHUD = new Entity(0, 0, Constants.TOP_HUD, Constants.NB_TOP_HUD, 0);
     }
 
@@ -149,6 +148,7 @@ public class GameScene extends JPanel implements ActionListener {
 
         // different drawing functions for different game states
         if (State == STATE.GAME) {
+            stopWatch.start();
             if (!pause) {
                 ScrollBG(graphics);
                 stopWatch.resume();
